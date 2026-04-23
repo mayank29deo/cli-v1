@@ -1,0 +1,9 @@
+{
+  "name": "cli-v1",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Booster CLM dashboard suite",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.0"
+  }
+}
