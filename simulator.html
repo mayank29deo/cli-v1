@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VED AI — Booster Journey Simulator</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060C18;--panel:#0B1525;--card:#0F1D30;--border:#162438;
+  --purple:#8B7CF8;--teal:#1ECDB5;--green:#2ECC9A;--amber:#F5BC1E;
+  --red:#F06060;--blue:#5BA8FF;--pink:#E06EAA;--orange:#FF7A2E;
+  --text:#C8DCF0;--muted:#4A6580;--faint:#0E1B2C;
+}
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes nodePulse{0%,100%{box-shadow:0 0 0 0 rgba(139,124,248,.3)}50%{box-shadow:0 0 0 6px rgba(139,124,248,.25)}}
+@keyframes typingBounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-4px)}}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;height:52px;padding:0 28px;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0}
+.logo{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.35em;color:var(--purple)}
+.divider{width:1px;height:20px;background:var(--border)}
+.crumb{font-size:11.5px;font-weight:500}
+.crumb span{color:var(--muted)}
+.sim-badge{font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;background:rgba(245,188,30,.07);border:1px solid rgba(245,188,30,.25);color:var(--amber);letter-spacing:.05em}
+.nav-links{display:flex;gap:4px;margin-left:auto}
+.nav-btn{font-size:11px;padding:6px 12px;border-radius:7px;border:1px solid var(--border);color:var(--muted);transition:all .15s;white-space:nowrap}
+.nav-btn:hover{border-color:var(--purple);color:var(--purple)}
+.nav-btn.on{border-color:var(--purple);color:var(--purple);background:rgba(139,124,248,.07)}
+
+/* STUDENT BAR */
+.student-bar{background:var(--panel);border-bottom:1px solid var(--border);padding:12px 28px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;flex-shrink:0}
+.sb-label{font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.persona-group{display:flex;gap:7px;flex:1;flex-wrap:wrap}
+.persona{display:flex;align-items:center;gap:8px;padding:7px 13px;border-radius:10px;border:1px solid var(--border);cursor:pointer;transition:all .15s;font-size:11.5px;min-width:180px}
+.persona:hover{border-color:var(--muted)}
+.persona.on{border-color:var(--purple);background:rgba(139,124,248,.07)}
+.persona-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;flex-shrink:0}
+.persona-name{font-weight:500;line-height:1.2}
+.persona-tier{font-size:9.5px;color:var(--muted);margin-top:2px;font-family:'DM Mono',monospace}
+.control-group{display:flex;gap:6px;align-items:center}
+.ctrl-btn{font-size:11px;padding:6px 14px;border-radius:7px;border:1px solid var(--border);color:var(--text);transition:all .15s;font-weight:500}
+.ctrl-btn.primary{background:var(--purple);color:#fff;border-color:var(--purple)}
+.ctrl-btn.primary:hover:not(:disabled){background:#9d8ff9;box-shadow:0 4px 14px rgba(139,124,248,.35)}
+.ctrl-btn:disabled{opacity:.5;cursor:not-allowed}
+.ctrl-btn:not(.primary):hover{border-color:var(--purple);color:var(--purple)}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:420px 1fr 350px;height:calc(100vh - 52px - 63px);overflow:hidden}
+.panel{border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.panel:last-child{border-right:none}
+.panel-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.panel-title{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.panel-scroll{flex:1;overflow-y:auto;padding:16px}
+
+/* TIMELINE (left panel) */
+.day-sep{
+  display:flex;align-items:center;gap:10px;margin:14px 0 8px;
+  font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--purple);
+}
+.day-sep:first-child{margin-top:0}
+.day-sep::before{content:"";flex:0 0 14px;height:1px;background:rgba(139,124,248,.4)}
+.day-sep::after{content:"";flex:1;height:1px;background:rgba(139,124,248,.2)}
+
+.event{
+  display:flex;gap:12px;padding:10px 12px;border-radius:10px;
+  border:1px solid transparent;transition:all .2s;cursor:pointer;margin-bottom:3px;
+  position:relative;
+}
+.event:hover{background:var(--panel)}
+.event.fired{opacity:.92}
+.event.fired .ev-dot{background:var(--green);border-color:var(--green);color:#0d1418}
+.event.active{background:rgba(139,124,248,.07);border-color:rgba(139,124,248,.3)}
+.event.active .ev-dot{animation:nodePulse 1.2s ease infinite;border-color:var(--purple);background:rgba(139,124,248,.15);color:var(--purple)}
+.event.skipped{opacity:.35}
+.event.skipped .ev-dot{background:var(--faint);border-color:var(--border);color:var(--muted)}
+
+.ev-col{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:28px}
+.ev-dot{width:28px;height:28px;border-radius:50%;background:var(--faint);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .3s;position:relative;z-index:1}
+.ev-line{width:2px;flex:1;min-height:18px;background:var(--border);transition:background .3s}
+.event.fired .ev-line{background:var(--green)}
+.event.skipped .ev-line{background:var(--faint)}
+
+.ev-body{flex:1;min-width:0;padding:2px 0}
+.ev-time{font-size:9.5px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:3px;letter-spacing:.05em}
+.ev-label{font-size:12px;font-weight:500;line-height:1.3;margin-bottom:3px}
+.ev-meta{font-size:10px;color:var(--muted);line-height:1.4}
+.ev-tpl{
+  font-size:9.5px;font-family:'DM Mono',monospace;color:var(--amber);
+  margin-top:5px;display:inline-block;padding:1px 6px;border-radius:4px;
+  background:rgba(245,188,30,.08);border:1px solid rgba(245,188,30,.18);
+}
+.ev-skipped-note{font-size:9.5px;color:var(--red);margin-top:3px;font-style:italic}
+
+/* CENTER: ORCHESTRATION */
+.orc-section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px;animation:up .4s ease both}
+.orc-title{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.orc-title::before{content:"";width:4px;height:12px;background:var(--purple);border-radius:2px}
+
+.pipeline{display:flex;flex-direction:column;gap:0}
+.pnode{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px dashed var(--faint)}
+.pnode:last-child{border-bottom:none}
+.pcircle{width:32px;height:32px;border-radius:50%;background:var(--faint);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.pcircle.done{background:rgba(46,204,154,.1);border-color:var(--green);color:var(--green)}
+.pcircle.active{background:rgba(139,124,248,.12);border-color:var(--purple);color:var(--purple);animation:nodePulse 1.2s ease infinite}
+.pbody{flex:1;min-width:0}
+.plabel{font-size:12px;font-weight:500;margin-bottom:3px}
+.pdesc{font-size:11px;color:var(--muted);line-height:1.5}
+.pdesc code{font-family:'DM Mono',monospace;background:var(--faint);padding:1px 5px;border-radius:3px;color:var(--amber);font-size:10.5px}
+
+.state-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--faint);font-size:11.5px}
+.state-row:last-child{border-bottom:none}
+.state-lbl{color:var(--muted)}
+.state-val{font-family:'DM Mono',monospace;font-weight:500}
+
+.kpi-inline{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px}
+.kpi-mini{background:var(--faint);border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.kpi-mini-label{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.kpi-mini-val{font-size:18px;font-weight:500;font-family:'DM Mono',monospace}
+
+.wati-call{background:var(--faint);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:'DM Mono',monospace;font-size:10.5px;line-height:1.6;color:var(--muted);white-space:pre-wrap;word-break:break-all}
+.wati-call .k{color:var(--purple)}
+.wati-call .s{color:var(--teal)}
+.wati-call .n{color:var(--amber)}
+
+/* PHONE (right) */
+.phone-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:14px;min-height:0}
+.phone{width:270px;flex-shrink:0;border-radius:32px;overflow:hidden;border:7px solid #181830;box-shadow:0 18px 54px rgba(0,0,0,.85);display:flex;flex-direction:column;background:#0d1418;max-height:100%}
+.phone-inner{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative}
+.phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:84px;height:22px;background:#181830;border-radius:0 0 13px 13px;z-index:5}
+.wa-hdr{background:#202c33;padding:34px 12px 9px;display:flex;align-items:center;gap:9px;flex-shrink:0}
+.wa-av{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#fff;background:linear-gradient(135deg,#FF7A2E,#F5BC1E)}
+.wa-name{font-size:12.5px;font-weight:600;color:#e9edef}
+.wa-status{font-size:9.5px;color:#8696a0;margin-top:1px}
+.wa-msgs{flex:1;overflow-y:auto;padding:8px 9px 5px;background:#0d1418}
+.wa-msgs::-webkit-scrollbar{width:2px}
+.wa-msgs::-webkit-scrollbar-thumb{background:#2a3942}
+.wa-date{text-align:center;margin:6px 0 10px}
+.wa-date span{background:#182229;color:#8696a0;font-size:9.5px;padding:3px 9px;border-radius:7px}
+.bw{display:flex;margin-bottom:2px}
+.bw.in{justify-content:flex-start}
+.bw.out{justify-content:flex-end}
+.bubble{max-width:88%;padding:7px 10px 16px;border-radius:8px 8px 8px 2px;font-size:11.5px;line-height:1.55;color:#e9edef;background:#202c33;position:relative;word-break:break-word;animation:slideIn .3s ease both;white-space:pre-wrap}
+.bw.out .bubble{background:#005c4b;border-radius:8px 8px 2px 8px}
+.bubble strong{color:#fff}
+.btime{position:absolute;bottom:3px;right:8px;font-size:8.5px;color:#8696a0;display:flex;align-items:center;gap:3px}
+.ticks{color:#53bdeb}
+.typing{background:#202c33;border-radius:8px 8px 8px 2px;padding:9px 12px;display:inline-flex;gap:4px;align-items:center;margin-bottom:5px}
+.tdot{width:6px;height:6px;border-radius:50%;background:#8696a0}
+.tdot:nth-child(1){animation:typingBounce 1.3s ease infinite 0s}
+.tdot:nth-child(2){animation:typingBounce 1.3s ease infinite .18s}
+.tdot:nth-child(3){animation:typingBounce 1.3s ease infinite .36s}
+.bubble .poster{background:linear-gradient(135deg,#FF7A2E,#F5BC1E);height:62px;border-radius:4px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9.5px;font-weight:600;letter-spacing:.05em}
+.btn-row{display:flex;flex-direction:column;gap:2px;background:#202c33;border-radius:2px 2px 8px 8px;padding:5px 8px;margin-top:1px;max-width:88%}
+.bw.in .btn-row{align-self:flex-start}
+.mini-btn{background:rgba(255,255,255,.06);color:#53bdeb;padding:6px;text-align:center;font-size:11px;font-weight:500;border-radius:4px}
+
+.wa-inp{background:#202c33;padding:7px 9px;display:flex;align-items:center;gap:7px;flex-shrink:0}
+.wa-inp-fake{flex:1;background:#2a3942;border-radius:20px;padding:6px 13px;font-size:10.5px;color:#8696a0}
+.wa-mic{width:30px;height:30px;border-radius:50%;background:#00a884;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;flex-shrink:0}
+
+@media (max-width:1200px){
+  .layout{grid-template-columns:360px 1fr 310px}
+}
+@media (max-width:1000px){
+  .layout{grid-template-columns:1fr;overflow-y:auto}
+  .panel{border-right:none;border-bottom:1px solid var(--border)}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+/* ═══════════════════════════════════════════════════════
+   4 STUDENT PERSONAS (matching the 4 lead tiers)
+═══════════════════════════════════════════════════════ */
+
+const PERSONAS = [
+  {
+    id:0, first:"Arjun", last:"Reddy", tier:"hot", tierLabel:"HOT", avColor:"#F06060",
+    region:"TG", state:"Telangana",
+    d1_attended:true, d2_attended:true, d3_attended:true,
+    hw_d1:true, hw_d2:true,
+    read_rate:0.95,
+  },
+  {
+    id:1, first:"Lakshmi", last:"Rao", tier:"warm75", tierLabel:"WARM-75", avColor:"#FF7A2E",
+    region:"AP", state:"Andhra Pradesh",
+    d1_attended:true, d2_attended:true, d3_attended:false,
+    hw_d1:true, hw_d2:true,
+    read_rate:0.88,
+  },
+  {
+    id:2, first:"Saanvi", last:"Desai", tier:"warm50", tierLabel:"WARM-50", avColor:"#F5BC1E",
+    region:"MH", state:"Maharashtra",
+    d1_attended:true, d2_attended:false, d3_attended:false,
+    hw_d1:true, hw_d2:false,
+    read_rate:0.64,
+  },
+  {
+    id:3, first:"Harini", last:"Venkatesh", tier:"d1ns", tierLabel:"D1 NO-SHOW", avColor:"#4A6580",
+    region:"TN", state:"Tamil Nadu",
+    d1_attended:false, d2_attended:false, d3_attended:false,
+    hw_d1:false, hw_d2:false,
+    read_rate:0.72,
+  },
+];
+
+/* ═══════════════════════════════════════════════════════
+   JOURNEY EVENT LIST (resolved per persona)
+═══════════════════════════════════════════════════════ */
+
+function buildJourney(p) {
+  const J = [];
+  const add = (day, time, label, meta, tpl, ch, msgFn, cond) => {
+    J.push({day, time, label, meta, tpl, ch, msgFn, skipped: cond ? !cond(p) : false});
+  };
+
+  // ─── PRE-COHORT + DAY 0 ─────────────────────
+  add("Pre-cohort", "D-3 · 18:00", "Hype snippet video",
+      "Excitement · all enrolled", "T10_HYPE_VIDEO", "WA",
+      p => `${p.first}, 30-second taste of what's coming 🎬\n\n*ved.app/snip/C17*\n\nThat's Neha Ma'am breaking down a concept that took me 3 classes in school. You'll see it on Day 1. 🤯\n\nSet a reminder for your batch!`);
+
+  add("Pre-cohort", "D-2 · 11:00", "Curiosity hook",
+      "Teasing · engagement boost", "T11_CURIOSITY_HOOK", "WA",
+      p => `Quick riddle, ${p.first}:\n\n*Why do astronauts float even though gravity is still pulling them?*\n\nReply with your guess? We'll reveal the answer in Day 1's class on Rotational Mechanics. 🔍\n\n(No Googling! 😉)`);
+
+  add("Day 0", "D0 · 09:00", "Welcome + batch schedule (regional)",
+      `Warm · onboarding · ${p.region} poster`, "T01_WELCOME", "WA",
+      p => `Hey ${p.first}! 🎉 Welcome to the Vedantu Booster Trial!\n\nYour 3-day adventure starts *Apr 24 at 6:30 PM*.\n\n📅 *Your schedule:*\nDay 1 · Apr 24 · 6:30 PM — Rotational Mechanics\nDay 2 · Apr 25 · 6:30 PM — Gravitation\nDay 3 · Apr 26 · 6:30 PM — Oscillations\n\n*How to join:*\n1. Download the Vedantu app\n2. Log in with: +91 98••• / ${p.first.toLowerCase()}@mail.com\n3. Class appears under 'My Courses'\n\nYour teacher: *Neha Ma'am* (Physics)\nSee you there! 🚀`,
+      null);
+
+  add("Day 0", "D0 · 20:00", "T-24h reminder",
+      "Anticipation · tomorrow is Day 1", "T02_REMINDER_T24H", "WA",
+      p => `${p.first}, tomorrow is Day 1! ⏰\n\n6:30 PM sharp · *Neha Ma'am* takes you through:\n👉 Rotational Mechanics\n\nSneak peek: Why does a spinning top not fall?\n\nSet a reminder. See you at 6:30 PM. 💪`);
+
+  // ─── DAY 1 ──────────────────────────────────
+  add("Day 1", "D1 · 15:30", "T-3h reminder + prep",
+      "Curious · question hook", "T03_REMINDER_T3H", "WA",
+      p => `${p.first}, quick question before class at 6:30 PM:\n\n*Why do ice skaters spin faster when they pull their arms in?*\n\nToday we'll crack this together in Rotational Mechanics. 3 hours to go — be ready with pen + notebook. ✏️`);
+
+  add("Day 1", "D1 · 18:00", "Class starts in 30 min",
+      "Urgent · FOMO · Join Now CTA", "T04_JOIN_NOW", "WA",
+      p => `${p.first}, class starts in *30 minutes* ⚡\n\n6:30 PM · tap to join:\n👉 ved.app/j/C17D1\n\nDon't make Neha Ma'am start without you! 👀`);
+
+  add("Day 1", "D1 · 20:15", "Post-class summary",
+      "Reflective · only sent if attended", "T05_POST_SUMMARY", "WA",
+      p => `That's a wrap on *Day 1* 🎯\n\nToday in Rotational Mechanics you learned:\n✅ Moment of inertia & its intuition\n✅ Angular momentum conservation\n✅ 5 JEE-level problems solved\n\nHow was the class? → ved.app/fb/C17D1\n\nYour detailed performance report is heading to your inbox. 📧`,
+      p => p.d1_attended);
+
+  add("Day 1", "D1 · 20:15", "Daily performance email",
+      "Vedantu-orange · attendance + HW status", "EMAIL_D1", "EMAIL",
+      p => `📧 Email: Day 1 performance report (orange template)`,
+      p => p.d1_attended);
+
+  add("Day 1", "D1 · 20:30", "Homework assigned",
+      "Coach · only if attended", "T06_HW_ASSIGNED", "WA",
+      p => `${p.first}, time to lock in what you learned 💪\n\n*Day 1 Homework: Rotational Mechanics*\n⏱ 25 min · Deadline: Tomorrow 6 PM\n\nStart here → ved.app/hw/C17D1\n\nStudents who submit HW on time are *3.4× more likely* to crack full concepts. Be that student. 🧠`,
+      p => p.d1_attended);
+
+  // D1 branch: no-show OR low engagement
+  add("Day 1", "D1 · 21:00", "D1 no-show re-engage",
+      "Empathy · 2nd chance for Day 2", "T16_D1_NOSHOW", "WA",
+      p => `${p.first}, we missed you today 💙\n\nLife happens. Completely get it.\n\nHere's the thing — Day 2 tomorrow at 6:30 PM covers *Gravitation*, which doesn't need Day 1 context. You can jump right back in.\n\n30-second catch-up of Day 1: ved.app/recap/C17D1\n\nRejoin tomorrow? We saved your seat. 🪑✨`,
+      p => !p.d1_attended);
+
+  add("Day 1", "D1 · 21:15", "Daily perf · High",
+      "Praise + push · attn + HW both ✓", "T08_PERF_HIGH", "WA",
+      p => `${p.first}, you're *crushing it* 🏆\n\n📊 Day 1 scorecard:\nAttendance: 100% ✅\nHomework: 100% ✅\nBatch rank: Top 8%\n\nThis is what top-1% students do. *Don't stop now.*\n\nTomorrow's class is the deepest one — you're primed for it. 🚀`,
+      p => p.d1_attended && p.hw_d1);
+
+  add("Day 1", "D1 · 21:15", "Daily perf · Low",
+      "Urgency nudge · partial engagement", "T09_PERF_LOW", "WA",
+      p => `${p.first}, I don't want you to miss out 💭\n\nDay 1 check: you ${p.hw_d1 ? "attended but skipped HW" : "missed homework"}.\n\nLook — 2 more days. *Just 2.* The Day 3 session is where everything clicks and ~70% of students end up wanting to continue after it.\n\nDon't let Day 1 decide your story. Show up tomorrow.\n\nTap to confirm → ved.app/confirm`,
+      p => p.d1_attended && !p.hw_d1);
+
+  add("Day 1", "D1 · 21:30", "T-24h reminder (for Day 2)",
+      "Anticipation · Day 2 tomorrow", "T02_REMINDER_T24H", "WA",
+      p => `${p.first}, tomorrow is Day 2! ⏰\n\n6:30 PM sharp · *Neha Ma'am* takes you through:\n👉 Gravitation\n\nSneak peek: How Newton figured out the Moon is falling.\n\nSet a reminder. 💪`);
+
+  // ─── DAY 2 ──────────────────────────────────
+  add("Day 2", "D2 · 12:00", "HW reminder (if unsubmitted)",
+      "Nudge · 6h before deadline", "T07_HW_REMINDER", "WA",
+      p => `${p.first}, your Rotational Mechanics homework is still pending 👀\n\n6 hours left. Takes ~20 minutes.\n\nTap to submit → ved.app/hw/C17D1\n\nEven 5 questions beats 0. Show up for yourself. 🔥`,
+      p => p.d1_attended && !p.hw_d1);
+
+  add("Day 2", "D2 · 15:30", "T-3h reminder + prep",
+      "Curious · question hook", "T03_REMINDER_T3H", "WA",
+      p => `${p.first}, quick question before class at 6:30 PM:\n\n*Why don't satellites fall back to Earth?*\n\nToday we'll crack this together in Gravitation. 3 hours to go — be ready with pen + notebook. ✏️`);
+
+  add("Day 2", "D2 · 18:00", "Class starts in 30 min",
+      "Urgent · Join Now CTA", "T04_JOIN_NOW", "WA",
+      p => `${p.first}, class starts in *30 minutes* ⚡\n\n6:30 PM · tap to join:\n👉 ved.app/j/C17D2\n\nDon't make Neha Ma'am start without you! 👀`);
+
+  add("Day 2", "D2 · 20:15", "Post-class summary",
+      "Reflective · only if attended", "T05_POST_SUMMARY", "WA",
+      p => `That's a wrap on *Day 2* 🎯\n\nToday in Gravitation you learned:\n✅ Kepler's 3 laws via real examples\n✅ Escape velocity derivation\n✅ Orbital mechanics · 5 MCQs solved\n\nHow was the class? → ved.app/fb/C17D2\n\nYour detailed performance report is heading to your inbox. 📧`,
+      p => p.d2_attended);
+
+  add("Day 2", "D2 · 20:15", "Daily performance email",
+      "Vedantu-orange · cumulative D1+D2", "EMAIL_D2", "EMAIL",
+      p => `📧 Email: Day 2 performance report (orange template)`,
+      p => p.d2_attended);
+
+  add("Day 2", "D2 · 20:30", "Homework assigned",
+      "Coach · only if attended", "T06_HW_ASSIGNED", "WA",
+      p => `${p.first}, time to lock in what you learned 💪\n\n*Day 2 Homework: Gravitation*\n⏱ 25 min · Deadline: Tomorrow 6 PM\n\nStart here → ved.app/hw/C17D2\n\nYou're 2/3 of the way there. Lock it in. 🧠`,
+      p => p.d2_attended);
+
+  add("Day 2", "D2 · 21:15", "Daily perf · High",
+      "Praise + push", "T08_PERF_HIGH", "WA",
+      p => `${p.first}, you're *crushing it* 🏆\n\n📊 Day 2 scorecard:\nAttendance: 100% ✅\nHomework: 100% ✅\nBatch rank: Top 5%\n\nYou're in the top 5% of your cohort. *Don't stop now.*\n\nTomorrow's Day 3 is the transformation class. You're primed. 🚀`,
+      p => p.d2_attended && p.hw_d2);
+
+  add("Day 2", "D2 · 21:15", "Daily perf · Low",
+      "Urgency nudge", "T09_PERF_LOW", "WA",
+      p => `${p.first}, I don't want you to miss out 💭\n\nDay 2 check: you ${!p.d2_attended ? "missed class" : "skipped homework"}.\n\nOne more day. *Just 1.* The Day 3 session is where everything clicks — 70% of students decide to continue after it.\n\nDon't let today decide your story. Show up tomorrow.\n\nTap to confirm → ved.app/confirm`,
+      p => !(p.d2_attended && p.hw_d2));
+
+  add("Day 2", "D2 · 21:30", "T-24h reminder (for Day 3)",
+      "Anticipation · Day 3 tomorrow", "T02_REMINDER_T24H", "WA",
+      p => `${p.first}, tomorrow is *Day 3* — the final ⏰\n\n6:30 PM sharp · *Neha Ma'am* wraps up with:\n👉 Oscillations\n\nThis is the class that ties the 3 days together. Don't miss it.\n\nSee you at 6:30 PM. 💪`);
+
+  // ─── DAY 3 ──────────────────────────────────
+  add("Day 3", "D3 · 15:30", "T-3h reminder + prep", "Curious · big finish hook", "T03_REMINDER_T3H", "WA",
+      p => `${p.first}, last one · quick question before class at 6:30 PM:\n\n*Why does a swing keep swinging, and why does it eventually stop?*\n\nToday we finish strong with Oscillations. 3 hours to go. ✏️`);
+
+  add("Day 3", "D3 · 18:00", "Class starts in 30 min", "Urgent · final class CTA", "T04_JOIN_NOW", "WA",
+      p => `${p.first}, *last* class starts in 30 minutes ⚡\n\n6:30 PM · tap to join:\n👉 ved.app/j/C17D3\n\nThis is the one where it all clicks. 💫`);
+
+  add("Day 3", "D3 · 20:15", "Post-class summary",
+      "Reflective · only if attended", "T05_POST_SUMMARY", "WA",
+      p => `That's a wrap on *Day 3* 🎯\n\nToday in Oscillations you learned:\n✅ SHM from first principles\n✅ Damped & forced oscillations\n✅ Connection to waves (next topic)\n\nHow was the class? → ved.app/fb/C17D3\n\nFinal performance report coming to your inbox. 📧`,
+      p => p.d3_attended);
+
+  add("Day 3", "D3 · 21:00", "Overall Day 3 summary",
+      "Transformation · emotional close · all users", "T12_D3_SUMMARY", "WA",
+      p => {
+        const attn = (p.d1_attended?1:0)+(p.d2_attended?1:0)+(p.d3_attended?1:0);
+        const hw = (p.hw_d1?1:0)+(p.hw_d2?1:0);
+        const score = Math.round((0.6*attn/3 + 0.3*hw/2 + 0.1*p.read_rate)*100);
+        return `${p.first}, three days ago you took a chance on yourself.\n\n📊 *Your 3-day journey:*\nClasses attended: ${attn}/3\nHomework done: ${hw}/2\nOverall score: ${score}%\n\n*You learned:* Full Physics foundation — Rotational Mechanics, Gravitation, Oscillations\n\nWhat now? Your full performance report → ved.app/report/C17/${p.first.toLowerCase()}\n\nThe real question is — do you want to keep going? 👇`;
+      });
+
+  add("Day 3", "D3 · 21:05", "Final performance email",
+      "Vedantu-orange · complete 3-day report", "EMAIL_FINAL", "EMAIL",
+      p => `📧 Email: Final 3-day performance + learning outcome report`);
+
+  // ─── DAY 3+1: INTENT ────────────────────────
+  add("Conversion", "D3+1 · 18:00", "Intent capture (buttons)",
+      "Direct · YES/NO + parent/student + tuition Y/N", "T13_INTENT_CAPTURE", "WA",
+      p => `${p.first}, one last question 🎯\n\nBased on these 3 days, would you like to enroll in the full course?\n\nQuick details help us match you with the right counsellor:\n• Who's answering: *You / Parent*\n• Already taking tuition: *Yes / No*\n\nTap below 👇`);
+
+  add("Conversion", "D3+1 · 18:15", "Counsellor connect (Intent=YES)",
+      "Close · warm handoff · tier-based assignment", "T14_COUNSELLOR_CONNECT", "WA",
+      p => `${p.first}, amazing 🎉\n\nYour dedicated counsellor: *Ankita Sharma*\n📞 +91 8X-XXXX-XXXX\n\nShe'll call you between *4 PM – 7 PM today* to walk you through:\n✅ Your ideal full course track\n✅ Scholarship options (if eligible)\n✅ Fee + payment flexibility\n\nPrep 3 questions you want answered. See you on that call! 💙`,
+      p => p.tier === "hot" || p.tier === "warm75");
+
+  add("Conversion", "D3+2 · 11:00", "Soft nurture (NO/no reply)",
+      "Gentle · preserve for later", "T15_NURTURE_SOFT", "WA",
+      p => {
+        const attn = (p.d1_attended?1:0)+(p.d2_attended?1:0)+(p.d3_attended?1:0);
+        const hw = (p.hw_d1?1:0)+(p.hw_d2?1:0);
+        const score = Math.round((0.6*attn/3 + 0.3*hw/2 + 0.1*p.read_rate)*100);
+        return `Hey ${p.first} 🌱\n\nYou scored ${score}% in your Booster trial — that's a solid base.\n\nNo pressure on the full course. But here's a 2-min read on what changes for students who continue → ved.app/why-continue\n\nWe keep your progress saved for 30 days. Whenever you're ready. 🙂`;
+      },
+      p => p.tier === "warm50" || p.tier === "d1ns");
+
+  return J;
+}
+
+/* ═══════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════ */
+
+let S = {
+  personaIdx: 0,
+  activeEvent: 0,
+  playing: false,
+  playedUpTo: 0,  // how many events have "fired" in the phone
+  playTimer: null,
+};
+
+function currentPersona() { return PERSONAS[S.personaIdx]; }
+function currentJourney() { return buildJourney(currentPersona()); }
+
+/* ═══════════════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════════════ */
+
+function render() {
+  document.getElementById("root").innerHTML = `
+    ${rTopbar()}
+    ${rStudentBar()}
+    <div class="layout">
+      ${rTimelinePanel()}
+      ${rOrchestrationPanel()}
+      ${rPhonePanel()}
+    </div>`;
+  bindHandlers();
+  scrollWA();
+}
+
+function rTopbar() {
+  return `<div class="topbar">
+    <span class="logo">VED AI</span>
+    <div class="divider"></div>
+    <span class="crumb"><span>Booster CLM ·</span> Journey Simulator</span>
+    <span class="sim-badge">⚡ 3-DAY PLAYBACK</span>
+    <div class="nav-links">
+      <a href="index.html"><button class="nav-btn">📊 Dashboard</button></a>
+      <a href="simulator.html"><button class="nav-btn on">⚡ Simulator</button></a>
+      <a href="templates.html"><button class="nav-btn">📱 Templates</button></a>
+      <a href="leads.html"><button class="nav-btn">🎯 Leads</button></a>
+      <a href="email-preview.html"><button class="nav-btn">📧 Email</button></a>
+    </div>
+  </div>`;
+}
+
+function rStudentBar() {
+  const p = currentPersona();
+  const tierColor = {hot:"#F06060", warm75:"#FF7A2E", warm50:"#F5BC1E", d1ns:"#4A6580"};
+  return `<div class="student-bar">
+    <span class="sb-label">Simulate as</span>
+    <div class="persona-group">
+      ${PERSONAS.map((pp,i) => {
+        const on = S.personaIdx === i ? "on" : "";
+        return `<div class="persona ${on}" data-pidx="${i}">
+          <div class="persona-av" style="background:${pp.avColor}">${pp.first[0]}</div>
+          <div>
+            <div class="persona-name">${pp.first} ${pp.last}</div>
+            <div class="persona-tier">${pp.state} · ${pp.tierLabel}</div>
+          </div>
+        </div>`;
+      }).join("")}
+    </div>
+    <div class="control-group">
+      <button class="ctrl-btn" id="reset-btn">⏮ Reset</button>
+      <button class="ctrl-btn" id="step-btn">⏭ Step</button>
+      <button class="ctrl-btn primary" id="play-btn">${S.playing ? "⏸ Pause" : "▶ Play all 3 days"}</button>
+    </div>
+  </div>`;
+}
+
+function rTimelinePanel() {
+  const J = currentJourney();
+  const groups = [];
+  let lastDay = null;
+  J.forEach((ev, i) => {
+    if (ev.day !== lastDay) { groups.push({day:ev.day, items:[]}); lastDay = ev.day; }
+    groups[groups.length-1].items.push({...ev, idx:i});
+  });
+
+  return `<div class="panel">
+    <div class="panel-head">
+      <span class="panel-title">Journey Timeline</span>
+      <span style="font-size:10px;color:var(--muted)">${J.length} events · ${S.playedUpTo} fired</span>
+    </div>
+    <div class="panel-scroll">
+      ${groups.map(g => `
+        <div class="day-sep">${g.day}</div>
+        ${g.items.map(ev => {
+          const fired = ev.idx < S.playedUpTo;
+          const active = ev.idx === S.activeEvent;
+          const cls = ev.skipped ? "skipped" : fired ? "fired" : active ? "active" : "";
+          return `<div class="event ${cls}" data-evidx="${ev.idx}">
+            <div class="ev-col">
+              <div class="ev-dot">${fired && !ev.skipped ? "✓" : ev.skipped ? "∅" : "•"}</div>
+              <div class="ev-line"></div>
+            </div>
+            <div class="ev-body">
+              <div class="ev-time">${ev.time} ${ev.ch === "EMAIL" ? "📧" : "💬"}</div>
+              <div class="ev-label">${ev.label}</div>
+              <div class="ev-meta">${ev.meta}</div>
+              <div class="ev-tpl">${ev.tpl}</div>
+              ${ev.skipped ? `<div class="ev-skipped-note">SKIPPED for this persona (condition not met)</div>` : ""}
+            </div>
+          </div>`;
+        }).join("")}
+      `).join("")}
+    </div>
+  </div>`;
+}
+
+function rOrchestrationPanel() {
+  const J = currentJourney();
+  const ev = J[S.activeEvent];
+  const p = currentPersona();
+  if (!ev) return `<div class="panel"></div>`;
+
+  const attn = (p.d1_attended?1:0)+(p.d2_attended?1:0)+(p.d3_attended?1:0);
+  const hw = (p.hw_d1?1:0)+(p.hw_d2?1:0);
+  const score = (0.6*attn/3 + 0.3*hw/2 + 0.1*p.read_rate).toFixed(2);
+
+  const watiPayload = ev.ch === "EMAIL" ?
+`POST https://gmail.googleapis.com/gmail/v1/users/me/messages/send
+Authorization: Bearer <span class="k">${'<gmail_oauth_token>'}</span>
+{
+  "to":         "<span class="s">${p.first.toLowerCase()}@mail.com</span>",
+  "subject":    "<span class="s">Your Vedantu Booster · ${ev.day} Performance</span>",
+  "template":   "<span class="n">vedantu_orange_${ev.day.toLowerCase().replace(' ','')}</span>",
+  "variables":  {
+    "first_name":    "<span class="s">${p.first}</span>",
+    "attn_score":    <span class="n">${Math.round((attn/3)*100)}</span>,
+    "hw_score":      <span class="n">${Math.round((hw/2)*100)}</span>,
+    "read_rate":     <span class="n">${Math.round(p.read_rate*100)}</span>
+  }
+}`
+:
+`POST https://live-server.wati.io/api/v1/sendTemplateMessage
+Authorization: Bearer <span class="k">${'<wati_token>'}</span>
+{
+  "whatsappNumber": "<span class="s">+9198•••${1000 + p.id * 137}</span>",
+  "template_name":  "<span class="n">${ev.tpl.toLowerCase()}</span>",
+  "broadcast_name": "<span class="n">booster_apr_c17_${ev.day.toLowerCase().replace(' ','')}</span>",
+  "parameters": [
+    {"name":"first_name", "value":"<span class="s">${p.first}</span>"},
+    {"name":"batch_id",   "value":"<span class="s">BOOSTER-APR-C17</span>"},
+    {"name":"region",     "value":"<span class="s">${p.region}</span>"}
+  ]
+}`;
+
+  return `<div class="panel">
+    <div class="panel-head">
+      <span class="panel-title">Backend Orchestration</span>
+      <span style="font-size:10px;color:${ev.skipped?'var(--red)':'var(--green)'}">${ev.skipped ? "● Skipped" : S.playedUpTo > S.activeEvent ? "● Delivered" : "● Ready"}</span>
+    </div>
+    <div class="panel-scroll">
+
+      <div class="orc-section">
+        <div class="orc-title">Event</div>
+        <div style="font-size:14px;font-weight:500;margin-bottom:4px">${ev.label}</div>
+        <div style="font-size:11.5px;color:var(--muted)">${ev.day} · ${ev.time} · Channel: ${ev.ch === "EMAIL" ? "Email" : "WhatsApp"}</div>
+      </div>
+
+      <div class="orc-section">
+        <div class="orc-title">Rule engine decision</div>
+        <div class="pipeline">
+          <div class="pnode">
+            <div class="pcircle done">1</div>
+            <div class="pbody">
+              <div class="plabel">Read student row from master sheet</div>
+              <div class="pdesc">Pulled <code>${p.first} ${p.last}</code> (<code>${p.region}</code>) · <code>tier=${p.tierLabel}</code> · <code>score=${score}</code></div>
+            </div>
+          </div>
+          <div class="pnode">
+            <div class="pcircle done">2</div>
+            <div class="pbody">
+              <div class="plabel">Evaluate trigger condition</div>
+              <div class="pdesc">${ev.skipped ? `<span style="color:var(--red)">Condition FALSE — template skipped for this persona.</span>` : `Condition met · template <code>${ev.tpl}</code> selected`}</div>
+            </div>
+          </div>
+          <div class="pnode">
+            <div class="pcircle ${ev.skipped?'':'done'}">3</div>
+            <div class="pbody">
+              <div class="plabel">Write chosen_template column</div>
+              <div class="pdesc">${ev.skipped ? "—" : `Master sheet cell updated: <code>chosen_template = ${ev.tpl}</code>`}</div>
+            </div>
+          </div>
+          <div class="pnode">
+            <div class="pcircle ${ev.skipped?'':'active'}">4</div>
+            <div class="pbody">
+              <div class="plabel">Dispatch via ${ev.ch === "EMAIL" ? "Gmail API" : "WATI API"}</div>
+              <div class="pdesc">${ev.skipped ? "—" : "Apps Script calls the API with rendered variables"}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      ${!ev.skipped ? `
+      <div class="orc-section">
+        <div class="orc-title">${ev.ch === "EMAIL" ? "Gmail API call (Apps Script)" : "WATI API call (Apps Script)"}</div>
+        <div class="wati-call">${watiPayload}</div>
+      </div>
+      ` : ""}
+
+      <div class="orc-section">
+        <div class="orc-title">Live lead scoring</div>
+        <div class="kpi-inline">
+          <div class="kpi-mini">
+            <div class="kpi-mini-label">Attendance</div>
+            <div class="kpi-mini-val" style="color:var(--green)">${attn}/3</div>
+          </div>
+          <div class="kpi-mini">
+            <div class="kpi-mini-label">Homework</div>
+            <div class="kpi-mini-val" style="color:var(--amber)">${hw}/2</div>
+          </div>
+          <div class="kpi-mini">
+            <div class="kpi-mini-label">WA read</div>
+            <div class="kpi-mini-val" style="color:var(--blue)">${Math.round(p.read_rate*100)}%</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px dashed var(--faint)">
+          <div class="state-row">
+            <span class="state-lbl">Computed score</span>
+            <span class="state-val" style="font-size:14px;color:var(--purple)">${score}</span>
+          </div>
+          <div class="state-row">
+            <span class="state-lbl">Assigned tier</span>
+            <span class="state-val" style="color:${p.tier === 'hot' ? 'var(--red)' : p.tier === 'warm75' ? 'var(--orange)' : p.tier === 'warm50' ? 'var(--amber)' : 'var(--muted)'}">${p.tierLabel}</span>
+          </div>
+          <div class="state-row">
+            <span class="state-lbl">Formula</span>
+            <span class="state-val" style="font-size:10px;color:var(--muted)">0.6·attn + 0.3·hw + 0.1·read</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>`;
+}
+
+function rPhonePanel() {
+  const J = currentJourney();
+  const p = currentPersona();
+  const deliveredMsgs = [];
+  for (let i = 0; i < S.playedUpTo; i++) {
+    const ev = J[i];
+    if (!ev.skipped && ev.ch !== "EMAIL") {
+      deliveredMsgs.push({
+        tpl: ev.tpl,
+        time: ev.time.split("·")[1].trim(),
+        body: ev.msgFn(p),
+        buttons: ev.tpl === "T13_INTENT_CAPTURE" ? ["✅ YES, I'm interested","⏭ Not right now"] : null,
+        poster: ev.tpl === "T01_WELCOME" ? `${p.region} · BOOSTER POSTER` : null,
+      });
+    }
+  }
+
+  const isTyping = S.playing && S.playedUpTo < J.length;
+
+  return `<div class="panel">
+    <div class="panel-head">
+      <span class="panel-title">Student's Phone</span>
+      <span style="font-size:10px;color:var(--muted)">${deliveredMsgs.length} msgs</span>
+    </div>
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="phone-inner">
+          <div class="phone-notch"></div>
+          <div class="wa-hdr">
+            <div class="wa-av">V</div>
+            <div style="flex:1;min-width:0">
+              <div class="wa-name">Vedantu Booster</div>
+              <div class="wa-status">${isTyping ? "typing…" : "online"}</div>
+            </div>
+            <div style="color:#8696a0;font-size:13px">⋮</div>
+          </div>
+          <div class="wa-msgs" id="wa-msgs">
+            ${deliveredMsgs.length ? `<div class="wa-date"><span>Apr 21 – Apr 27</span></div>` : ""}
+            ${deliveredMsgs.map(m => `
+              <div class="bw in">
+                <div class="bubble">
+                  ${m.poster ? `<div class="poster">${m.poster}</div>` : ""}
+                  ${m.body.replace(/\*(.*?)\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')}
+                  <span class="btime">${m.time}</span>
+                </div>
+              </div>
+              ${m.buttons ? `
+                <div class="bw in">
+                  <div class="btn-row">
+                    ${m.buttons.map(b => `<div class="mini-btn">${b}</div>`).join("")}
+                  </div>
+                </div>` : ""}
+            `).join("")}
+            ${isTyping ? `<div class="bw in"><div class="typing"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div></div>` : ""}
+            ${!deliveredMsgs.length ? `<div style="text-align:center;color:#8696a0;font-size:11px;padding:40px 10px;line-height:1.65">
+              Press <strong style="color:#fff">▶ Play all 3 days</strong> to see the full journey unfold for <strong style="color:#fff">${p.first}</strong>.
+            </div>` : ""}
+          </div>
+          <div class="wa-inp">
+            <div class="wa-inp-fake">Message</div>
+            <div class="wa-mic">🎙</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   HANDLERS + ANIMATION
+═══════════════════════════════════════════════════════ */
+
+function bindHandlers() {
+  document.querySelectorAll("[data-pidx]").forEach(el => {
+    el.addEventListener("click", () => {
+      stopPlay();
+      S.personaIdx = +el.dataset.pidx;
+      S.activeEvent = 0;
+      S.playedUpTo = 0;
+      render();
+    });
+  });
+
+  document.querySelectorAll("[data-evidx]").forEach(el => {
+    el.addEventListener("click", () => {
+      stopPlay();
+      S.activeEvent = +el.dataset.evidx;
+      render();
+    });
+  });
+
+  document.getElementById("reset-btn")?.addEventListener("click", () => {
+    stopPlay();
+    S.activeEvent = 0;
+    S.playedUpTo = 0;
+    render();
+  });
+
+  document.getElementById("step-btn")?.addEventListener("click", () => {
+    stopPlay();
+    stepForward();
+  });
+
+  document.getElementById("play-btn")?.addEventListener("click", () => {
+    S.playing ? stopPlay() : startPlay();
+  });
+}
+
+function stepForward() {
+  const J = currentJourney();
+  if (S.playedUpTo < J.length) {
+    S.playedUpTo++;
+    S.activeEvent = S.playedUpTo - 1;
+    render();
+  }
+}
+
+function startPlay() {
+  S.playing = true;
+  render();
+  S.playTimer = setInterval(() => {
+    const J = currentJourney();
+    if (S.playedUpTo >= J.length) {
+      stopPlay();
+      return;
+    }
+    stepForward();
+  }, 900);
+}
+
+function stopPlay() {
+  S.playing = false;
+  if (S.playTimer) { clearInterval(S.playTimer); S.playTimer = null; }
+  render();
+}
+
+function scrollWA() {
+  setTimeout(() => {
+    const el = document.getElementById("wa-msgs");
+    if (el) el.scrollTop = el.scrollHeight;
+  }, 60);
+}
+
+/* ── BOOT ── */
+render();
+</script>
+</body>
+</html>

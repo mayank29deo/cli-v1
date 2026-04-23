@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VED AI — Booster Sales Handoff</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060C18;--panel:#0B1525;--card:#0F1D30;--border:#162438;
+  --purple:#8B7CF8;--teal:#1ECDB5;--green:#2ECC9A;--amber:#F5BC1E;
+  --red:#F06060;--blue:#5BA8FF;--pink:#E06EAA;--orange:#FF7A2E;
+  --text:#C8DCF0;--muted:#4A6580;--faint:#0E1B2C;
+}
+html,body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
+input,select{font-family:inherit;color:inherit}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;height:52px;padding:0 28px;background:var(--bg);border-bottom:1px solid var(--border)}
+.logo{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.35em;color:var(--purple)}
+.divider{width:1px;height:20px;background:var(--border)}
+.crumb{font-size:11.5px;font-weight:500}
+.crumb span{color:var(--muted)}
+.nav-links{display:flex;gap:4px;margin-left:auto}
+.nav-btn{font-size:11px;padding:6px 12px;border-radius:7px;border:1px solid var(--border);color:var(--muted);transition:all .15s;white-space:nowrap}
+.nav-btn:hover{border-color:var(--purple);color:var(--purple)}
+.nav-btn.on{border-color:var(--purple);color:var(--purple);background:rgba(139,124,248,.07)}
+
+/* STATS STRIP */
+.wrap{max-width:1520px;margin:0 auto;padding:22px 28px 60px}
+h1.pg-title{font-size:26px;font-weight:300;letter-spacing:-.01em;margin-bottom:3px}
+.pg-sub{font-size:12px;color:var(--muted);margin-bottom:22px}
+
+.stats-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:22px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 15px;animation:up .4s ease both;cursor:pointer;transition:all .2s}
+.stat:hover{border-color:var(--purple);transform:translateY(-1px)}
+.stat.active{border-color:var(--purple);background:rgba(139,124,248,.05)}
+.stat-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+.stat-label{font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center}
+.stat-val{font-size:22px;font-weight:500;line-height:1;font-family:'DM Mono',monospace}
+.stat-sub{font-size:10px;color:var(--muted);margin-top:5px}
+
+/* FILTER BAR */
+.filter-bar{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.search-wrap{flex:1;min-width:220px;position:relative}
+.search-wrap::before{content:"🔍";position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:12px}
+.search-input{width:100%;padding:8px 12px 8px 32px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:11.5px;color:var(--text)}
+.search-input:focus{outline:none;border-color:var(--purple)}
+.fb-select{padding:7px 11px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:11px;color:var(--text);cursor:pointer}
+.fb-select:focus{outline:none;border-color:var(--purple)}
+
+.chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{font-size:10.5px;padding:6px 12px;border-radius:20px;border:1px solid var(--border);color:var(--muted);transition:all .15s}
+.chip:hover{color:var(--text)}
+.chip.on{border-color:var(--purple);color:var(--purple);background:rgba(139,124,248,.08)}
+.fb-count{margin-left:auto;font-size:11px;color:var(--muted);font-family:'DM Mono',monospace}
+
+/* BULK BAR */
+.bulk-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(139,124,248,.08);border:1px solid rgba(139,124,248,.3);border-radius:10px;margin-bottom:14px;animation:slideIn .25s ease}
+.bulk-label{font-size:11.5px;font-weight:500}
+.bulk-label strong{color:var(--purple)}
+.bulk-btn{font-size:10.5px;padding:6px 12px;border-radius:7px;border:1px solid var(--border);color:var(--text);transition:all .15s;background:var(--bg)}
+.bulk-btn:hover{border-color:var(--purple);color:var(--purple)}
+.bulk-btn.assign{border-color:var(--green);color:var(--green);background:rgba(46,204,154,.06)}
+.bulk-btn.export{border-color:var(--orange);color:var(--orange);background:rgba(255,122,46,.06)}
+
+/* TABLE */
+.table-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.leads-table{width:100%;border-collapse:collapse}
+.leads-table th{text-align:left;padding:11px 12px;font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);background:var(--panel);position:sticky;top:0;z-index:2}
+.leads-table th.sortable{cursor:pointer;user-select:none}
+.leads-table th.sortable:hover{color:var(--purple)}
+.leads-table td{padding:12px;border-bottom:1px solid var(--faint);font-size:11.5px;vertical-align:middle}
+.leads-table tr:hover td{background:rgba(139,124,248,.025)}
+.leads-table tr.selected td{background:rgba(139,124,248,.07)}
+.leads-table tr.handed td{opacity:.6}
+
+.cbx{width:15px;height:15px;border-radius:4px;border:1.5px solid var(--border);display:inline-block;cursor:pointer;position:relative;vertical-align:middle}
+.cbx.on{background:var(--purple);border-color:var(--purple)}
+.cbx.on::after{content:"✓";position:absolute;top:-3px;left:1px;color:#fff;font-size:12px;font-weight:600}
+
+.sn-avatar{width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;vertical-align:middle;margin-right:8px}
+.sn-name{font-weight:500}
+.sn-contact{font-size:9.5px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px}
+.reg-pill{font-size:9.5px;padding:2px 8px;border-radius:20px;background:var(--faint);color:var(--muted);border:1px solid var(--border);font-family:'DM Mono',monospace;letter-spacing:.05em}
+
+.metric-grid{display:flex;gap:5px;align-items:center}
+.metric-bit{font-size:10.5px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:4px;background:var(--faint);border:1px solid var(--border)}
+.metric-bit.good{color:var(--green);border-color:rgba(46,204,154,.3);background:rgba(46,204,154,.06)}
+.metric-bit.bad{color:var(--red);border-color:rgba(240,96,96,.3);background:rgba(240,96,96,.06)}
+
+.score-cell{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;text-align:center}
+.score-bar{height:4px;background:var(--faint);border-radius:4px;overflow:hidden;margin-top:4px;width:60px}
+.score-fill{height:100%;border-radius:4px}
+
+.tier-pill{font-size:9.5px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.chosen-tpl{font-size:9.5px;font-family:'DM Mono',monospace;color:var(--amber);background:rgba(245,188,30,.08);padding:2px 7px;border-radius:4px;border:1px solid rgba(245,188,30,.2);display:inline-block}
+
+.status-chip{font-size:9.5px;padding:3px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;font-weight:500}
+.status-dot{width:6px;height:6px;border-radius:50%}
+
+.row-btn{font-size:10.5px;padding:5px 11px;border-radius:6px;border:1px solid var(--border);color:var(--text);transition:all .15s}
+.row-btn:hover{border-color:var(--green);color:var(--green);background:rgba(46,204,154,.07)}
+.row-btn.done{border-color:var(--green);color:var(--green);background:rgba(46,204,154,.12)}
+
+/* DETAIL DRAWER */
+.drawer-overlay{position:fixed;inset:0;background:rgba(6,12,24,.75);z-index:100;display:none;animation:pulse .2s ease}
+.drawer-overlay.on{display:block}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:480px;max-width:92vw;background:var(--panel);border-left:1px solid var(--border);z-index:101;overflow-y:auto;transform:translateX(100%);transition:transform .25s ease}
+.drawer.on{transform:translateX(0)}
+.dr-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;position:sticky;top:0;background:var(--panel);z-index:5}
+.dr-close{margin-left:auto;font-size:18px;color:var(--muted);padding:4px 10px;border-radius:6px;transition:all .15s}
+.dr-close:hover{background:var(--faint);color:var(--text)}
+.dr-body{padding:18px 24px 40px}
+.dr-section{margin-bottom:18px}
+.dr-section h3{font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.kv-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--faint);font-size:11.5px}
+.kv-row:last-child{border-bottom:none}
+.kv-row .k{color:var(--muted)}
+.kv-row .v{font-weight:500;font-family:'DM Mono',monospace}
+
+.score-breakdown{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px}
+.sb-row{display:grid;grid-template-columns:80px 1fr 90px;gap:10px;align-items:center;padding:6px 0}
+.sb-lbl{font-size:10.5px;color:var(--muted)}
+.sb-bar{height:6px;background:var(--faint);border-radius:99px;overflow:hidden}
+.sb-fill{height:100%;border-radius:99px}
+.sb-val{font-size:11px;font-family:'DM Mono',monospace;text-align:right}
+.sb-total{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.sb-total-lbl{font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sb-total-val{font-size:22px;font-weight:500;font-family:'DM Mono',monospace}
+
+.dr-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.dr-btn{padding:10px;border-radius:8px;font-size:11.5px;font-weight:500;transition:all .15s;border:1px solid var(--border)}
+.dr-btn.primary{background:var(--green);color:#0d1418;border-color:var(--green)}
+.dr-btn.primary:hover{filter:brightness(1.1);box-shadow:0 4px 14px rgba(46,204,154,.3)}
+.dr-btn:not(.primary):hover{border-color:var(--purple);color:var(--purple)}
+
+@media (max-width:1100px){
+  .stats-strip{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:700px){
+  .stats-strip{grid-template-columns:repeat(2,1fr)}
+  .leads-table th:nth-child(5),.leads-table td:nth-child(5),
+  .leads-table th:nth-child(6),.leads-table td:nth-child(6){display:none}
+  .wrap{padding:14px}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+/* ═══════════════════════════════════════════════════════
+   LEADS DATA (mock — Metabase dump replaces this)
+═══════════════════════════════════════════════════════ */
+
+const TIER = {
+  hot:    {label:"Hot",      color:"#F06060", range:"0.85–1.00"},
+  warm75: {label:"Warm-75",  color:"#FF7A2E", range:"0.55–0.80"},
+  warm50: {label:"Warm-50",  color:"#F5BC1E", range:"0.30–0.55"},
+  d1ns:   {label:"D1 NoShow",color:"#4A6580", range:"0.00–0.15"},
+};
+
+const REGIONS = ["TG","AP","TN","MH","PB"];
+const REGION_NAME = {TG:"Telangana",AP:"Andhra Pradesh",TN:"Tamil Nadu",MH:"Maharashtra",PB:"Patiala (PB)"};
+const REGION_COLOR = {TG:"#1ECDB5",AP:"#F5BC1E",TN:"#5BA8FF",MH:"#8B7CF8",PB:"#F06060"};
+const CLASSES = ["Class 10","Class 11","Class 12","Class 12 Drop"];
+const CHOSEN_TPL = {
+  hot:    "T14_COUNSELLOR_CONNECT",
+  warm75: "T14_COUNSELLOR_CONNECT",
+  warm50: "T15_NURTURE_SOFT",
+  d1ns:   "T16_D1_NOSHOW",
+};
+
+function makeLead(i, tier, fn, ln, region, cls, d1a, d2a, d3a, hw1, hw2, readPct, phone) {
+  const attn = (d1a?1:0)+(d2a?1:0)+(d3a?1:0);
+  const hw = (hw1?1:0)+(hw2?1:0);
+  const read = readPct/100;
+  const score = +(0.6*(attn/3) + 0.3*(hw/2) + 0.1*read).toFixed(2);
+  return {
+    id:i, first:fn, last:ln, region, cls, phone,
+    email:`${fn.toLowerCase()}.${ln.toLowerCase()}@mail.com`,
+    batch:"BOOSTER-APR-C17",
+    d1_attn:d1a, d2_attn:d2a, d3_attn:d3a, hw_d1:hw1, hw_d2:hw2,
+    read_rate:read, attn_pct:Math.round(attn/3*100), hw_pct:Math.round(hw/2*100),
+    read_pct:readPct,
+    score, tier,
+    reason: tier==="hot"?`${attn}/3 attn · ${hw}/2 HW · ${readPct}% read — FULL COHORT`
+           :tier==="warm75"?`${attn}/3 attn (dropped D3) · ${hw}/2 HW · ${readPct}% read`
+           :tier==="warm50"?`${attn}/3 attn (dropped D2) · ${hw}/2 HW · ${readPct}% read`
+           :`Did not attend any class · ${readPct}% read only`,
+    chosen_tpl: CHOSEN_TPL[tier],
+    counsellor: Math.random() > .6 ? ["Ankita Sharma","Rohit Verma","Priya Kulkarni","Saanvi Rao"][i%4] : null,
+    status: Math.random() > .75 ? "contacted" : Math.random() > .5 ? "assigned" : "pending",
+  };
+}
+
+const LEADS = [
+  makeLead(1,"hot","Aarav","Reddy","TG","Class 11",true,true,true,true,true,96,"+91 98XXX 2341"),
+  makeLead(2,"hot","Meera","Iyer","TN","Class 12",true,true,true,true,true,89,"+91 99XXX 1147"),
+  makeLead(3,"hot","Siddharth","Patil","MH","Class 11",true,true,true,true,true,81,"+91 70XXX 4422"),
+  makeLead(4,"hot","Ishan","Rao","TG","Class 10",true,true,true,true,true,88,"+91 83XXX 9801"),
+  makeLead(5,"hot","Priyanshi","Sharma","MH","Class 12",true,true,true,true,true,94,"+91 90XXX 5517"),
+  makeLead(6,"hot","Kartik","Nair","AP","Class 11",true,true,true,true,true,79,"+91 97XXX 2205"),
+  makeLead(7,"warm75","Lakshmi","Rao","AP","Class 12",true,true,false,true,true,92,"+91 80XXX 3309"),
+  makeLead(8,"warm75","Gurpreet","Kaur","PB","Class 11",true,true,false,true,true,85,"+91 96XXX 5521"),
+  makeLead(9,"warm75","Harini","Venkat","TN","Class 12",true,true,false,true,false,97,"+91 97XXX 8817"),
+  makeLead(10,"warm75","Rohan","Joshi","MH","Class 11",true,true,false,true,true,78,"+91 98XXX 1173"),
+  makeLead(11,"warm75","Divya","Rajesh","TN","Class 10",true,true,false,false,true,82,"+91 95XXX 4455"),
+  makeLead(12,"warm50","Abhinav","Kumar","TG","Class 12",true,false,false,true,false,78,"+91 90XXX 6640"),
+  makeLead(13,"warm50","Saanvi","Desai","MH","Class 11",true,false,false,true,false,64,"+91 88XXX 2209"),
+  makeLead(14,"warm50","Arjun","Mehta","AP","Class 11",true,false,false,false,false,71,"+91 85XXX 9916"),
+  makeLead(15,"warm50","Simran","Bains","PB","Class 10",true,false,false,true,false,69,"+91 99XXX 3344"),
+  makeLead(16,"warm50","Venkat","Srinivasan","TN","Class 12",true,false,false,false,false,55,"+91 94XXX 7700"),
+  makeLead(17,"d1ns","Deepak","Yadav","MH","Class 11",false,false,false,false,false,42,"+91 93XXX 8821"),
+  makeLead(18,"d1ns","Swati","Paul","TG","Class 10",false,false,false,false,false,61,"+91 98XXX 1192"),
+  makeLead(19,"d1ns","Manoj","Das","AP","Class 12",false,false,false,false,false,38,"+91 96XXX 4473"),
+  makeLead(20,"d1ns","Tanya","Kapoor","PB","Class 11",false,false,false,false,false,29,"+91 97XXX 6615"),
+];
+
+const COUNTS = {
+  total: LEADS.length,
+  hot:    LEADS.filter(l=>l.tier==="hot").length,
+  warm75: LEADS.filter(l=>l.tier==="warm75").length,
+  warm50: LEADS.filter(l=>l.tier==="warm50").length,
+  d1ns:   LEADS.filter(l=>l.tier==="d1ns").length,
+  assigned: LEADS.filter(l=>l.counsellor).length,
+};
+
+/* ═══════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════ */
+
+let S = {
+  search:"",
+  region:"all",
+  tier:"all",
+  status:"all",
+  scoreMin:0,
+  sortBy:"score",
+  sortDir:"desc",
+  selected:new Set(),
+  openId:null,
+};
+
+/* ═══════════════════════════════════════════════════════
+   FILTER & SORT
+═══════════════════════════════════════════════════════ */
+
+function filteredLeads() {
+  let rows = LEADS.slice();
+  if (S.search) {
+    const q = S.search.toLowerCase();
+    rows = rows.filter(l => `${l.first} ${l.last} ${l.phone} ${l.email}`.toLowerCase().includes(q));
+  }
+  if (S.region !== "all") rows = rows.filter(l => l.region === S.region);
+  if (S.tier !== "all")   rows = rows.filter(l => l.tier === S.tier);
+  if (S.status !== "all") rows = rows.filter(l => l.status === S.status);
+  if (S.scoreMin > 0)     rows = rows.filter(l => l.score >= S.scoreMin);
+
+  rows.sort((a,b) => {
+    const dir = S.sortDir === "desc" ? -1 : 1;
+    const va = a[S.sortBy], vb = b[S.sortBy];
+    if (typeof va === "string") return va.localeCompare(vb) * dir;
+    return (va - vb) * dir;
+  });
+  return rows;
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════════════ */
+
+function render() {
+  const rows = filteredLeads();
+  document.getElementById("root").innerHTML = `
+    ${rTopbar()}
+    <div class="wrap">
+      <h1 class="pg-title">Sales Handoff · Leads</h1>
+      <div class="pg-sub">Tier + score + reason · handed off to counsellors in priority order</div>
+      ${rStats()}
+      ${rFilterBar(rows.length)}
+      ${rBulkBar()}
+      ${rTable(rows)}
+    </div>
+    ${rDrawer()}`;
+  bindHandlers();
+}
+
+function rTopbar() {
+  return `<div class="topbar">
+    <span class="logo">VED AI</span>
+    <div class="divider"></div>
+    <span class="crumb"><span>Booster CLM ·</span> Sales Handoff</span>
+    <div class="nav-links">
+      <a href="index.html"><button class="nav-btn">📊 Dashboard</button></a>
+      <a href="simulator.html"><button class="nav-btn">⚡ Simulator</button></a>
+      <a href="templates.html"><button class="nav-btn">📱 Templates</button></a>
+      <a href="leads.html"><button class="nav-btn on">🎯 Leads</button></a>
+      <a href="email-preview.html"><button class="nav-btn">📧 Email</button></a>
+    </div>
+  </div>`;
+}
+
+function rStats() {
+  const items = [
+    {k:"all",    label:"Total scored",   val:COUNTS.total,   color:"#8B7CF8", sub:"this cohort"},
+    {k:"hot",    label:"🔥 Hot",         val:COUNTS.hot,     color:"#F06060", sub:"all 3 attended"},
+    {k:"warm75", label:"🟠 Warm · 75%",   val:COUNTS.warm75,  color:"#FF7A2E", sub:"D3 dropoff"},
+    {k:"warm50", label:"🟡 Warm · 50%",   val:COUNTS.warm50,  color:"#F5BC1E", sub:"D2 dropoff"},
+    {k:"d1ns",   label:"⚫ D1 No-show",   val:COUNTS.d1ns,    color:"#4A6580", sub:"nurture bucket"},
+    {k:"assigned",label:"✅ Assigned",    val:COUNTS.assigned,color:"#2ECC9A", sub:"to counsellor"},
+  ];
+  return `<div class="stats-strip">
+    ${items.map((it,i) => `
+      <div class="stat ${(it.k==="assigned"?S.status==="assigned":S.tier===it.k)?"active":""}" data-stat="${it.k}" style="animation-delay:${i*.05}s">
+        <div class="stat-label"><span class="stat-dot" style="background:${it.color}"></span>${it.label}</div>
+        <div class="stat-val" style="color:${it.color}">${it.val}</div>
+        <div class="stat-sub">${it.sub}</div>
+      </div>`).join("")}
+  </div>`;
+}
+
+function rFilterBar(count) {
+  return `<div class="filter-bar">
+    <div class="search-wrap">
+      <input class="search-input" id="search" placeholder="Search name · phone · email…" value="${S.search}">
+    </div>
+
+    <select class="fb-select" id="region-sel">
+      <option value="all">All regions</option>
+      ${REGIONS.map(r => `<option value="${r}" ${S.region===r?"selected":""}>${REGION_NAME[r]} (${r})</option>`).join("")}
+    </select>
+
+    <select class="fb-select" id="status-sel">
+      <option value="all">All status</option>
+      <option value="pending" ${S.status==="pending"?"selected":""}>⚠ Pending pickup</option>
+      <option value="assigned" ${S.status==="assigned"?"selected":""}>✅ Assigned</option>
+      <option value="contacted" ${S.status==="contacted"?"selected":""}>📞 Contacted</option>
+    </select>
+
+    <div class="chips">
+      ${["all","hot","warm75","warm50","d1ns"].map(t => {
+        const lbl = t === "all" ? "All tiers" : TIER[t].label;
+        return `<button class="chip ${S.tier===t?"on":""}" data-tier="${t}">${lbl}</button>`;
+      }).join("")}
+    </div>
+
+    <span class="fb-count">${count} of ${LEADS.length}</span>
+  </div>`;
+}
+
+function rBulkBar() {
+  if (S.selected.size === 0) return "";
+  return `<div class="bulk-bar">
+    <span class="bulk-label"><strong>${S.selected.size}</strong> leads selected</span>
+    <button class="bulk-btn assign" id="bulk-assign">🤝 Assign to counsellor</button>
+    <button class="bulk-btn" id="bulk-contact">📞 Mark contacted</button>
+    <button class="bulk-btn export" id="bulk-export">⬇ Export CSV</button>
+    <button class="bulk-btn" id="bulk-clear" style="margin-left:auto">✕ Clear</button>
+  </div>`;
+}
+
+function rTable(rows) {
+  if (rows.length === 0) return `<div class="table-card" style="padding:60px;text-align:center;color:var(--muted);font-size:13px">No leads match these filters.</div>`;
+
+  const allSelected = rows.every(r => S.selected.has(r.id));
+  return `<div class="table-card">
+    <table class="leads-table">
+      <thead><tr>
+        <th style="width:30px"><span class="cbx ${allSelected?"on":""}" id="all-cbx"></span></th>
+        <th class="sortable" data-sort="first">Student</th>
+        <th>Reg</th>
+        <th class="sortable" data-sort="cls">Class</th>
+        <th>Attn · HW · Read</th>
+        <th class="sortable" data-sort="score">Score ${S.sortBy==="score"?(S.sortDir==="desc"?"↓":"↑"):""}</th>
+        <th>Tier</th>
+        <th>Chosen template</th>
+        <th>Status / counsellor</th>
+        <th style="width:120px"></th>
+      </tr></thead>
+      <tbody>
+        ${rows.map((l,i) => rRow(l,i)).join("")}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function rRow(l, i) {
+  const sel = S.selected.has(l.id);
+  const t = TIER[l.tier];
+  const statusStyle = {
+    pending:   {c:"var(--amber)", label:"Pending"},
+    assigned:  {c:"var(--blue)",  label:"Assigned"},
+    contacted: {c:"var(--green)", label:"Contacted"},
+  }[l.status];
+  const handed = l.status === "contacted" ? "handed" : "";
+
+  return `<tr class="${sel?"selected":""} ${handed}" data-row="${l.id}" style="animation:up .25s ease ${i*.015}s both">
+    <td><span class="cbx ${sel?"on":""}" data-cbx="${l.id}"></span></td>
+    <td>
+      <div style="display:flex;align-items:center">
+        <div class="sn-avatar" style="background:${REGION_COLOR[l.region]}">${l.first[0]}</div>
+        <div>
+          <div class="sn-name">${l.first} ${l.last}</div>
+          <div class="sn-contact">${l.phone}</div>
+        </div>
+      </div>
+    </td>
+    <td><span class="reg-pill" style="color:${REGION_COLOR[l.region]};border-color:${REGION_COLOR[l.region]}40">${l.region}</span></td>
+    <td style="font-size:11px;color:var(--muted)">${l.cls}</td>
+    <td>
+      <div class="metric-grid">
+        <span class="metric-bit ${l.attn_pct>=66?"good":l.attn_pct>=33?"":"bad"}">${l.attn_pct}%</span>
+        <span style="color:var(--muted);font-size:10px">·</span>
+        <span class="metric-bit ${l.hw_pct>=50?"good":"bad"}">${l.hw_pct}%</span>
+        <span style="color:var(--muted);font-size:10px">·</span>
+        <span class="metric-bit">${l.read_pct}%</span>
+      </div>
+    </td>
+    <td>
+      <div class="score-cell" style="color:${t.color}">${l.score.toFixed(2)}</div>
+      <div class="score-bar"><div class="score-fill" style="width:${l.score*100}%;background:${t.color}"></div></div>
+    </td>
+    <td><span class="tier-pill" style="background:${t.color}18;color:${t.color};border:1px solid ${t.color}35">${t.label}</span></td>
+    <td><span class="chosen-tpl">${l.chosen_tpl}</span></td>
+    <td>
+      <span class="status-chip" style="color:${statusStyle.c};background:${statusStyle.c}15;border:1px solid ${statusStyle.c}30">
+        <span class="status-dot" style="background:${statusStyle.c}"></span>${statusStyle.label}
+      </span>
+      ${l.counsellor ? `<div style="font-size:9.5px;color:var(--muted);margin-top:3px">→ ${l.counsellor}</div>` : ""}
+    </td>
+    <td><button class="row-btn ${l.status==="contacted"?"done":""}" data-open="${l.id}">${l.status==="contacted"?"✓ Done":"View →"}</button></td>
+  </tr>`;
+}
+
+function rDrawer() {
+  const l = LEADS.find(x => x.id === S.openId);
+  if (!l) return `<div class="drawer-overlay" id="dr-ov"></div><div class="drawer" id="drawer"></div>`;
+  const t = TIER[l.tier];
+  const attnContrib = +(0.6 * l.attn_pct/100).toFixed(3);
+  const hwContrib   = +(0.3 * l.hw_pct/100).toFixed(3);
+  const readContrib = +(0.1 * l.read_rate).toFixed(3);
+  return `<div class="drawer-overlay on" id="dr-ov"></div>
+  <div class="drawer on" id="drawer">
+    <div class="dr-head">
+      <div class="sn-avatar" style="background:${REGION_COLOR[l.region]};width:42px;height:42px;font-size:15px">${l.first[0]}</div>
+      <div>
+        <div style="font-size:16px;font-weight:500">${l.first} ${l.last}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">${l.phone} · ${l.email}</div>
+      </div>
+      <button class="dr-close" id="dr-close">✕</button>
+    </div>
+    <div class="dr-body">
+
+      <div class="dr-section">
+        <h3>Student</h3>
+        <div class="kv-row"><span class="k">Region</span><span class="v" style="color:${REGION_COLOR[l.region]}">${REGION_NAME[l.region]}</span></div>
+        <div class="kv-row"><span class="k">Class</span><span class="v">${l.cls}</span></div>
+        <div class="kv-row"><span class="k">Batch</span><span class="v">${l.batch}</span></div>
+      </div>
+
+      <div class="dr-section">
+        <h3>Score breakdown</h3>
+        <div class="score-breakdown">
+          <div class="sb-row">
+            <span class="sb-lbl">Attendance</span>
+            <div class="sb-bar"><div class="sb-fill" style="width:${l.attn_pct}%;background:var(--green)"></div></div>
+            <span class="sb-val">${l.attn_pct}% × 0.6 = ${attnContrib}</span>
+          </div>
+          <div class="sb-row">
+            <span class="sb-lbl">Homework</span>
+            <div class="sb-bar"><div class="sb-fill" style="width:${l.hw_pct}%;background:var(--amber)"></div></div>
+            <span class="sb-val">${l.hw_pct}% × 0.3 = ${hwContrib}</span>
+          </div>
+          <div class="sb-row">
+            <span class="sb-lbl">WA read</span>
+            <div class="sb-bar"><div class="sb-fill" style="width:${l.read_pct}%;background:var(--blue)"></div></div>
+            <span class="sb-val">${l.read_pct}% × 0.1 = ${readContrib}</span>
+          </div>
+          <div class="sb-total">
+            <span class="sb-total-lbl">Final score</span>
+            <span class="sb-total-val" style="color:${t.color}">${l.score.toFixed(2)}</span>
+          </div>
+          <div style="font-size:10.5px;color:var(--muted);margin-top:6px;text-align:right">Tier: <span style="color:${t.color};font-weight:600">${t.label}</span> (range ${t.range})</div>
+        </div>
+      </div>
+
+      <div class="dr-section">
+        <h3>Journey outcome</h3>
+        <div class="kv-row"><span class="k">Day 1 attended</span><span class="v" style="color:${l.d1_attn?'var(--green)':'var(--red)'}">${l.d1_attn?"✓ YES":"✗ NO"}</span></div>
+        <div class="kv-row"><span class="k">Day 2 attended</span><span class="v" style="color:${l.d2_attn?'var(--green)':'var(--red)'}">${l.d2_attn?"✓ YES":"✗ NO"}</span></div>
+        <div class="kv-row"><span class="k">Day 3 attended</span><span class="v" style="color:${l.d3_attn?'var(--green)':'var(--red)'}">${l.d3_attn?"✓ YES":"✗ NO"}</span></div>
+        <div class="kv-row"><span class="k">HW Day 1</span><span class="v" style="color:${l.hw_d1?'var(--green)':'var(--red)'}">${l.hw_d1?"✓ Submitted":"✗ Missed"}</span></div>
+        <div class="kv-row"><span class="k">HW Day 2</span><span class="v" style="color:${l.hw_d2?'var(--green)':'var(--red)'}">${l.hw_d2?"✓ Submitted":"✗ Missed"}</span></div>
+      </div>
+
+      <div class="dr-section">
+        <h3>Handoff context</h3>
+        <div class="kv-row"><span class="k">Handoff reason</span><span class="v" style="font-size:10.5px;text-align:right;max-width:60%">${l.reason}</span></div>
+        <div class="kv-row"><span class="k">Next template</span><span class="v" style="color:var(--amber)">${l.chosen_tpl}</span></div>
+        <div class="kv-row"><span class="k">Counsellor</span><span class="v">${l.counsellor || "— unassigned —"}</span></div>
+        <div class="kv-row"><span class="k">Status</span><span class="v" style="text-transform:capitalize">${l.status}</span></div>
+      </div>
+
+      <div class="dr-actions">
+        <button class="dr-btn primary" id="dr-handoff">🤝 Hand off now</button>
+        <button class="dr-btn" id="dr-call">📞 Call ${l.first}</button>
+        <button class="dr-btn" id="dr-wa" style="grid-column:span 2">💬 Open WhatsApp thread</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   HANDLERS
+═══════════════════════════════════════════════════════ */
+
+function bindHandlers() {
+  document.getElementById("search")?.addEventListener("input", e => {
+    S.search = e.target.value;
+    const q = S.search;
+    render();
+    const ip = document.getElementById("search");
+    if (ip) { ip.focus(); ip.setSelectionRange(q.length, q.length); }
+  });
+  document.getElementById("region-sel")?.addEventListener("change", e => { S.region = e.target.value; render(); });
+  document.getElementById("status-sel")?.addEventListener("change", e => { S.status = e.target.value; render(); });
+
+  document.querySelectorAll("[data-tier]").forEach(el => {
+    el.addEventListener("click", () => { S.tier = el.dataset.tier; render(); });
+  });
+
+  document.querySelectorAll("[data-stat]").forEach(el => {
+    el.addEventListener("click", () => {
+      const k = el.dataset.stat;
+      if (k === "all") { S.tier = "all"; S.status = "all"; }
+      else if (k === "assigned") S.status = "assigned";
+      else S.tier = k;
+      render();
+    });
+  });
+
+  document.querySelectorAll("[data-sort]").forEach(el => {
+    el.addEventListener("click", () => {
+      const k = el.dataset.sort;
+      if (S.sortBy === k) S.sortDir = S.sortDir === "desc" ? "asc" : "desc";
+      else { S.sortBy = k; S.sortDir = "desc"; }
+      render();
+    });
+  });
+
+  document.querySelectorAll("[data-cbx]").forEach(el => {
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const id = +el.dataset.cbx;
+      S.selected.has(id) ? S.selected.delete(id) : S.selected.add(id);
+      render();
+    });
+  });
+
+  document.getElementById("all-cbx")?.addEventListener("click", () => {
+    const rows = filteredLeads();
+    const all = rows.every(r => S.selected.has(r.id));
+    if (all) rows.forEach(r => S.selected.delete(r.id));
+    else rows.forEach(r => S.selected.add(r.id));
+    render();
+  });
+
+  document.querySelectorAll("[data-open]").forEach(el => {
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      S.openId = +el.dataset.open;
+      render();
+    });
+  });
+
+  document.getElementById("dr-close")?.addEventListener("click", () => { S.openId = null; render(); });
+  document.getElementById("dr-ov")?.addEventListener("click", () => { S.openId = null; render(); });
+  document.getElementById("dr-handoff")?.addEventListener("click", () => {
+    const l = LEADS.find(x => x.id === S.openId);
+    if (l) {
+      l.status = "contacted";
+      if (!l.counsellor) l.counsellor = "Ankita Sharma";
+      S.openId = null;
+      render();
+    }
+  });
+
+  document.getElementById("bulk-clear")?.addEventListener("click", () => { S.selected.clear(); render(); });
+  document.getElementById("bulk-assign")?.addEventListener("click", () => {
+    S.selected.forEach(id => {
+      const l = LEADS.find(x => x.id === id);
+      if (l) { l.status = "assigned"; if (!l.counsellor) l.counsellor = "Ankita Sharma"; }
+    });
+    S.selected.clear();
+    render();
+  });
+  document.getElementById("bulk-contact")?.addEventListener("click", () => {
+    S.selected.forEach(id => {
+      const l = LEADS.find(x => x.id === id);
+      if (l) l.status = "contacted";
+    });
+    S.selected.clear();
+    render();
+  });
+  document.getElementById("bulk-export")?.addEventListener("click", () => {
+    const rows = LEADS.filter(l => S.selected.has(l.id));
+    const csv = ["first,last,phone,email,region,class,score,tier,counsellor,status",
+      ...rows.map(l => `${l.first},${l.last},${l.phone},${l.email},${l.region},${l.cls},${l.score},${l.tier},${l.counsellor||""},${l.status}`)
+    ].join("\n");
+    const blob = new Blob([csv], {type:"text/csv"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `booster_leads_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+  });
+}
+
+/* ── BOOT ── */
+render();
+</script>
+</body>
+</html>

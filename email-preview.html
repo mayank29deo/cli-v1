@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VED AI — Booster Email Templates</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#060C18;--panel:#0B1525;--card:#0F1D30;--border:#162438;
+  --purple:#8B7CF8;--teal:#1ECDB5;--green:#2ECC9A;--amber:#F5BC1E;
+  --red:#F06060;--blue:#5BA8FF;--orange:#FF6B1A;--peach:#FFF4EB;
+  --text:#C8DCF0;--muted:#4A6580;--faint:#0E1B2C;
+}
+html,body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;height:52px;padding:0 28px;background:var(--bg);border-bottom:1px solid var(--border)}
+.logo{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.35em;color:var(--purple)}
+.divider{width:1px;height:20px;background:var(--border)}
+.crumb{font-size:11.5px;font-weight:500}
+.crumb span{color:var(--muted)}
+.nav-links{display:flex;gap:4px;margin-left:auto}
+.nav-btn{font-size:11px;padding:6px 12px;border-radius:7px;border:1px solid var(--border);color:var(--muted);transition:all .15s;white-space:nowrap}
+.nav-btn:hover{border-color:var(--purple);color:var(--purple)}
+.nav-btn.on{border-color:var(--purple);color:var(--purple);background:rgba(139,124,248,.07)}
+
+/* TOOLBAR */
+.toolbar{background:var(--panel);border-bottom:1px solid var(--border);padding:12px 28px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.tb-label{font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.email-tabs{display:flex;gap:5px;flex-wrap:wrap}
+.etab{display:flex;align-items:center;gap:8px;padding:7px 13px;border-radius:9px;border:1px solid var(--border);cursor:pointer;transition:all .15s;font-size:11.5px}
+.etab:hover{border-color:var(--muted)}
+.etab.on{border-color:var(--orange);background:rgba(255,107,26,.07);color:var(--orange)}
+.etab-num{width:22px;height:22px;border-radius:50%;background:var(--faint);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:600;color:var(--muted)}
+.etab.on .etab-num{background:var(--orange);color:#fff}
+.persona-sel{margin-left:auto;padding:7px 11px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:11px;color:var(--text);font-family:inherit}
+
+/* LAYOUT */
+.wrap{max-width:1520px;margin:0 auto;padding:22px 28px;display:grid;grid-template-columns:1fr 360px;gap:22px}
+@media (max-width:1100px){ .wrap{grid-template-columns:1fr} }
+
+/* EMAIL FRAME (browser-style window) */
+.email-frame{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;animation:up .4s ease}
+.ef-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--panel)}
+.ef-dots{display:flex;gap:5px}
+.ef-dot{width:10px;height:10px;border-radius:50%}
+.ef-subject{flex:1;font-size:11.5px;color:var(--text);font-weight:500}
+.ef-subject span{color:var(--muted);font-weight:400}
+.ef-meta{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace}
+
+/* GMAIL ENVELOPE */
+.gmail-env{background:#f6f8fc;padding:20px 30px 30px;max-height:calc(100vh - 200px);overflow-y:auto}
+.gmail-env::-webkit-scrollbar-thumb{background:rgba(0,0,0,.2)}
+
+.gm-hdr{background:#fff;border:1px solid #e1e5eb;border-radius:8px;padding:14px 18px;margin-bottom:10px;color:#202124;font-family:-apple-system,Roboto,Arial,sans-serif}
+.gm-subject{font-size:17px;font-weight:500;margin-bottom:8px;letter-spacing:-.01em}
+.gm-from{display:flex;align-items:center;gap:10px;font-size:13px}
+.gm-av{width:34px;height:34px;border-radius:50%;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;flex-shrink:0}
+.gm-from-det{flex:1;color:#5f6368;font-size:12.5px}
+.gm-from-det strong{color:#202124;font-weight:500}
+.gm-date{font-size:12px;color:#5f6368}
+
+/* ═══════════ VEDANTU ORANGE EMAIL TEMPLATE ═══════════ */
+.v-email{
+  background:#fff;max-width:600px;margin:0 auto;border-radius:12px;overflow:hidden;
+  box-shadow:0 2px 14px rgba(0,0,0,.08);color:#2b2b45;
+  font-family:-apple-system,Roboto,'Segoe UI',Arial,sans-serif;
+}
+.v-banner{
+  background:linear-gradient(135deg,#FF6B1A 0%,#FFB547 100%);
+  padding:34px 34px 28px;color:#fff;position:relative;overflow:hidden;
+}
+.v-banner::before{
+  content:"";position:absolute;top:-30px;right:-30px;width:140px;height:140px;
+  background:rgba(255,255,255,.12);border-radius:50%;
+}
+.v-banner::after{
+  content:"";position:absolute;bottom:-40px;left:-20px;width:100px;height:100px;
+  background:rgba(255,255,255,.08);border-radius:50%;
+}
+.v-logo{font-size:11px;font-weight:700;letter-spacing:.25em;margin-bottom:18px;position:relative;z-index:1;opacity:.95}
+.v-title{font-size:26px;font-weight:700;line-height:1.2;letter-spacing:-.01em;position:relative;z-index:1;margin-bottom:6px}
+.v-subtitle{font-size:14px;font-weight:500;opacity:.95;position:relative;z-index:1}
+
+.v-greet{padding:30px 34px 14px;font-size:16px;color:#2b2b45}
+.v-greet strong{color:#FF6B1A}
+.v-body{padding:0 34px 18px;font-size:14.5px;line-height:1.65;color:#495066}
+.v-body p{margin-bottom:14px}
+.v-body strong{color:#2b2b45;font-weight:600}
+
+.v-scorecard{
+  margin:20px 34px;background:#FFF4EB;border:1px solid #FFD9BC;border-radius:12px;
+  padding:22px 24px;
+}
+.v-sc-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#FF6B1A;margin-bottom:14px}
+.v-sc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:6px}
+.v-sc-stat{text-align:center;padding:10px 6px;background:#fff;border-radius:10px;border:1px solid #FFD9BC}
+.v-sc-icon{font-size:22px;margin-bottom:6px}
+.v-sc-val{font-size:22px;font-weight:700;color:#FF6B1A;line-height:1}
+.v-sc-sub{font-size:10.5px;color:#7a7e91;margin-top:4px;font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+
+.v-progress{margin:18px 34px;background:#fafbfd;border-radius:10px;padding:18px 20px;border:1px solid #eef0f5}
+.v-pr-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#2b2b45;margin-bottom:12px}
+.v-pr-row{display:flex;align-items:center;gap:12px;margin-bottom:11px}
+.v-pr-row:last-child{margin-bottom:0}
+.v-pr-lbl{font-size:13px;font-weight:500;color:#495066;width:98px;flex-shrink:0}
+.v-pr-bar{flex:1;height:10px;background:#f0f2f7;border-radius:10px;overflow:hidden}
+.v-pr-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,#FF6B1A,#FFB547);transition:width .8s}
+.v-pr-val{font-size:13px;font-weight:600;color:#2b2b45;font-family:'DM Mono',monospace;width:54px;text-align:right}
+
+.v-takeaways{margin:18px 34px}
+.v-ta-title{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#2b2b45;margin-bottom:10px}
+.v-ta{display:flex;gap:10px;margin-bottom:9px;font-size:14px;line-height:1.55;color:#495066}
+.v-ta-tick{width:22px;height:22px;border-radius:50%;background:#FFF4EB;color:#FF6B1A;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+
+.v-cta{margin:24px 34px;padding:22px;background:#FFF4EB;border-radius:12px;border:2px dashed #FFB547;text-align:center}
+.v-cta-title{font-size:15px;font-weight:700;color:#2b2b45;margin-bottom:6px}
+.v-cta-sub{font-size:13px;color:#7a7e91;margin-bottom:14px;line-height:1.55}
+.v-cta-btn{display:inline-block;padding:12px 28px;background:#FF6B1A;color:#fff!important;font-weight:700;border-radius:8px;font-size:14px;letter-spacing:.02em;box-shadow:0 4px 12px rgba(255,107,26,.25)}
+
+.v-tip{margin:18px 34px;padding:14px 16px;background:#F0F7FF;border-left:4px solid #5BA8FF;border-radius:6px;font-size:13px;color:#2b2b45;line-height:1.55}
+.v-tip strong{color:#2b6cb0}
+
+.v-foot{background:#fafbfd;padding:22px 34px 26px;border-top:1px solid #eef0f5;text-align:center;color:#7a7e91;font-size:11.5px;line-height:1.6}
+.v-foot a{color:#FF6B1A;text-decoration:none;font-weight:500}
+.v-foot-lg{font-weight:700;letter-spacing:.2em;font-size:10px;color:#FF6B1A;margin-bottom:9px}
+
+/* FINAL REPORT EXTRA */
+.v-journey{margin:20px 34px}
+.v-j-row{display:grid;grid-template-columns:60px 1fr 80px;gap:12px;padding:11px 14px;background:#fafbfd;border-radius:9px;border:1px solid #eef0f5;margin-bottom:7px;align-items:center}
+.v-j-day{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7a7e91;text-align:center;padding:4px 6px;background:#fff;border-radius:6px;border:1px solid #eef0f5}
+.v-j-topic{font-size:13px;font-weight:500;color:#2b2b45}
+.v-j-sub{font-size:11px;color:#7a7e91;margin-top:2px}
+.v-j-stat{font-size:11.5px;font-weight:600;text-align:right}
+.v-j-stat.ok{color:#2b9d6e}
+.v-j-stat.no{color:#d64545}
+
+.v-overall{margin:24px 34px;padding:24px;background:linear-gradient(135deg,#FFF4EB,#fffef7);border-radius:14px;border:1px solid #FFD9BC;text-align:center}
+.v-ov-score{font-size:56px;font-weight:800;color:#FF6B1A;line-height:1;letter-spacing:-.02em;font-family:-apple-system,sans-serif}
+.v-ov-suffix{font-size:20px;color:#7a7e91;font-weight:600;margin-left:3px}
+.v-ov-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#FF6B1A;margin-top:6px;margin-bottom:8px}
+.v-ov-tier{display:inline-block;padding:7px 18px;background:#fff;border-radius:20px;font-size:13px;font-weight:600;color:#FF6B1A;margin-top:8px;border:1px solid #FFD9BC}
+
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:14px;animation:up .5s ease}
+.side-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px}
+.sc-title{font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.kpi-small{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px dashed var(--faint);font-size:11.5px}
+.kpi-small:last-child{border-bottom:none}
+.kpi-small .k{color:var(--muted)}
+.kpi-small .v{font-weight:500;font-family:'DM Mono',monospace}
+.metric-big{background:var(--faint);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.mb-label{font-size:9.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.mb-val{font-size:24px;font-weight:500;font-family:'DM Mono',monospace;line-height:1}
+.mb-sub{font-size:10.5px;color:var(--muted);margin-top:5px}
+
+.var-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--faint);font-size:11px}
+.var-row:last-child{border-bottom:none}
+.var-row code{font-family:'DM Mono',monospace;color:var(--amber);font-size:10.5px}
+.var-row .vv{color:var(--text);font-family:'DM Mono',monospace;font-size:10.5px}
+
+.send-btn{width:100%;padding:11px;background:var(--orange);color:#fff;font-size:12.5px;font-weight:600;border-radius:8px;transition:all .15s;margin-top:10px}
+.send-btn:hover{filter:brightness(1.08);box-shadow:0 4px 14px rgba(255,107,26,.3)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+/* ═══════════════════════════════════════════════════════
+   EMAIL DEFINITIONS
+═══════════════════════════════════════════════════════ */
+
+const PERSONAS = {
+  hot:    {first:"Arjun",    attn_d1:true, attn_d2:true, attn_d3:true, hw_d1:true, hw_d2:true, read_rate:95, rank:5},
+  warm75: {first:"Lakshmi",  attn_d1:true, attn_d2:true, attn_d3:false,hw_d1:true, hw_d2:true, read_rate:88, rank:18},
+  warm50: {first:"Saanvi",   attn_d1:true, attn_d2:false,attn_d3:false,hw_d1:true, hw_d2:false,read_rate:64, rank:44},
+  d1ns:   {first:"Harini",   attn_d1:false,attn_d2:false,attn_d3:false,hw_d1:false,hw_d2:false,read_rate:42, rank:82},
+};
+
+const EMAILS = [
+  {id:"d1",    label:"Day 1 Report",   icon:"1️⃣", subject:"Your Day 1 Booster · Scorecard inside 📊",  day:1, openRate:48, clickRate:21},
+  {id:"d2",    label:"Day 2 Report",   icon:"2️⃣", subject:"Day 2 done · You're 2/3 of the way there 💪", day:2, openRate:42, clickRate:19},
+  {id:"final", label:"Final 3-Day",    icon:"🏆", subject:"Your complete Booster journey report is here", day:3, openRate:56, clickRate:34},
+];
+
+/* ═══════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════ */
+
+let S = {
+  email:"d1",
+  persona:"hot",
+};
+
+/* ═══════════════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════════════ */
+
+function render() {
+  document.getElementById("root").innerHTML = `
+    ${rTopbar()}
+    ${rToolbar()}
+    <div class="wrap">
+      <div>${rEmailPreview()}</div>
+      ${rSidebar()}
+    </div>`;
+  bindHandlers();
+}
+
+function rTopbar() {
+  return `<div class="topbar">
+    <span class="logo">VED AI</span>
+    <div class="divider"></div>
+    <span class="crumb"><span>Booster CLM ·</span> Email Templates</span>
+    <div class="nav-links">
+      <a href="index.html"><button class="nav-btn">📊 Dashboard</button></a>
+      <a href="simulator.html"><button class="nav-btn">⚡ Simulator</button></a>
+      <a href="templates.html"><button class="nav-btn">📱 Templates</button></a>
+      <a href="leads.html"><button class="nav-btn">🎯 Leads</button></a>
+      <a href="email-preview.html"><button class="nav-btn on">📧 Email</button></a>
+    </div>
+  </div>`;
+}
+
+function rToolbar() {
+  return `<div class="toolbar">
+    <span class="tb-label">Email</span>
+    <div class="email-tabs">
+      ${EMAILS.map(e => `
+        <div class="etab ${S.email===e.id?"on":""}" data-email="${e.id}">
+          <div class="etab-num">${e.icon}</div>
+          ${e.label}
+        </div>`).join("")}
+    </div>
+    <select class="persona-sel" id="persona-sel">
+      <option value="hot"    ${S.persona==="hot"?"selected":""}>As: Arjun — HOT (3/3 attn)</option>
+      <option value="warm75" ${S.persona==="warm75"?"selected":""}>As: Lakshmi — WARM-75 (2/3 attn)</option>
+      <option value="warm50" ${S.persona==="warm50"?"selected":""}>As: Saanvi — WARM-50 (1/3 attn)</option>
+      <option value="d1ns"   ${S.persona==="d1ns"?"selected":""}>As: Harini — D1 NO-SHOW</option>
+    </select>
+  </div>`;
+}
+
+function rEmailPreview() {
+  const p = PERSONAS[S.persona];
+  const em = EMAILS.find(e => e.id === S.email);
+  return `<div class="email-frame">
+    <div class="ef-head">
+      <div class="ef-dots">
+        <div class="ef-dot" style="background:#F06060"></div>
+        <div class="ef-dot" style="background:#F5BC1E"></div>
+        <div class="ef-dot" style="background:#2ECC9A"></div>
+      </div>
+      <div class="ef-subject"><span>Preview ·</span> ${em.subject}</div>
+      <div class="ef-meta">via Gmail API</div>
+    </div>
+    <div class="gmail-env">
+      <div class="gm-hdr">
+        <div class="gm-subject">${em.subject}</div>
+        <div class="gm-from">
+          <div class="gm-av">V</div>
+          <div class="gm-from-det">
+            <strong>Vedantu Booster &lt;booster@vedantu.com&gt;</strong>
+            <div>to ${p.first.toLowerCase()}@mail.com</div>
+          </div>
+          <div class="gm-date">${em.day === 3 ? "Apr 27, 08:00 AM" : `Apr ${23+em.day}, 9:00 PM`}</div>
+        </div>
+      </div>
+      ${S.email === "final" ? rFinalEmail(p) : rDailyEmail(p, em.day)}
+    </div>
+  </div>`;
+}
+
+function rDailyEmail(p, day) {
+  const attn = day === 1 ? (p.attn_d1?100:0) : Math.round(((p.attn_d1?1:0)+(p.attn_d2?1:0))/2*100);
+  const hw   = day === 1 ? (p.hw_d1?100:0)   : Math.round(((p.hw_d1?1:0)+(p.hw_d2?1:0))/2*100);
+  const topic = day === 1 ? "Rotational Mechanics" : "Gravitation";
+  const cumClasses = day === 1 ? (p.attn_d1?1:0) : (p.attn_d1?1:0)+(p.attn_d2?1:0);
+  const cumHW = day === 1 ? (p.hw_d1?1:0) : (p.hw_d1?1:0)+(p.hw_d2?1:0);
+  const isHigh = attn === 100 && hw === 100;
+  const isLow = attn < 50;
+
+  const takeaways = day === 1 ? [
+    "Moment of inertia & rotational kinetic energy — from first principles",
+    "Angular momentum conservation with 3 real-world examples",
+    "5 JEE-level problems solved · patterns you'll see on the exam",
+  ] : [
+    "Kepler's 3 laws — intuition before formulas",
+    "Escape velocity derivation (it's simpler than you think)",
+    "Why GPS satellites don't fall · orbital mechanics demystified",
+  ];
+
+  const headline = isHigh
+    ? `You're crushing it, ${p.first} 🏆`
+    : isLow && day === 1
+      ? `We missed you today, ${p.first} 💙`
+      : `Nice work on Day ${day}, ${p.first} ✨`;
+
+  const subline = isHigh
+    ? `Top ${Math.ceil(p.rank)}% of your cohort · Day ${day} of 3`
+    : isLow
+      ? `Your seat is saved for tomorrow`
+      : `Here's your scorecard + tomorrow's prep`;
+
+  return `<div class="v-email">
+    <div class="v-banner">
+      <div class="v-logo">VEDANTU · BOOSTER</div>
+      <div class="v-title">${headline}</div>
+      <div class="v-subtitle">${subline}</div>
+    </div>
+
+    <div class="v-greet">Hi <strong>${p.first}</strong>,</div>
+    <div class="v-body">
+      <p>${isLow && day === 1
+          ? `We noticed you couldn't make it to Day 1's class on <strong>${topic}</strong>. Life happens — we completely get it. The good news: Day 2 tomorrow covers a fresh topic, and you can jump right back in without any catch-up.`
+          : `Day ${day} of your Booster trial is done. Here's everything that happened — your performance, what you learned, and what's next.`}</p>
+    </div>
+
+    <div class="v-scorecard">
+      <div class="v-sc-label">📊 Day ${day} Scorecard</div>
+      <div class="v-sc-grid">
+        <div class="v-sc-stat">
+          <div class="v-sc-icon">🎯</div>
+          <div class="v-sc-val">${attn}%</div>
+          <div class="v-sc-sub">Attendance</div>
+        </div>
+        <div class="v-sc-stat">
+          <div class="v-sc-icon">📝</div>
+          <div class="v-sc-val">${hw}%</div>
+          <div class="v-sc-sub">Homework</div>
+        </div>
+        <div class="v-sc-stat">
+          <div class="v-sc-icon">🏅</div>
+          <div class="v-sc-val">${isHigh?"Top "+p.rank+"%":isLow?"—":"Middle"}</div>
+          <div class="v-sc-sub">Batch rank</div>
+        </div>
+      </div>
+    </div>
+
+    ${day === 2 ? `
+      <div class="v-progress">
+        <div class="v-pr-title">📈 Cumulative progress (D1 + D2)</div>
+        <div class="v-pr-row">
+          <span class="v-pr-lbl">Classes</span>
+          <div class="v-pr-bar"><div class="v-pr-fill" style="width:${(cumClasses/2)*100}%"></div></div>
+          <span class="v-pr-val">${cumClasses}/2</span>
+        </div>
+        <div class="v-pr-row">
+          <span class="v-pr-lbl">Homework</span>
+          <div class="v-pr-bar"><div class="v-pr-fill" style="width:${(cumHW/2)*100}%"></div></div>
+          <span class="v-pr-val">${cumHW}/2</span>
+        </div>
+        <div class="v-pr-row">
+          <span class="v-pr-lbl">WA read</span>
+          <div class="v-pr-bar"><div class="v-pr-fill" style="width:${p.read_rate}%"></div></div>
+          <span class="v-pr-val">${p.read_rate}%</span>
+        </div>
+      </div>
+    ` : ""}
+
+    ${!isLow || day > 1 ? `
+      <div class="v-takeaways">
+        <div class="v-ta-title">✨ What you learned today</div>
+        ${takeaways.map(t => `
+          <div class="v-ta">
+            <div class="v-ta-tick">✓</div>
+            <div>${t}</div>
+          </div>`).join("")}
+      </div>
+    ` : ""}
+
+    <div class="v-cta">
+      <div class="v-cta-title">${isLow && day === 1 ? `Don't let Day 1 decide your story` : `Tomorrow's class — Day ${day+1}`}</div>
+      <div class="v-cta-sub">${isLow && day === 1
+        ? `Day 2 starts at 6:30 PM with <strong>Gravitation</strong>. Fresh topic, clean slate.`
+        : day === 2
+          ? `<strong>Oscillations</strong> at 6:30 PM tomorrow — the transformation class. This is where the 3 days connect.`
+          : `<strong>Gravitation</strong> at 6:30 PM. We'll build on what you learned today.`}</div>
+      <a href="#" class="v-cta-btn">${isLow && day === 1 ? "Join me tomorrow →" : "Set reminder →"}</a>
+    </div>
+
+    ${isHigh ? `
+      <div class="v-tip">
+        <strong>💡 Teacher note:</strong> You answered every quiz correctly today. Tomorrow I'm going to ask you something harder — be ready. — Neha Ma'am
+      </div>
+    ` : ""}
+
+    <div class="v-foot">
+      <div class="v-foot-lg">VEDANTU</div>
+      You're receiving this because you enrolled in the Booster trial.<br>
+      <a href="#">View on web</a> · <a href="#">Preferences</a> · <a href="#">Unsubscribe</a><br>
+      <span style="font-size:10.5px">Vedantu Innovations · Bangalore, India</span>
+    </div>
+  </div>`;
+}
+
+function rFinalEmail(p) {
+  const attnN = (p.attn_d1?1:0)+(p.attn_d2?1:0)+(p.attn_d3?1:0);
+  const hwN = (p.hw_d1?1:0)+(p.hw_d2?1:0);
+  const score = Math.round((0.6*attnN/3 + 0.3*hwN/2 + 0.1*p.read_rate/100) * 100);
+  const tier = score >= 85 ? "Hot lead · Top priority"
+             : score >= 55 ? "Warm · 75% potential"
+             : score >= 30 ? "Warm · 50% potential"
+             : "Re-engage";
+
+  return `<div class="v-email">
+    <div class="v-banner">
+      <div class="v-logo">VEDANTU · BOOSTER · FINAL REPORT</div>
+      <div class="v-title">Your 3-day journey, ${p.first} ✨</div>
+      <div class="v-subtitle">Everything you did · and what happens next</div>
+    </div>
+
+    <div class="v-greet">Hi <strong>${p.first}</strong>,</div>
+    <div class="v-body">
+      <p>Three days ago you took a chance on yourself. Here's the full story — every class, every homework, every concept.</p>
+    </div>
+
+    <div class="v-overall">
+      <div class="v-ov-label">Overall Booster Score</div>
+      <div>
+        <span class="v-ov-score">${score}</span><span class="v-ov-suffix">%</span>
+      </div>
+      <div class="v-ov-tier">${tier}</div>
+    </div>
+
+    <div class="v-journey">
+      <div class="v-ta-title" style="margin-bottom:10px">📅 Day-by-day breakdown</div>
+
+      <div class="v-j-row">
+        <div class="v-j-day">Day 1</div>
+        <div>
+          <div class="v-j-topic">Rotational Mechanics</div>
+          <div class="v-j-sub">Neha Ma'am · 6:30 PM · Apr 24</div>
+        </div>
+        <div class="v-j-stat ${p.attn_d1?'ok':'no'}">${p.attn_d1?"✓ Attended":"✗ Missed"}<br><span style="font-size:10px;color:#7a7e91">HW: ${p.hw_d1?"✓":"✗"}</span></div>
+      </div>
+
+      <div class="v-j-row">
+        <div class="v-j-day">Day 2</div>
+        <div>
+          <div class="v-j-topic">Gravitation</div>
+          <div class="v-j-sub">Neha Ma'am · 6:30 PM · Apr 25</div>
+        </div>
+        <div class="v-j-stat ${p.attn_d2?'ok':'no'}">${p.attn_d2?"✓ Attended":"✗ Missed"}<br><span style="font-size:10px;color:#7a7e91">HW: ${p.hw_d2?"✓":"✗"}</span></div>
+      </div>
+
+      <div class="v-j-row">
+        <div class="v-j-day">Day 3</div>
+        <div>
+          <div class="v-j-topic">Oscillations</div>
+          <div class="v-j-sub">Neha Ma'am · 6:30 PM · Apr 26</div>
+        </div>
+        <div class="v-j-stat ${p.attn_d3?'ok':'no'}">${p.attn_d3?"✓ Attended":"✗ Missed"}<br><span style="font-size:10px;color:#7a7e91">—</span></div>
+      </div>
+    </div>
+
+    <div class="v-progress">
+      <div class="v-pr-title">📊 Final metrics</div>
+      <div class="v-pr-row">
+        <span class="v-pr-lbl">Attendance</span>
+        <div class="v-pr-bar"><div class="v-pr-fill" style="width:${(attnN/3)*100}%"></div></div>
+        <span class="v-pr-val">${attnN}/3</span>
+      </div>
+      <div class="v-pr-row">
+        <span class="v-pr-lbl">Homework</span>
+        <div class="v-pr-bar"><div class="v-pr-fill" style="width:${(hwN/2)*100}%"></div></div>
+        <span class="v-pr-val">${hwN}/2</span>
+      </div>
+      <div class="v-pr-row">
+        <span class="v-pr-lbl">WA read</span>
+        <div class="v-pr-bar"><div class="v-pr-fill" style="width:${p.read_rate}%"></div></div>
+        <span class="v-pr-val">${p.read_rate}%</span>
+      </div>
+    </div>
+
+    <div class="v-takeaways">
+      <div class="v-ta-title">🎓 What you now know</div>
+      <div class="v-ta"><div class="v-ta-tick">✓</div>Rotational Mechanics — foundation locked</div>
+      <div class="v-ta"><div class="v-ta-tick">✓</div>Gravitation — orbital mechanics, Kepler's laws</div>
+      <div class="v-ta"><div class="v-ta-tick">✓</div>Oscillations — SHM, damping, connection to waves</div>
+      <div class="v-ta"><div class="v-ta-tick">✓</div>Full Physics foundation for JEE Main Unit 4</div>
+    </div>
+
+    <div class="v-cta">
+      <div class="v-cta-title">${score >= 55 ? "Want to keep going?" : "Take a breath. Whenever you're ready."}</div>
+      <div class="v-cta-sub">
+        ${score >= 85
+          ? `You're clearly ready for the full course. Your counsellor will reach out today with a track built for where you are.`
+          : score >= 55
+            ? `You picked up the momentum fast. A 30-min call with your counsellor will map out your next 6 months.`
+            : `No pressure. Your progress is saved for 30 days — come back whenever.`}
+      </div>
+      <a href="#" class="v-cta-btn">${score >= 55 ? "See full course →" : "Come back later →"}</a>
+    </div>
+
+    <div class="v-tip">
+      <strong>📎 Download:</strong> Your detailed performance report (PDF) · teacher notes · recommended next topics — all attached to this email.
+    </div>
+
+    <div class="v-foot">
+      <div class="v-foot-lg">VEDANTU</div>
+      Thank you for spending 3 days with us, ${p.first}. However this goes — we're rooting for you.<br>
+      <a href="#">View on web</a> · <a href="#">Download PDF</a> · <a href="#">Preferences</a><br>
+      <span style="font-size:10.5px">Vedantu Innovations · Bangalore, India</span>
+    </div>
+  </div>`;
+}
+
+function rSidebar() {
+  const em = EMAILS.find(e => e.id === S.email);
+  const p = PERSONAS[S.persona];
+  const attn = S.email === "d1" ? (p.attn_d1?100:0) : S.email === "d2" ? Math.round(((p.attn_d1?1:0)+(p.attn_d2?1:0))/2*100) : Math.round(((p.attn_d1?1:0)+(p.attn_d2?1:0)+(p.attn_d3?1:0))/3*100);
+  const hw = S.email === "d1" ? (p.hw_d1?100:0) : Math.round(((p.hw_d1?1:0)+(p.hw_d2?1:0))/2*100);
+
+  return `<div class="sidebar">
+    <div class="side-card">
+      <div class="sc-title">📊 Tracking · this email</div>
+      <div class="metric-big">
+        <div class="mb-label">Open rate</div>
+        <div class="mb-val" style="color:var(--green)">${em.openRate}%</div>
+        <div class="mb-sub">Industry benchmark: 22% · we're ${em.openRate > 22 ? "above" : "below"}</div>
+      </div>
+      <div class="metric-big">
+        <div class="mb-label">Click-through rate</div>
+        <div class="mb-val" style="color:var(--amber)">${em.clickRate}%</div>
+        <div class="mb-sub">CTA click on "${em.id === "final" ? "See full course" : "Set reminder"}"</div>
+      </div>
+      <div class="metric-big">
+        <div class="mb-label">Unsubscribes</div>
+        <div class="mb-val" style="color:var(--red)">0.3%</div>
+        <div class="mb-sub">Below threshold (&lt;1%)</div>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <div class="sc-title">🔤 Rendered variables</div>
+      <div class="var-row"><code>{{first_name}}</code><span class="vv">${p.first}</span></div>
+      <div class="var-row"><code>{{attn_score}}</code><span class="vv">${attn}%</span></div>
+      <div class="var-row"><code>{{hw_score}}</code><span class="vv">${hw}%</span></div>
+      <div class="var-row"><code>{{read_rate}}</code><span class="vv">${p.read_rate}%</span></div>
+      <div class="var-row"><code>{{rank_in_batch}}</code><span class="vv">Top ${p.rank}%</span></div>
+      <div class="var-row"><code>{{email}}</code><span class="vv">${p.first.toLowerCase()}@mail.com</span></div>
+      <button class="send-btn" id="send-test">📤 Send test to me</button>
+    </div>
+
+    <div class="side-card">
+      <div class="sc-title">📅 Send schedule</div>
+      <div class="kpi-small"><span class="k">Trigger</span><span class="v">${em.id === "final" ? "Day 3 end + 1h" : `Day ${em.day} end + 45 min`}</span></div>
+      <div class="kpi-small"><span class="k">Recipient filter</span><span class="v">${em.id === "final" ? "all enrolled" : "attended=YES"}</span></div>
+      <div class="kpi-small"><span class="k">From</span><span class="v" style="font-size:10px">booster@vedantu.com</span></div>
+      <div class="kpi-small"><span class="k">Template engine</span><span class="v">MJML → Gmail API</span></div>
+      <div class="kpi-small"><span class="k">Tracking pixel</span><span class="v" style="color:var(--green)">ON</span></div>
+    </div>
+
+    <div class="side-card">
+      <div class="sc-title">💡 Why Vedantu orange</div>
+      <div style="font-size:11.5px;color:var(--muted);line-height:1.6">
+        Brand-primary orange (<code style="color:var(--orange);font-family:'DM Mono',monospace">#FF6B1A</code>) pairs with a peach scorecard (<code style="color:var(--amber);font-family:'DM Mono',monospace">#FFF4EB</code>) for warmth and readability. Works in Gmail, Outlook, Apple Mail. All CTAs use the orange → yellow gradient for recognition.
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   HANDLERS
+═══════════════════════════════════════════════════════ */
+
+function bindHandlers() {
+  document.querySelectorAll("[data-email]").forEach(el => {
+    el.addEventListener("click", () => { S.email = el.dataset.email; render(); });
+  });
+  document.getElementById("persona-sel")?.addEventListener("change", e => {
+    S.persona = e.target.value; render();
+  });
+  document.getElementById("send-test")?.addEventListener("click", (e) => {
+    e.target.textContent = "✓ Sent (mock)";
+    e.target.style.background = "var(--green)";
+    setTimeout(() => { e.target.textContent = "📤 Send test to me"; e.target.style.background = ""; }, 1800);
+  });
+}
+
+/* ── BOOT ── */
+render();
+</script>
+</body>
+</html>
