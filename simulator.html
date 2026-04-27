@@ -184,36 +184,51 @@ a{text-decoration:none;color:inherit}
    4 STUDENT PERSONAS (matching the 4 lead tiers)
 ═══════════════════════════════════════════════════════ */
 
+// 4 personas spanning all 4 tiers AND both audience tracks (parent + student)
+function getAudience(grade) { return (grade >= 5 && grade <= 7) ? "parent" : "student"; }
+const SHARED_TEMPLATES = ["T02_REMINDER_T24H","T03_REMINDER_T3H","T04_JOIN_NOW","T06_HW_ASSIGNED","T07_HW_REMINDER"];
+function resolveWati(logicalId, audience) {
+  if (SHARED_TEMPLATES.includes(logicalId)) return logicalId;
+  return `${logicalId}_${audience.toUpperCase()}`;
+}
+
 const PERSONAS = [
   {
     id:0, first:"Arjun", last:"Reddy", tier:"hot", tierLabel:"HOT", avColor:"#F06060",
-    region:"TG", state:"Telangana",
+    region:"TG", state:"Telangana", grade:10, audience:"student",
+    parent_first:"Vikram", parent_last:"Reddy",
     d1_attended:true, d2_attended:true, d3_attended:true,
     hw_d1:true, hw_d2:true,
     read_rate:0.95,
   },
   {
     id:1, first:"Lakshmi", last:"Rao", tier:"warm75", tierLabel:"WARM-75", avColor:"#FF7A2E",
-    region:"AP", state:"Andhra Pradesh",
+    region:"AP", state:"Andhra Pradesh", grade:7, audience:"parent",
+    parent_first:"Suresh", parent_last:"Rao",
     d1_attended:true, d2_attended:true, d3_attended:false,
     hw_d1:true, hw_d2:true,
     read_rate:0.88,
   },
   {
     id:2, first:"Saanvi", last:"Desai", tier:"warm50", tierLabel:"WARM-50", avColor:"#F5BC1E",
-    region:"MH", state:"Maharashtra",
+    region:"MH", state:"Maharashtra", grade:9, audience:"student",
+    parent_first:"Anjali", parent_last:"Desai",
     d1_attended:true, d2_attended:false, d3_attended:false,
     hw_d1:true, hw_d2:false,
     read_rate:0.64,
   },
   {
     id:3, first:"Harini", last:"Venkatesh", tier:"d1ns", tierLabel:"D1 NO-SHOW", avColor:"#4A6580",
-    region:"TN", state:"Tamil Nadu",
+    region:"TN", state:"Tamil Nadu", grade:6, audience:"parent",
+    parent_first:"Ganesh", parent_last:"Venkatesh",
     d1_attended:false, d2_attended:false, d3_attended:false,
     hw_d1:false, hw_d2:false,
     read_rate:0.72,
   },
 ];
+
+// Helper: pick body variant based on persona's audience
+const av = (p, parentBody, studentBody) => p.audience === "parent" ? parentBody : studentBody;
 
 /* ═══════════════════════════════════════════════════════
    JOURNEY EVENT LIST (resolved per persona)
@@ -221,22 +236,29 @@ const PERSONAS = [
 
 function buildJourney(p) {
   const J = [];
-  const add = (day, time, label, meta, tpl, ch, msgFn, cond) => {
-    J.push({day, time, label, meta, tpl, ch, msgFn, skipped: cond ? !cond(p) : false});
+  // Auto-resolve WATI ID with audience suffix (or shared)
+  const add = (day, time, label, meta, logicalTpl, ch, msgFn, cond) => {
+    const watiId = resolveWati(logicalTpl, p.audience);
+    J.push({day, time, label, meta, tpl: watiId, logical: logicalTpl, ch, msgFn, skipped: cond ? !cond(p) : false});
   };
 
   // ─── PRE-COHORT + DAY 0 ─────────────────────
-  add("Pre-cohort", "D-3 · 18:00", "Hype snippet video",
-      "Excitement · all enrolled", "T10_HYPE_VIDEO", "WA",
-      p => `${p.first}, 30-second taste of what's coming 🎬\n\n*ved.app/snip/C17*\n\nThat's Neha Ma'am breaking down a concept that took me 3 classes in school. You'll see it on Day 1. 🤯\n\nSet a reminder for your batch!`);
-
+  // T10_HYPE_VIDEO dropped per team's PDF
   add("Pre-cohort", "D-2 · 11:00", "Curiosity hook",
-      "Teasing · engagement boost", "T11_CURIOSITY_HOOK", "WA",
-      p => `Quick riddle, ${p.first}:\n\n*Why do astronauts float even though gravity is still pulling them?*\n\nReply with your guess? We'll reveal the answer in Day 1's class on Rotational Mechanics. 🔍\n\n(No Googling! 😉)`);
+      `${p.audience === "parent" ? "Parent voice · invites parent to engage" : "Student voice · brain teaser"}`,
+      "T11_CURIOSITY_HOOK", "WA",
+      p => av(p,
+        `Quick question for ${p.first} 👇\n\n*Why do astronauts float even when gravity exists?*\n\nEncourage them to think — we'll explain this in tomorrow's class 😊`,
+        `Quick brain teaser 🧠\n\n*Why do astronauts float if gravity still exists?*\n\nThink about it — we'll break it tomorrow 😏`
+      ));
 
   add("Day 0", "D0 · 09:00", "Welcome + batch schedule (regional)",
-      `Warm · onboarding · ${p.region} poster`, "T01_WELCOME", "WA",
-      p => `Hey ${p.first}! 🎉 Welcome to the Vedantu Booster Trial!\n\nYour 3-day adventure starts *Apr 24 at 6:30 PM*.\n\n📅 *Your schedule:*\nDay 1 · Apr 24 · 6:30 PM — Rotational Mechanics\nDay 2 · Apr 25 · 6:30 PM — Gravitation\nDay 3 · Apr 26 · 6:30 PM — Oscillations\n\n*How to join:*\n1. Download the Vedantu app\n2. Log in with: +91 98••• / ${p.first.toLowerCase()}@mail.com\n3. Class appears under 'My Courses'\n\nYour teacher: *Neha Ma'am* (Physics)\nSee you there! 🚀`,
+      `${p.audience === "parent" ? "Parent voice · trust + safety" : "Student voice · energy + ambition"} · ${p.region} poster`,
+      "T01_WELCOME", "WA",
+      p => av(p,
+        `Hello Parent 👋\n\nWelcome to Vedantu's *3-Day Booster Trial for ${p.first}* 🎉\n\n📅 Starting: Apr 28 · 6:30 PM\n\nYour child's schedule:\nDay 1 · Rotational Mechanics\nDay 2 · Gravitation\nDay 3 · Oscillations\n\n*How to join:*\n1. Download Vedantu App\n2. Login using: +91 98••• / ${p.first.toLowerCase()}@mail.com\n3. Class visible under *My Courses*\n\n👩‍🏫 Teacher: Neha Ma'am (Physics)\n\nWe're excited to support ${p.first}'s learning journey 💙`,
+        `Hey ${p.first}! 🚀\n\nWelcome to your *3-Day Physics Booster Trial*\n\nStarting Apr 28 · 6:30 PM\n\n🔥 Your lineup:\nDay 1: Rotational Mechanics\nDay 2: Gravitation\nDay 3: Oscillations\n\nLogin → Join → Learn\n\nTeacher: Neha Ma'am\n\nLet's level up 💪`
+      ),
       null);
 
   add("Day 0", "D0 · 20:00", "T-24h reminder",
@@ -253,8 +275,12 @@ function buildJourney(p) {
       p => `${p.first}, class starts in *30 minutes* ⚡\n\n6:30 PM · tap to join:\n👉 ved.app/j/C17D1\n\nDon't make Neha Ma'am start without you! 👀`);
 
   add("Day 1", "D1 · 20:15", "Post-class summary",
-      "Reflective · only sent if attended", "T05_POST_SUMMARY", "WA",
-      p => `That's a wrap on *Day 1* 🎯\n\nToday in Rotational Mechanics you learned:\n✅ Moment of inertia & its intuition\n✅ Angular momentum conservation\n✅ 5 JEE-level problems solved\n\nHow was the class? → ved.app/fb/C17D1\n\nYour detailed performance report is heading to your inbox. 📧`,
+      `${p.audience === "parent" ? "Parent voice · 'today's class summary'" : "Student voice · 'that was solid'"} · only if attended`,
+      "T05_POST_SUMMARY", "WA",
+      p => av(p,
+        `Today's class summary 📊\n\n${p.first} learned:\n✅ Moment of inertia & its intuition\n✅ Angular momentum conservation\n✅ 5 problems solved\n\nFeedback: ved.app/fb/C17D1\n\nA performance report will be shared shortly 📧`,
+        `That was solid 💯\n\nToday you learned:\n✅ Moment of inertia & its intuition\n✅ Angular momentum conservation\n✅ 5 JEE-level problems solved\n\nHow was it?\n👉 ved.app/fb/C17D1`
+      ),
       p => p.d1_attended);
 
   add("Day 1", "D1 · 20:15", "Daily performance email",
@@ -267,20 +293,32 @@ function buildJourney(p) {
       p => `${p.first}, time to lock in what you learned 💪\n\n*Day 1 Homework: Rotational Mechanics*\n⏱ 25 min · Deadline: Tomorrow 6 PM\n\nStart here → ved.app/hw/C17D1\n\nStudents who submit HW on time are *3.4× more likely* to crack full concepts. Be that student. 🧠`,
       p => p.d1_attended);
 
-  // D1 branch: no-show OR low engagement
+  // D1 branch: no-show OR low engagement (audience-paired)
   add("Day 1", "D1 · 21:00", "D1 no-show re-engage",
-      "Empathy · 2nd chance for Day 2", "T16_D1_NOSHOW", "WA",
-      p => `${p.first}, we missed you today 💙\n\nLife happens. Completely get it.\n\nHere's the thing — Day 2 tomorrow at 6:30 PM covers *Gravitation*, which doesn't need Day 1 context. You can jump right back in.\n\n30-second catch-up of Day 1: ved.app/recap/C17D1\n\nRejoin tomorrow? We saved your seat. 🪑✨`,
+      `${p.audience === "parent" ? "Parent · 'no worries'" : "Student · 'happens'"}`,
+      "T16_D1_NOSHOW", "WA",
+      p => av(p,
+        `We noticed ${p.first} couldn't attend today\n\nNo worries 😊\n\nTomorrow's class is equally important — we'd love to see them join!`,
+        `Missed today? Happens.\n\nBut Day 2 is where it gets interesting\n\nBe there tomorrow 🔥`
+      ),
       p => !p.d1_attended);
 
   add("Day 1", "D1 · 21:15", "Daily perf · High",
-      "Praise + push · attn + HW both ✓", "T08_PERF_HIGH", "WA",
-      p => `${p.first}, you're *crushing it* 🏆\n\n📊 Day 1 scorecard:\nAttendance: 100% ✅\nHomework: 100% ✅\nBatch rank: Top 8%\n\nThis is what top-1% students do. *Don't stop now.*\n\nTomorrow's class is the deepest one — you're primed for it. 🚀`,
+      `${p.audience === "parent" ? "Parent · 'long-term confidence'" : "Student · 'how toppers stay ahead'"}`,
+      "T08_PERF_HIGH", "WA",
+      p => av(p,
+        `Great progress! 🎉\n\n📊 ${p.first}'s performance:\nAttendance: 100%\nHomework: Completed\nBatch rank: Top 10%\n\nConsistency like this builds long-term academic confidence 💪`,
+        `You're doing great 🔥\n\n📊 Stats:\nAttendance: 100%\nHW: Done\nRank: Top 8%\n\nThis is how toppers stay ahead\n\nKeep going 🚀`
+      ),
       p => p.d1_attended && p.hw_d1);
 
   add("Day 1", "D1 · 21:15", "Daily perf · Low",
-      "Urgency nudge · partial engagement", "T09_PERF_LOW", "WA",
-      p => `${p.first}, I don't want you to miss out 💭\n\nDay 1 check: you ${p.hw_d1 ? "attended but skipped HW" : "missed homework"}.\n\nLook — 2 more days. *Just 2.* The Day 3 session is where everything clicks and ~70% of students end up wanting to continue after it.\n\nDon't let Day 1 decide your story. Show up tomorrow.\n\nTap to confirm → ved.app/confirm`,
+      `${p.audience === "parent" ? "Parent · 'help them stay consistent'" : "Student · 'show up tomorrow'"}`,
+      "T09_PERF_LOW", "WA",
+      p => av(p,
+        `We noticed ${p.first} missed parts of the session today\n\nEven attending 1 class regularly can significantly improve understanding 📈\n\nLet's help them stay consistent tomorrow 💙`,
+        `You missed a bit today\n\nBut here's the thing — it's not too late\n\nShow up tomorrow. That's all it takes 💪`
+      ),
       p => p.d1_attended && !p.hw_d1);
 
   add("Day 1", "D1 · 21:30", "T-24h reminder (for Day 2)",
@@ -302,8 +340,12 @@ function buildJourney(p) {
       p => `${p.first}, class starts in *30 minutes* ⚡\n\n6:30 PM · tap to join:\n👉 ved.app/j/C17D2\n\nDon't make Neha Ma'am start without you! 👀`);
 
   add("Day 2", "D2 · 20:15", "Post-class summary",
-      "Reflective · only if attended", "T05_POST_SUMMARY", "WA",
-      p => `That's a wrap on *Day 2* 🎯\n\nToday in Gravitation you learned:\n✅ Kepler's 3 laws via real examples\n✅ Escape velocity derivation\n✅ Orbital mechanics · 5 MCQs solved\n\nHow was the class? → ved.app/fb/C17D2\n\nYour detailed performance report is heading to your inbox. 📧`,
+      `${p.audience === "parent" ? "Parent voice" : "Student voice"} · only if attended`,
+      "T05_POST_SUMMARY", "WA",
+      p => av(p,
+        `Today's class summary 📊\n\n${p.first} learned:\n✅ Kepler's Laws\n✅ Escape Velocity\n✅ Basics of Orbital Motion\n\nFeedback: ved.app/fb/C17D2\n\nA performance report will be shared shortly 📧`,
+        `That was solid 💯\n\nToday you learned:\n✅ Kepler's Laws\n✅ Escape Velocity\n✅ Orbital Mechanics\n\nHow was it?\n👉 ved.app/fb/C17D2`
+      ),
       p => p.d2_attended);
 
   add("Day 2", "D2 · 20:15", "Daily performance email",
@@ -317,13 +359,21 @@ function buildJourney(p) {
       p => p.d2_attended);
 
   add("Day 2", "D2 · 21:15", "Daily perf · High",
-      "Praise + push", "T08_PERF_HIGH", "WA",
-      p => `${p.first}, you're *crushing it* 🏆\n\n📊 Day 2 scorecard:\nAttendance: 100% ✅\nHomework: 100% ✅\nBatch rank: Top 5%\n\nYou're in the top 5% of your cohort. *Don't stop now.*\n\nTomorrow's Day 3 is the transformation class. You're primed. 🚀`,
+      `${p.audience === "parent" ? "Parent voice" : "Student voice"}`,
+      "T08_PERF_HIGH", "WA",
+      p => av(p,
+        `Great progress! 🎉\n\n📊 ${p.first}'s performance:\nAttendance: 100%\nHomework: Completed\nBatch rank: Top 5%\n\nConsistency like this builds long-term academic confidence 💪`,
+        `You're doing great 🔥\n\n📊 Stats:\nAttendance: 100%\nHW: Done\nRank: Top 5%\n\nThis is how toppers stay ahead\n\nKeep going 🚀`
+      ),
       p => p.d2_attended && p.hw_d2);
 
   add("Day 2", "D2 · 21:15", "Daily perf · Low",
-      "Urgency nudge", "T09_PERF_LOW", "WA",
-      p => `${p.first}, I don't want you to miss out 💭\n\nDay 2 check: you ${!p.d2_attended ? "missed class" : "skipped homework"}.\n\nOne more day. *Just 1.* The Day 3 session is where everything clicks — 70% of students decide to continue after it.\n\nDon't let today decide your story. Show up tomorrow.\n\nTap to confirm → ved.app/confirm`,
+      `${p.audience === "parent" ? "Parent voice" : "Student voice"}`,
+      "T09_PERF_LOW", "WA",
+      p => av(p,
+        `We noticed ${p.first} missed parts of the session today\n\nEven attending 1 class regularly can significantly improve understanding 📈\n\nLet's help them stay consistent tomorrow 💙`,
+        `You missed a bit today\n\nBut here's the thing — it's not too late\n\nShow up tomorrow. That's all it takes 💪`
+      ),
       p => !(p.d2_attended && p.hw_d2));
 
   add("Day 2", "D2 · 21:30", "T-24h reminder (for Day 3)",
@@ -338,40 +388,57 @@ function buildJourney(p) {
       p => `${p.first}, *last* class starts in 30 minutes ⚡\n\n6:30 PM · tap to join:\n👉 ved.app/j/C17D3\n\nThis is the one where it all clicks. 💫`);
 
   add("Day 3", "D3 · 20:15", "Post-class summary",
-      "Reflective · only if attended", "T05_POST_SUMMARY", "WA",
-      p => `That's a wrap on *Day 3* 🎯\n\nToday in Oscillations you learned:\n✅ SHM from first principles\n✅ Damped & forced oscillations\n✅ Connection to waves (next topic)\n\nHow was the class? → ved.app/fb/C17D3\n\nFinal performance report coming to your inbox. 📧`,
+      `${p.audience === "parent" ? "Parent voice" : "Student voice"} · only if attended`,
+      "T05_POST_SUMMARY", "WA",
+      p => av(p,
+        `Today's class summary 📊\n\n${p.first} learned:\n✅ SHM from first principles\n✅ Damped & forced oscillations\n✅ Connection to waves\n\nFeedback: ved.app/fb/C17D3\n\nFinal performance report coming shortly 📧`,
+        `That was solid 💯\n\nToday you learned:\n✅ SHM from first principles\n✅ Damped & forced oscillations\n✅ Connection to waves (next topic)\n\nHow was it?\n👉 ved.app/fb/C17D3`
+      ),
       p => p.d3_attended);
 
   add("Day 3", "D3 · 21:00", "Overall Day 3 summary",
-      "Transformation · emotional close · all users", "T12_D3_SUMMARY", "WA",
+      `${p.audience === "parent" ? "Parent · 'Mr./Mrs. ___, here's progress'" : "Student · '3 days. Big progress.'"}`,
+      "T12_D3_SUMMARY", "WA",
       p => {
         const attn = (p.d1_attended?1:0)+(p.d2_attended?1:0)+(p.d3_attended?1:0);
         const hw = (p.hw_d1?1:0)+(p.hw_d2?1:0);
         const score = Math.round((0.6*attn/3 + 0.3*hw/2 + 0.1*p.read_rate)*100);
-        return `${p.first}, three days ago you took a chance on yourself.\n\n📊 *Your 3-day journey:*\nClasses attended: ${attn}/3\nHomework done: ${hw}/2\nOverall score: ${score}%\n\n*You learned:* Full Physics foundation — Rotational Mechanics, Gravitation, Oscillations\n\nWhat now? Your full performance report → ved.app/report/C17/${p.first.toLowerCase()}\n\nThe real question is — do you want to keep going? 👇`;
+        return av(p,
+          `Mr./Mrs. ${p.parent_last}, here's ${p.first}'s 3-day progress 📊\n\n✔ Classes attended: ${attn}/3\n✔ Concepts covered\n✔ Performance insights\n\nView detailed report:\n👉 ved.app/report/C17/${p.first.toLowerCase()}\n\nYou've taken a great step toward strengthening their foundation 💙`,
+          `3 days. Big progress.\n\n📊 Your stats:\nClasses: ${attn}/3\nHW: ${hw}/2\nScore: ${score}%\n\nYou just built a strong Physics base\n\n👉 Full report: ved.app/report/C17/${p.first.toLowerCase()}\n\nNow the real question 👇`
+        );
       });
 
   add("Day 3", "D3 · 21:05", "Final performance email",
-      "Vedantu-orange · complete 3-day report", "EMAIL_FINAL", "EMAIL",
-      p => `📧 Email: Final 3-day performance + learning outcome report`);
+      `Vedantu-orange · ${p.audience} variant`, "EMAIL_FINAL", "EMAIL",
+      p => `📧 Email: Final 3-day performance report (${p.audience} variant)`);
 
   // ─── DAY 3+1: INTENT ────────────────────────
   add("Conversion", "D3+1 · 18:00", "Intent capture (buttons)",
-      "Direct · YES/NO + parent/student + tuition Y/N", "T13_INTENT_CAPTURE", "WA",
-      p => `${p.first}, one last question 🎯\n\nBased on these 3 days, would you like to enroll in the full course?\n\nQuick details help us match you with the right counsellor:\n• Who's answering: *You / Parent*\n• Already taking tuition: *Yes / No*\n\nTap below 👇`);
+      `${p.audience === "parent" ? "Parent · 'would you like ___ to continue?'" : "Student · 'do you want to continue?'"}`,
+      "T13_INTENT_CAPTURE", "WA",
+      p => av(p,
+        `Would you like ${p.first} to continue this learning journey?\n\nPlease help us guide you better:\n• Who is responding: *Parent / Student*\n• Current tuition: *Yes / No*`,
+        `Do you want to continue this journey? 🎯\n\nTell us:\n• You / Parent responding\n• Already in tuition? Yes / No`
+      ));
 
   add("Conversion", "D3+1 · 18:15", "Counsellor connect (Intent=YES)",
-      "Close · warm handoff · tier-based assignment", "T14_COUNSELLOR_CONNECT", "WA",
-      p => `${p.first}, amazing 🎉\n\nYour dedicated counsellor: *Ankita Sharma*\n📞 +91 8X-XXXX-XXXX\n\nShe'll call you between *4 PM – 7 PM today* to walk you through:\n✅ Your ideal full course track\n✅ Scholarship options (if eligible)\n✅ Fee + payment flexibility\n\nPrep 3 questions you want answered. See you on that call! 💙`,
+      `${p.audience === "parent" ? "Parent · formal 'discuss plan/scholarship/fees'" : "Student · 'be ready'"}`,
+      "T14_COUNSELLOR_CONNECT", "WA",
+      p => av(p,
+        `Thank you! 🎉\n\nYour academic counsellor: *Ankita Sharma*\n📞 +91 8X-XXXX-XXXX\n\nThey'll call between 4–7 PM to discuss:\n✔ Personalized learning plan\n✔ Scholarship eligibility\n✔ Fee options`,
+        `Nice decision 💯\n\nYour counsellor: Ankita Sharma\n\nThey'll call you today (4–7 PM)\n\nAsk them anything about:\n✔ Strategy\n✔ Scholarships\n✔ Course plan\n\nBe ready 💪`
+      ),
       p => p.tier === "hot" || p.tier === "warm75");
 
   add("Conversion", "D3+2 · 11:00", "Soft nurture (NO/no reply)",
-      "Gentle · preserve for later", "T15_NURTURE_SOFT", "WA",
+      `${p.audience === "parent" ? "Parent · patient" : "Student · cool"}`,
+      "T15_NURTURE_SOFT", "WA",
       p => {
-        const attn = (p.d1_attended?1:0)+(p.d2_attended?1:0)+(p.d3_attended?1:0);
-        const hw = (p.hw_d1?1:0)+(p.hw_d2?1:0);
-        const score = Math.round((0.6*attn/3 + 0.3*hw/2 + 0.1*p.read_rate)*100);
-        return `Hey ${p.first} 🌱\n\nYou scored ${score}% in your Booster trial — that's a solid base.\n\nNo pressure on the full course. But here's a 2-min read on what changes for students who continue → ved.app/why-continue\n\nWe keep your progress saved for 30 days. Whenever you're ready. 🙂`;
+        return av(p,
+          `We understand this is a decision 😊\n\n${p.first}'s detailed report is still available:\n👉 ved.app/report\n\nWe're here whenever you're ready to continue 💙`,
+          `Still thinking? That's okay\n\nYour report is saved here:\n👉 ved.app/report\n\nWhenever you're ready — we've got you 🚀`
+        );
       },
       p => p.tier === "warm50" || p.tier === "d1ns");
 
@@ -435,11 +502,12 @@ function rStudentBar() {
     <div class="persona-group">
       ${PERSONAS.map((pp,i) => {
         const on = S.personaIdx === i ? "on" : "";
+        const audColor = pp.audience === "parent" ? "#FF7A2E" : "#5BA8FF";
         return `<div class="persona ${on}" data-pidx="${i}">
           <div class="persona-av" style="background:${pp.avColor}">${pp.first[0]}</div>
           <div>
             <div class="persona-name">${pp.first} ${pp.last}</div>
-            <div class="persona-tier">${pp.state} · ${pp.tierLabel}</div>
+            <div class="persona-tier">G${pp.grade} · ${pp.tierLabel} · <span style="color:${audColor};font-weight:600">${pp.audience.toUpperCase()}</span></div>
           </div>
         </div>`;
       }).join("")}
@@ -524,9 +592,14 @@ Authorization: Bearer <span class="k">${'<wati_token>'}</span>
   "template_name":  "<span class="n">${ev.tpl.toLowerCase()}</span>",
   "broadcast_name": "<span class="n">booster_apr_c17_${ev.day.toLowerCase().replace(' ','')}</span>",
   "parameters": [
-    {"name":"first_name", "value":"<span class="s">${p.first}</span>"},
-    {"name":"batch_id",   "value":"<span class="s">BOOSTER-APR-C17</span>"},
-    {"name":"region",     "value":"<span class="s">${p.region}</span>"}
+    {"name":"first_name",        "value":"<span class="s">${p.first}</span>"},
+    {"name":"batch_id",          "value":"<span class="s">BOOSTER-APR-C17</span>"},
+    {"name":"region",            "value":"<span class="s">${p.region}</span>"},
+    {"name":"grade",             "value":"<span class="n">${p.grade}</span>"},
+    {"name":"audience",          "value":"<span class="s">${p.audience}</span>"}${p.audience === "parent" ? `,
+    {"name":"parent_first_name", "value":"<span class="s">${p.parent_first}</span>"},
+    {"name":"parent_last_name",  "value":"<span class="s">${p.parent_last}</span>"},
+    {"name":"child_first_name",  "value":"<span class="s">${p.first}</span>"}` : ""}
   ]
 }`;
 
@@ -550,25 +623,32 @@ Authorization: Bearer <span class="k">${'<wati_token>'}</span>
             <div class="pcircle done">1</div>
             <div class="pbody">
               <div class="plabel">Read student row from master sheet</div>
-              <div class="pdesc">Pulled <code>${p.first} ${p.last}</code> (<code>${p.region}</code>) · <code>tier=${p.tierLabel}</code> · <code>score=${score}</code></div>
+              <div class="pdesc">Pulled <code>${p.first} ${p.last}</code> · <code>grade=${p.grade}</code> · <code>region=${p.region}</code> · <code>tier=${p.tierLabel}</code></div>
             </div>
           </div>
           <div class="pnode">
             <div class="pcircle done">2</div>
             <div class="pbody">
-              <div class="plabel">Evaluate trigger condition</div>
-              <div class="pdesc">${ev.skipped ? `<span style="color:var(--red)">Condition FALSE — template skipped for this persona.</span>` : `Condition met · template <code>${ev.tpl}</code> selected`}</div>
+              <div class="plabel">Resolve audience from grade</div>
+              <div class="pdesc">Grade ${p.grade} → audience: <code style="color:${p.audience==='parent'?'var(--orange)':'var(--blue)'}">${p.audience.toUpperCase()}</code> (${p.audience==='parent'?'5–7 → parent voice':'8–10 → student voice'})</div>
             </div>
           </div>
           <div class="pnode">
-            <div class="pcircle ${ev.skipped?'':'done'}">3</div>
+            <div class="pcircle done">3</div>
+            <div class="pbody">
+              <div class="plabel">Pick logical template + resolve WATI variant</div>
+              <div class="pdesc">${ev.skipped ? `<span style="color:var(--red)">Condition FALSE — skipped for this persona.</span>` : `Logical: <code>${ev.logical}</code> → resolved: <code style="color:var(--amber)">${ev.tpl}</code>`}</div>
+            </div>
+          </div>
+          <div class="pnode">
+            <div class="pcircle ${ev.skipped?'':'done'}">4</div>
             <div class="pbody">
               <div class="plabel">Write chosen_template column</div>
-              <div class="pdesc">${ev.skipped ? "—" : `Master sheet cell updated: <code>chosen_template = ${ev.tpl}</code>`}</div>
+              <div class="pdesc">${ev.skipped ? "—" : `Master sheet: <code>chosen_template = ${ev.tpl}</code>`}</div>
             </div>
           </div>
           <div class="pnode">
-            <div class="pcircle ${ev.skipped?'':'active'}">4</div>
+            <div class="pcircle ${ev.skipped?'':'active'}">5</div>
             <div class="pbody">
               <div class="plabel">Dispatch via ${ev.ch === "EMAIL" ? "Gmail API" : "WATI API"}</div>
               <div class="pdesc">${ev.skipped ? "—" : "Apps Script calls the API with rendered variables"}</div>

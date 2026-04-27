@@ -172,21 +172,35 @@ const TIER = {
 const REGIONS = ["TG","AP","TN","MH","PB"];
 const REGION_NAME = {TG:"Telangana",AP:"Andhra Pradesh",TN:"Tamil Nadu",MH:"Maharashtra",PB:"Patiala (PB)"};
 const REGION_COLOR = {TG:"#1ECDB5",AP:"#F5BC1E",TN:"#5BA8FF",MH:"#8B7CF8",PB:"#F06060"};
-const CLASSES = ["Class 10","Class 11","Class 12","Class 12 Drop"];
-const CHOSEN_TPL = {
-  hot:    "T14_COUNSELLOR_CONNECT",
-  warm75: "T14_COUNSELLOR_CONNECT",
-  warm50: "T15_NURTURE_SOFT",
-  d1ns:   "T16_D1_NOSHOW",
-};
 
-function makeLead(i, tier, fn, ln, region, cls, d1a, d2a, d3a, hw1, hw2, readPct, phone) {
+// Logical → resolved WATI ID per audience (mirrors templates.html / apps_script)
+const LOGICAL_TPL_BY_TIER = {
+  hot:    "T14_COUNSELLOR_CONNECT",   // priority handoff
+  warm75: "T14_COUNSELLOR_CONNECT",   // still counsellor (warmer)
+  warm50: "T15_NURTURE_SOFT",         // gentle re-engage
+  d1ns:   "T16_D1_NOSHOW",            // empathy + 2nd chance
+};
+const SHARED_TEMPLATES = ["T02_REMINDER_T24H","T03_REMINDER_T3H","T04_JOIN_NOW","T06_HW_ASSIGNED","T07_HW_REMINDER"];
+
+function getAudience(grade) {
+  if (grade >= 5 && grade <= 7) return "parent";
+  return "student";
+}
+
+function resolveWati(logicalId, audience) {
+  if (SHARED_TEMPLATES.includes(logicalId)) return logicalId;
+  return `${logicalId}_${audience.toUpperCase()}`;
+}
+
+function makeLead(i, tier, fn, ln, region, grade, d1a, d2a, d3a, hw1, hw2, readPct, phone) {
   const attn = (d1a?1:0)+(d2a?1:0)+(d3a?1:0);
   const hw = (hw1?1:0)+(hw2?1:0);
   const read = readPct/100;
   const score = +(0.6*(attn/3) + 0.3*(hw/2) + 0.1*read).toFixed(2);
+  const audience = getAudience(grade);
   return {
-    id:i, first:fn, last:ln, region, cls, phone,
+    id:i, first:fn, last:ln, region, grade, audience, phone,
+    cls:`Class ${grade}`,
     email:`${fn.toLowerCase()}.${ln.toLowerCase()}@mail.com`,
     batch:"BOOSTER-APR-C17",
     d1_attn:d1a, d2_attn:d2a, d3_attn:d3a, hw_d1:hw1, hw_d2:hw2,
@@ -197,33 +211,37 @@ function makeLead(i, tier, fn, ln, region, cls, d1a, d2a, d3a, hw1, hw2, readPct
            :tier==="warm75"?`${attn}/3 attn (dropped D3) · ${hw}/2 HW · ${readPct}% read`
            :tier==="warm50"?`${attn}/3 attn (dropped D2) · ${hw}/2 HW · ${readPct}% read`
            :`Did not attend any class · ${readPct}% read only`,
-    chosen_tpl: CHOSEN_TPL[tier],
+    chosen_tpl: resolveWati(LOGICAL_TPL_BY_TIER[tier], audience),
     counsellor: Math.random() > .6 ? ["Ankita Sharma","Rohit Verma","Priya Kulkarni","Saanvi Rao"][i%4] : null,
     status: Math.random() > .75 ? "contacted" : Math.random() > .5 ? "assigned" : "pending",
   };
 }
 
 const LEADS = [
-  makeLead(1,"hot","Aarav","Reddy","TG","Class 11",true,true,true,true,true,96,"+91 98XXX 2341"),
-  makeLead(2,"hot","Meera","Iyer","TN","Class 12",true,true,true,true,true,89,"+91 99XXX 1147"),
-  makeLead(3,"hot","Siddharth","Patil","MH","Class 11",true,true,true,true,true,81,"+91 70XXX 4422"),
-  makeLead(4,"hot","Ishan","Rao","TG","Class 10",true,true,true,true,true,88,"+91 83XXX 9801"),
-  makeLead(5,"hot","Priyanshi","Sharma","MH","Class 12",true,true,true,true,true,94,"+91 90XXX 5517"),
-  makeLead(6,"hot","Kartik","Nair","AP","Class 11",true,true,true,true,true,79,"+91 97XXX 2205"),
-  makeLead(7,"warm75","Lakshmi","Rao","AP","Class 12",true,true,false,true,true,92,"+91 80XXX 3309"),
-  makeLead(8,"warm75","Gurpreet","Kaur","PB","Class 11",true,true,false,true,true,85,"+91 96XXX 5521"),
-  makeLead(9,"warm75","Harini","Venkat","TN","Class 12",true,true,false,true,false,97,"+91 97XXX 8817"),
-  makeLead(10,"warm75","Rohan","Joshi","MH","Class 11",true,true,false,true,true,78,"+91 98XXX 1173"),
-  makeLead(11,"warm75","Divya","Rajesh","TN","Class 10",true,true,false,false,true,82,"+91 95XXX 4455"),
-  makeLead(12,"warm50","Abhinav","Kumar","TG","Class 12",true,false,false,true,false,78,"+91 90XXX 6640"),
-  makeLead(13,"warm50","Saanvi","Desai","MH","Class 11",true,false,false,true,false,64,"+91 88XXX 2209"),
-  makeLead(14,"warm50","Arjun","Mehta","AP","Class 11",true,false,false,false,false,71,"+91 85XXX 9916"),
-  makeLead(15,"warm50","Simran","Bains","PB","Class 10",true,false,false,true,false,69,"+91 99XXX 3344"),
-  makeLead(16,"warm50","Venkat","Srinivasan","TN","Class 12",true,false,false,false,false,55,"+91 94XXX 7700"),
-  makeLead(17,"d1ns","Deepak","Yadav","MH","Class 11",false,false,false,false,false,42,"+91 93XXX 8821"),
-  makeLead(18,"d1ns","Swati","Paul","TG","Class 10",false,false,false,false,false,61,"+91 98XXX 1192"),
-  makeLead(19,"d1ns","Manoj","Das","AP","Class 12",false,false,false,false,false,38,"+91 96XXX 4473"),
-  makeLead(20,"d1ns","Tanya","Kapoor","PB","Class 11",false,false,false,false,false,29,"+91 97XXX 6615"),
+  // Hot leads — mix of grades 5-10 (parent + student audiences)
+  makeLead(1,"hot","Aarav","Reddy","TG",6,true,true,true,true,true,96,"+91 98XXX 2341"),
+  makeLead(2,"hot","Meera","Iyer","TN",10,true,true,true,true,true,89,"+91 99XXX 1147"),
+  makeLead(3,"hot","Siddharth","Patil","MH",9,true,true,true,true,true,81,"+91 70XXX 4422"),
+  makeLead(4,"hot","Ishan","Rao","TG",7,true,true,true,true,true,88,"+91 83XXX 9801"),
+  makeLead(5,"hot","Priyanshi","Sharma","MH",10,true,true,true,true,true,94,"+91 90XXX 5517"),
+  makeLead(6,"hot","Kartik","Nair","AP",8,true,true,true,true,true,79,"+91 97XXX 2205"),
+  // Warm-75 — D3 dropoff
+  makeLead(7,"warm75","Lakshmi","Rao","AP",7,true,true,false,true,true,92,"+91 80XXX 3309"),
+  makeLead(8,"warm75","Gurpreet","Kaur","PB",9,true,true,false,true,true,85,"+91 96XXX 5521"),
+  makeLead(9,"warm75","Harini","Venkat","TN",10,true,true,false,true,false,97,"+91 97XXX 8817"),
+  makeLead(10,"warm75","Rohan","Joshi","MH",8,true,true,false,true,true,78,"+91 98XXX 1173"),
+  makeLead(11,"warm75","Divya","Rajesh","TN",6,true,true,false,false,true,82,"+91 95XXX 4455"),
+  // Warm-50 — D2 dropoff
+  makeLead(12,"warm50","Abhinav","Kumar","TG",10,true,false,false,true,false,78,"+91 90XXX 6640"),
+  makeLead(13,"warm50","Saanvi","Desai","MH",9,true,false,false,true,false,64,"+91 88XXX 2209"),
+  makeLead(14,"warm50","Arjun","Mehta","AP",8,true,false,false,false,false,71,"+91 85XXX 9916"),
+  makeLead(15,"warm50","Simran","Bains","PB",5,true,false,false,true,false,69,"+91 99XXX 3344"),
+  makeLead(16,"warm50","Venkat","Srinivasan","TN",7,true,false,false,false,false,55,"+91 94XXX 7700"),
+  // D1 NoShow — never attended
+  makeLead(17,"d1ns","Deepak","Yadav","MH",9,false,false,false,false,false,42,"+91 93XXX 8821"),
+  makeLead(18,"d1ns","Swati","Paul","TG",6,false,false,false,false,false,61,"+91 98XXX 1192"),
+  makeLead(19,"d1ns","Manoj","Das","AP",10,false,false,false,false,false,38,"+91 96XXX 4473"),
+  makeLead(20,"d1ns","Tanya","Kapoor","PB",5,false,false,false,false,false,29,"+91 97XXX 6615"),
 ];
 
 const COUNTS = {
@@ -379,12 +397,12 @@ function rTable(rows) {
       <thead><tr>
         <th style="width:30px"><span class="cbx ${allSelected?"on":""}" id="all-cbx"></span></th>
         <th class="sortable" data-sort="first">Student</th>
+        <th class="sortable" data-sort="grade">Grade · Audience</th>
         <th>Reg</th>
-        <th class="sortable" data-sort="cls">Class</th>
         <th>Attn · HW · Read</th>
         <th class="sortable" data-sort="score">Score ${S.sortBy==="score"?(S.sortDir==="desc"?"↓":"↑"):""}</th>
         <th>Tier</th>
-        <th>Chosen template</th>
+        <th>WATI Template</th>
         <th>Status / counsellor</th>
         <th style="width:120px"></th>
       </tr></thead>
@@ -416,8 +434,11 @@ function rRow(l, i) {
         </div>
       </div>
     </td>
+    <td>
+      <span class="reg-pill" style="color:${l.audience==="parent"?"var(--orange)":"var(--blue)"};border-color:${l.audience==="parent"?"rgba(255,122,46,.35)":"rgba(94,168,255,.35)"};font-weight:600">G${l.grade}</span>
+      <span class="reg-pill" style="margin-left:4px;font-size:8.5px;font-weight:700;letter-spacing:.06em;background:${l.audience==="parent"?"rgba(255,122,46,.1)":"rgba(94,168,255,.1)"};color:${l.audience==="parent"?"var(--orange)":"var(--blue)"};border-color:${l.audience==="parent"?"rgba(255,122,46,.25)":"rgba(94,168,255,.25)"}">${l.audience.toUpperCase()}</span>
+    </td>
     <td><span class="reg-pill" style="color:${REGION_COLOR[l.region]};border-color:${REGION_COLOR[l.region]}40">${l.region}</span></td>
-    <td style="font-size:11px;color:var(--muted)">${l.cls}</td>
     <td>
       <div class="metric-grid">
         <span class="metric-bit ${l.attn_pct>=66?"good":l.attn_pct>=33?"":"bad"}">${l.attn_pct}%</span>
@@ -464,8 +485,9 @@ function rDrawer() {
 
       <div class="dr-section">
         <h3>Student</h3>
+        <div class="kv-row"><span class="k">Grade</span><span class="v">Class ${l.grade}</span></div>
+        <div class="kv-row"><span class="k">Audience track</span><span class="v" style="color:${l.audience==='parent'?'var(--orange)':'var(--blue)'}">${l.audience.toUpperCase()} (${l.audience==='parent'?'5–7':'8–10'})</span></div>
         <div class="kv-row"><span class="k">Region</span><span class="v" style="color:${REGION_COLOR[l.region]}">${REGION_NAME[l.region]}</span></div>
-        <div class="kv-row"><span class="k">Class</span><span class="v">${l.cls}</span></div>
         <div class="kv-row"><span class="k">Batch</span><span class="v">${l.batch}</span></div>
       </div>
 
@@ -615,8 +637,8 @@ function bindHandlers() {
   });
   document.getElementById("bulk-export")?.addEventListener("click", () => {
     const rows = LEADS.filter(l => S.selected.has(l.id));
-    const csv = ["first,last,phone,email,region,class,score,tier,counsellor,status",
-      ...rows.map(l => `${l.first},${l.last},${l.phone},${l.email},${l.region},${l.cls},${l.score},${l.tier},${l.counsellor||""},${l.status}`)
+    const csv = ["first,last,phone,email,region,grade,audience,score,tier,chosen_template,counsellor,status",
+      ...rows.map(l => `${l.first},${l.last},${l.phone},${l.email},${l.region},${l.grade},${l.audience},${l.score},${l.tier},${l.chosen_tpl},${l.counsellor||""},${l.status}`)
     ].join("\n");
     const blob = new Blob([csv], {type:"text/csv"});
     const a = document.createElement("a");

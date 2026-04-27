@@ -25,7 +25,6 @@ a{text-decoration:none;color:inherit}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 @keyframes sparkle{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
 
-/* TOPBAR */
 .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;height:52px;padding:0 28px;background:var(--bg);border-bottom:1px solid var(--border)}
 .logo{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.35em;color:var(--purple)}
 .divider{width:1px;height:20px;background:var(--border)}
@@ -36,16 +35,11 @@ a{text-decoration:none;color:inherit}
 .nav-btn:hover{border-color:var(--purple);color:var(--purple)}
 .nav-btn.on{border-color:var(--purple);color:var(--purple);background:rgba(139,124,248,.07)}
 
-.wrap{max-width:1480px;margin:0 auto;padding:22px 28px 60px}
+.wrap{max-width:1520px;margin:0 auto;padding:22px 28px 60px}
 h1.pg-title{font-size:26px;font-weight:300;letter-spacing:-.01em;margin-bottom:3px}
 .pg-sub{font-size:12px;color:var(--muted);margin-bottom:22px}
 
-/* DROPZONE */
-.dropzone{
-  background:var(--card);border:2px dashed var(--border);border-radius:14px;
-  padding:40px 28px;text-align:center;transition:all .2s;cursor:pointer;
-  margin-bottom:22px;animation:up .4s ease;
-}
+.dropzone{background:var(--card);border:2px dashed var(--border);border-radius:14px;padding:40px 28px;text-align:center;transition:all .2s;cursor:pointer;margin-bottom:22px;animation:up .4s ease}
 .dropzone:hover{border-color:var(--purple);background:rgba(139,124,248,.03)}
 .dropzone.drag{border-color:var(--purple);background:rgba(139,124,248,.08)}
 .dz-icon{font-size:36px;margin-bottom:10px}
@@ -53,30 +47,30 @@ h1.pg-title{font-size:26px;font-weight:300;letter-spacing:-.01em;margin-bottom:3
 .dz-sub{font-size:11.5px;color:var(--muted);line-height:1.65}
 .dz-sub code{font-family:'DM Mono',monospace;font-size:10.5px;color:var(--amber);background:var(--faint);padding:1px 6px;border-radius:3px}
 .dz-hint{font-size:10.5px;color:var(--muted);margin-top:14px;padding-top:14px;border-top:1px dashed var(--border);line-height:1.6}
-
 .file-picker{display:none}
 
-/* SCHEMA HELP */
 .schema-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:22px;animation:up .4s ease .05s both}
-.schema-title{font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.schema-title{font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.schema-section{margin-top:12px}
+.schema-section-label{font-size:10px;font-weight:600;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.schema-section-label .badge{font-size:8.5px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.05em}
+.schema-section-label .badge.req{background:rgba(240,96,96,.1);color:var(--red);border:1px solid rgba(240,96,96,.25)}
+.schema-section-label .badge.cond{background:rgba(245,188,30,.1);color:var(--amber);border:1px solid rgba(245,188,30,.25)}
+.schema-section-label .badge.opt{background:rgba(74,101,128,.15);color:var(--muted);border:1px solid var(--border)}
 .schema-cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;font-family:'DM Mono',monospace;font-size:10.5px}
 .schema-col{color:var(--text);background:var(--faint);padding:5px 9px;border-radius:5px;border:1px solid var(--border)}
-.schema-col .req{color:var(--red);margin-left:3px}
-.schema-col .opt{color:var(--muted);margin-left:3px;font-size:9px}
-.schema-demo{margin-top:12px;display:flex;gap:6px;align-items:center}
+.schema-demo{margin-top:14px;padding-top:12px;border-top:1px dashed var(--border);display:flex;gap:6px;align-items:center}
 .schema-demo button{font-size:10.5px;padding:6px 12px;border-radius:7px;border:1px solid var(--border);color:var(--purple)}
 .schema-demo button:hover{background:rgba(139,124,248,.08)}
 
-/* SUMMARY STATS (after upload) */
 .results-section{display:none;animation:up .5s ease both}
 .results-section.on{display:block}
-.stats-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:22px}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.stats-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:9px;margin-bottom:22px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 15px}
 .stat-label{font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
 .stat-val{font-size:22px;font-weight:500;font-family:'DM Mono',monospace;line-height:1}
 .stat-sub{font-size:10px;color:var(--muted);margin-top:5px}
 
-/* TOOLBAR */
 .result-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
 .pill-chip{font-size:11.5px;padding:5px 12px;border-radius:20px;background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace}
 .rbar-btn{font-size:11.5px;padding:8px 16px;border-radius:8px;border:1px solid var(--border);color:var(--text);font-weight:500;transition:all .15s}
@@ -89,12 +83,7 @@ h1.pg-title{font-size:26px;font-weight:300;letter-spacing:-.01em;margin-bottom:3
 .rbar-btn.reset{margin-left:auto;color:var(--muted)}
 .rbar-btn:disabled{opacity:.5;cursor:not-allowed}
 
-/* AI INSIGHTS CARD */
-.ai-card{
-  background:linear-gradient(135deg,rgba(255,122,46,.04),rgba(245,188,30,.03),rgba(139,124,248,.03));
-  border:1px solid rgba(255,122,46,.25);border-radius:14px;padding:22px 24px;margin-bottom:22px;
-  animation:up .4s ease;
-}
+.ai-card{background:linear-gradient(135deg,rgba(255,122,46,.04),rgba(245,188,30,.03),rgba(139,124,248,.03));border:1px solid rgba(255,122,46,.25);border-radius:14px;padding:22px 24px;margin-bottom:22px;animation:up .4s ease}
 .ai-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .ai-title{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--orange)}
 .ai-sparkle{font-size:18px;animation:sparkle 1.8s ease-in-out infinite}
@@ -102,10 +91,7 @@ h1.pg-title{font-size:26px;font-weight:300;letter-spacing:-.01em;margin-bottom:3
 .ai-body{font-size:13px;line-height:1.85;white-space:pre-wrap;color:var(--text)}
 .ai-body strong{color:var(--orange);font-weight:600}
 .ai-footer{margin-top:14px;padding-top:14px;border-top:1px dashed rgba(255,122,46,.2);font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;display:flex;flex-wrap:wrap;gap:14px}
-.ai-footer .k{color:var(--muted)}
-.ai-footer .v{color:var(--text);margin-left:3px}
 
-/* TABLE */
 .table-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .table-wrap{max-height:560px;overflow:auto}
 .leads-table{width:100%;border-collapse:collapse}
@@ -115,18 +101,22 @@ h1.pg-title{font-size:26px;font-weight:300;letter-spacing:-.01em;margin-bottom:3
 .sn-name{font-weight:500}
 .sn-meta{font-size:9.5px;color:var(--muted);margin-top:2px;font-family:'DM Mono',monospace}
 .reg-pill{font-size:9.5px;padding:2px 8px;border-radius:20px;background:var(--faint);color:var(--muted);border:1px solid var(--border);font-family:'DM Mono',monospace}
+.grade-pill{font-size:9.5px;padding:2px 8px;border-radius:20px;background:var(--faint);color:var(--purple);border:1px solid rgba(139,124,248,.25);font-weight:600}
+.aud-pill{font-size:8.5px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:4px}
+.aud-pill.parent{background:rgba(255,122,46,.1);color:var(--orange);border:1px solid rgba(255,122,46,.25)}
+.aud-pill.student{background:rgba(94,168,255,.1);color:var(--blue);border:1px solid rgba(94,168,255,.25)}
 .metric-bit{font-size:10.5px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:4px;background:var(--faint);border:1px solid var(--border);display:inline-block;margin-right:3px}
 .metric-bit.good{color:var(--green);border-color:rgba(46,204,154,.3);background:rgba(46,204,154,.06)}
 .metric-bit.bad{color:var(--red);border-color:rgba(240,96,96,.3);background:rgba(240,96,96,.06)}
 .score-cell{font-family:'DM Mono',monospace;font-size:13.5px;font-weight:500;text-align:center}
 .tier-pill{font-size:9.5px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap}
 .chosen-tpl{font-size:9.5px;font-family:'DM Mono',monospace;color:var(--amber);background:rgba(245,188,30,.08);padding:2px 7px;border-radius:4px;border:1px solid rgba(245,188,30,.2);display:inline-block;white-space:nowrap}
-.reason-cell{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;max-width:260px;line-height:1.45}
+.reason-cell{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;max-width:240px;line-height:1.45}
 
-/* ERROR / STATUS */
 .status-box{padding:14px 18px;border-radius:10px;margin-bottom:16px;font-size:12px;line-height:1.55;animation:slideIn .25s ease}
 .status-box.error{background:rgba(240,96,96,.08);border:1px solid rgba(240,96,96,.3);color:var(--red)}
 .status-box.ok{background:rgba(46,204,154,.06);border:1px solid rgba(46,204,154,.25);color:var(--green)}
+.status-box.warn{background:rgba(245,188,30,.06);border:1px solid rgba(245,188,30,.25);color:var(--amber)}
 .status-box.loading{background:rgba(139,124,248,.07);border:1px solid rgba(139,124,248,.28);color:var(--purple);display:flex;align-items:center;gap:10px}
 .status-box.loading::before{content:"";width:14px;height:14px;border:2px solid var(--purple);border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -144,7 +134,7 @@ h1.pg-title{font-size:26px;font-weight:300;letter-spacing:-.01em;margin-bottom:3
 <div id="root"></div>
 <script>
 /* ═══════════════════════════════════════════════════════
-   BOOSTER CSV UPLOAD + LOCAL ALGORITHM
+   BOOSTER CSV — local algorithm, audience-aware, 6-dim score
 ═══════════════════════════════════════════════════════ */
 
 const TIER = {
@@ -154,67 +144,157 @@ const TIER = {
   d1ns:   {label:"D1 NoShow",color:"#4A6580"},
 };
 
-const REGION_NAME = {TG:"Telangana",AP:"Andhra Pradesh",TN:"Tamil Nadu",MH:"Maharashtra",PB:"Patiala"};
-
-// Same formula as apps_script.gs
-const WEIGHTS = { ATTENDANCE: 0.60, HOMEWORK: 0.30, WA_READ: 0.10 };
-
-const EXPECTED_COLS = {
-  required: [
-    "first_name","last_name","phone","email","region",
-    "d1_attended","d2_attended","d3_attended",
-    "hw_d1_submitted","hw_d2_submitted"
-  ],
-  optional: [
-    "class","batch_id","wa_msgs_sent","wa_msgs_read"
-  ],
+// 6-dimensional scoring (per Vedantu sheet schema: test ≠ HW)
+const WEIGHTS = {
+  attendance:      0.25,
+  test:            0.20,
+  hw:              0.20,
+  class_engage:    0.15,
+  product_engage:  0.15,
+  wa_read:         0.05,
 };
 
+const REQUIRED = [
+  "first_name","last_name","phone","email","region","grade",
+  "d1_attended","d2_attended","d3_attended",
+  "test_d1_submitted","test_d2_submitted","test_d3_submitted",
+  "hw_d1_submitted","hw_d2_submitted","hw_d3_submitted",
+];
+const CONDITIONAL_PARENT = [
+  "parent_first_name","parent_last_name","parent_phone",
+];
+const OPTIONAL = [
+  "class","batch_id",
+  "class_engagement_d1","class_engagement_d2","class_engagement_d3",
+  "doubts_posted","replay_sessions","engagement_score_app","device",
+  "watch_time_d1","watch_time_d2","watch_time_d3",
+  "wa_msgs_sent","wa_msgs_read",
+];
+
 /* ═══════════════════════════════════════════════════════
-   ALGORITHM — runs locally, zero API cost
+   AUDIENCE + TEMPLATE RESOLUTION (mirrors apps_script + templates.html)
+═══════════════════════════════════════════════════════ */
+
+function getAudience(grade) {
+  if (grade >= 5 && grade <= 7) return "parent";
+  return "student";
+}
+
+function pickLogicalTemplate(s) {
+  if (!s.d1_attended && !s.d2_attended && !s.d3_attended) return {id:"T16_D1_NOSHOW", phase:"d1ns"};
+  if (s.d1_attended && s.d2_attended && s.d3_attended)    return {id:"T14_COUNSELLOR_CONNECT", phase:"hot_handoff"};
+  if (s.d1_attended && s.d2_attended && !s.d3_attended)   return {id:"T14_COUNSELLOR_CONNECT", phase:"warm75"};
+  if (s.d1_attended && !s.d2_attended)                    return {id:"T15_NURTURE_SOFT", phase:"warm50"};
+  return {id:"T13_INTENT_CAPTURE", phase:"intent"};
+}
+
+function resolveWatiId(logicalId, audience) {
+  // Shared templates have no audience suffix
+  const SHARED = ["T02_REMINDER_T24H","T03_REMINDER_T3H","T04_JOIN_NOW","T06_HW_ASSIGNED","T07_HW_REMINDER"];
+  if (SHARED.includes(logicalId)) return logicalId;
+  return `${logicalId}_${audience.toUpperCase()}`;
+}
+
+function pickTemplate(s) {
+  const {id: logical} = pickLogicalTemplate(s);
+  return resolveWatiId(logical, s.audience);
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCORING — 6 dimensions, normalized for missing fields
+═══════════════════════════════════════════════════════ */
+
+function avgBool(...arr) {
+  if (arr.length === 0) return 0;
+  return arr.filter(Boolean).length / arr.length;
+}
+
+function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+
+function computeScore(s) {
+  // Tier 1 — always available
+  const attn = avgBool(s.d1_attended, s.d2_attended, s.d3_attended);
+  const test = avgBool(s.test_d1_submitted, s.test_d2_submitted, s.test_d3_submitted);
+  const hw   = avgBool(s.hw_d1_submitted, s.hw_d2_submitted, s.hw_d3_submitted);
+
+  // Tier 2 — optional, normalized to 0-1
+  const hasClassEng = s.class_engagement_d1 != null || s.class_engagement_d2 != null || s.class_engagement_d3 != null;
+  const classEng = hasClassEng ? clamp01(((+s.class_engagement_d1 || 0) + (+s.class_engagement_d2 || 0) + (+s.class_engagement_d3 || 0)) / 300) : null;
+
+  const hasProductEng = s.engagement_score_app != null || s.doubts_posted != null || s.replay_sessions != null;
+  let productEng = null;
+  if (hasProductEng) {
+    if (s.engagement_score_app != null) {
+      productEng = clamp01((+s.engagement_score_app) / 100);
+    } else {
+      // Proxy from doubts + replays (rough heuristic)
+      const proxy = (+s.doubts_posted || 0) * 5 + (+s.replay_sessions || 0) * 3;
+      productEng = clamp01(proxy / 50);  // 50pts saturates
+    }
+  }
+
+  const hasWa = s.wa_msgs_sent > 0;
+  const waRead = hasWa ? clamp01(s.wa_msgs_read / s.wa_msgs_sent) : null;
+
+  // Compute weighted score, redistributing weights for missing optional fields
+  const dims = [
+    {w: WEIGHTS.attendance,     v: attn,      present: true},
+    {w: WEIGHTS.test,           v: test,      present: true},
+    {w: WEIGHTS.hw,             v: hw,        present: true},
+    {w: WEIGHTS.class_engage,   v: classEng,  present: hasClassEng},
+    {w: WEIGHTS.product_engage, v: productEng,present: hasProductEng},
+    {w: WEIGHTS.wa_read,        v: waRead,    present: hasWa},
+  ];
+  const present = dims.filter(d => d.present);
+  const totalW = present.reduce((a, d) => a + d.w, 0);
+  const score = present.reduce((acc, d) => acc + (d.w / totalW) * d.v, 0);
+
+  return {
+    score: +score.toFixed(4),
+    attn_pct: Math.round(attn * 100),
+    test_pct: Math.round(test * 100),
+    hw_pct: Math.round(hw * 100),
+    class_eng_pct: hasClassEng ? Math.round(classEng * 100) : null,
+    product_eng_pct: hasProductEng ? Math.round(productEng * 100) : null,
+    wa_read_pct: hasWa ? Math.round(waRead * 100) : null,
+  };
+}
+
+function assignTier(s) {
+  if (!s.d1_attended && !s.d2_attended && !s.d3_attended) return "d1ns";
+  if (s.score >= 0.80) return "hot";
+  if (s.score >= 0.55) return "warm75";
+  if (s.score >= 0.30) return "warm50";
+  return "d1ns";
+}
+
+function reasonFor(s) {
+  const attnN = (s.d1_attended?1:0) + (s.d2_attended?1:0) + (s.d3_attended?1:0);
+  const testN = (s.test_d1_submitted?1:0) + (s.test_d2_submitted?1:0) + (s.test_d3_submitted?1:0);
+  const hwN = (s.hw_d1_submitted?1:0) + (s.hw_d2_submitted?1:0) + (s.hw_d3_submitted?1:0);
+  const tail = [`${attnN}/3 attn`, `${testN}/3 test`, `${hwN}/3 HW`];
+  if (s.class_eng_pct != null) tail.push(`${s.class_eng_pct}% engage`);
+  if (s.tier === "hot")    return `Full cohort · ${tail.join(" · ")}`;
+  if (s.tier === "warm75") return `D3 dropoff · ${tail.join(" · ")}`;
+  if (s.tier === "warm50") return `D2 dropoff · ${tail.join(" · ")}`;
+  return `Did not attend any class · score ${s.score.toFixed(2)}`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ROW PROCESSING
 ═══════════════════════════════════════════════════════ */
 
 function parseBool(v) {
   if (v === true) return true;
   if (typeof v === "number") return v === 1;
   if (typeof v === "string") {
-    const s = v.trim().toLowerCase();
-    return s === "true" || s === "1" || s === "yes" || s === "y" || s === "✓";
+    const t = v.trim().toLowerCase();
+    return t === "true" || t === "1" || t === "yes" || t === "y" || t === "✓" || t === "present";
   }
   return false;
 }
 
-function pickTemplate(student) {
-  const {d1_attended, d2_attended, d3_attended, hw_d1_submitted, hw_d2_submitted} = student;
-
-  // Terminal / conversion-phase logic (matches apps_script.gs pickTemplate)
-  if (d3_attended) return "T14_COUNSELLOR_CONNECT";       // full cohort → priority handoff
-  if (d2_attended && !d3_attended) return "T14_COUNSELLOR_CONNECT"; // D3 dropoff → still counsellor
-  if (d1_attended && !d2_attended) return "T15_NURTURE_SOFT";       // D2 dropoff → soft nurture
-  if (!d1_attended) return "T16_D1_NOSHOW";                          // never showed → empathy re-engage
-  return "T13_INTENT_CAPTURE"; // fallback
-}
-
-function assignTier(score, d1, d2, d3) {
-  if (!d1 && !d2 && !d3) return "d1ns";   // never attended, override on score
-  if (score >= 0.85) return "hot";
-  if (score >= 0.55) return "warm75";
-  if (score >= 0.30) return "warm50";
-  return "d1ns";
-}
-
-function reasonFor(s) {
-  const attnN = (s.d1_attended?1:0) + (s.d2_attended?1:0) + (s.d3_attended?1:0);
-  const hwN = (s.hw_d1_submitted?1:0) + (s.hw_d2_submitted?1:0);
-  const readPct = Math.round(s.read_rate * 100);
-  if (s.tier === "hot")    return `${attnN}/3 attn · ${hwN}/2 HW · ${readPct}% read — FULL COHORT`;
-  if (s.tier === "warm75") return `${attnN}/3 attn (dropped D3) · ${hwN}/2 HW · ${readPct}% read`;
-  if (s.tier === "warm50") return `${attnN}/3 attn (dropped D2) · ${hwN}/2 HW · ${readPct}% read`;
-  return `Did not attend any class · ${readPct}% read only`;
-}
-
 function processRow(raw, idx) {
-  // Normalize keys to lowercase snake_case
   const r = {};
   for (const k in raw) {
     const clean = k.trim().toLowerCase().replace(/\s+/g,"_");
@@ -223,32 +303,50 @@ function processRow(raw, idx) {
 
   const s = {
     idx,
-    first_name: String(r.first_name||"").trim(),
-    last_name: String(r.last_name||"").trim(),
-    phone: String(r.phone||"").trim(),
-    email: String(r.email||"").trim(),
-    region: String(r.region||"").trim().toUpperCase(),
-    class: String(r.class||"").trim(),
-    batch_id: String(r.batch_id||"").trim(),
+    first_name: String(r.first_name || "").trim(),
+    last_name: String(r.last_name || "").trim(),
+    phone: String(r.phone || "").trim(),
+    email: String(r.email || "").trim(),
+    region: String(r.region || "").trim().toUpperCase(),
+    grade: +r.grade || 0,
+    class: String(r.class || "").trim(),
+    batch_id: String(r.batch_id || "").trim(),
+    parent_first_name: String(r.parent_first_name || "").trim(),
+    parent_last_name: String(r.parent_last_name || "").trim(),
+    parent_phone: String(r.parent_phone || "").trim(),
+    device: String(r.device || "").trim(),
+
     d1_attended: parseBool(r.d1_attended),
     d2_attended: parseBool(r.d2_attended),
     d3_attended: parseBool(r.d3_attended),
+
+    test_d1_submitted: parseBool(r.test_d1_submitted),
+    test_d2_submitted: parseBool(r.test_d2_submitted),
+    test_d3_submitted: parseBool(r.test_d3_submitted),
+
     hw_d1_submitted: parseBool(r.hw_d1_submitted),
     hw_d2_submitted: parseBool(r.hw_d2_submitted),
+    hw_d3_submitted: parseBool(r.hw_d3_submitted),
+
+    class_engagement_d1: r.class_engagement_d1 != null && r.class_engagement_d1 !== "" ? +r.class_engagement_d1 : null,
+    class_engagement_d2: r.class_engagement_d2 != null && r.class_engagement_d2 !== "" ? +r.class_engagement_d2 : null,
+    class_engagement_d3: r.class_engagement_d3 != null && r.class_engagement_d3 !== "" ? +r.class_engagement_d3 : null,
+    doubts_posted: r.doubts_posted != null && r.doubts_posted !== "" ? +r.doubts_posted : null,
+    replay_sessions: r.replay_sessions != null && r.replay_sessions !== "" ? +r.replay_sessions : null,
+    engagement_score_app: r.engagement_score_app != null && r.engagement_score_app !== "" ? +r.engagement_score_app : null,
+    watch_time_d1: r.watch_time_d1 != null && r.watch_time_d1 !== "" ? +r.watch_time_d1 : null,
+    watch_time_d2: r.watch_time_d2 != null && r.watch_time_d2 !== "" ? +r.watch_time_d2 : null,
+    watch_time_d3: r.watch_time_d3 != null && r.watch_time_d3 !== "" ? +r.watch_time_d3 : null,
     wa_msgs_sent: +r.wa_msgs_sent || 0,
     wa_msgs_read: +r.wa_msgs_read || 0,
   };
 
-  const attnN = (s.d1_attended?1:0) + (s.d2_attended?1:0) + (s.d3_attended?1:0);
-  const hwN = (s.hw_d1_submitted?1:0) + (s.hw_d2_submitted?1:0);
+  s.audience = getAudience(s.grade);
 
-  s.attn_pct = Math.round(attnN/3*100);
-  s.hw_pct = Math.round(hwN/2*100);
-  s.read_rate = s.wa_msgs_sent ? s.wa_msgs_read / s.wa_msgs_sent : 0;
-  s.read_pct = Math.round(s.read_rate * 100);
+  const computed = computeScore(s);
+  Object.assign(s, computed);
 
-  s.score = +(WEIGHTS.ATTENDANCE*(attnN/3) + WEIGHTS.HOMEWORK*(hwN/2) + WEIGHTS.WA_READ*s.read_rate).toFixed(4);
-  s.tier = assignTier(s.score, s.d1_attended, s.d2_attended, s.d3_attended);
+  s.tier = assignTier(s);
   s.chosen_template = pickTemplate(s);
   s.handoff_reason = reasonFor(s);
 
@@ -260,9 +358,10 @@ function processRow(raw, idx) {
 ═══════════════════════════════════════════════════════ */
 
 let S = {
-  students: null,     // processed rows
+  students: null,
   fileName: null,
   error: null,
+  warnings: [],
   aiInsights: null,
   aiUsage: null,
   aiLoading: false,
@@ -278,9 +377,10 @@ function render() {
     ${rTopbar()}
     <div class="wrap">
       <h1 class="pg-title">CSV Upload · Auto-Assign</h1>
-      <div class="pg-sub">Drop a Metabase dump — algorithm scores every lead, picks the next WATI template, and (optionally) asks Claude for cohort-level insights.</div>
+      <div class="pg-sub">Drop a Metabase dump — algorithm scores every lead on 6 dimensions, picks the right WATI template (audience-routed by grade), and (optionally) asks Claude for cohort insights.</div>
 
       ${S.error ? `<div class="status-box error"><strong>⚠ Error:</strong> ${S.error}</div>` : ""}
+      ${S.warnings.length > 0 ? `<div class="status-box warn"><strong>⚠ Warnings:</strong><br>${S.warnings.map(w => "• " + w).join("<br>")}</div>` : ""}
       ${S.students ? `<div class="status-box ok">✓ Processed <strong>${S.students.length}</strong> leads from <code style="font-family:'DM Mono',monospace">${S.fileName}</code></div>` : ""}
 
       ${rDropzone()}
@@ -316,8 +416,8 @@ function rDropzone() {
     </div>
     <input type="file" id="file-input" class="file-picker" accept=".csv">
     <div class="dz-hint">
-      Expected columns below. Order doesn't matter, header names normalize to <code style="font-family:'DM Mono',monospace;color:var(--amber)">snake_case</code>.
-      Boolean cells accept <code style="font-family:'DM Mono',monospace;color:var(--amber)">TRUE / FALSE / 1 / 0 / yes / no</code>.
+      Header order doesn't matter; names normalize to <code style="font-family:'DM Mono',monospace;color:var(--amber)">snake_case</code>.
+      Boolean cells accept <code style="font-family:'DM Mono',monospace;color:var(--amber)">TRUE / FALSE / 1 / 0 / yes / no / present</code>.
     </div>
   </div>`;
 }
@@ -325,13 +425,31 @@ function rDropzone() {
 function rSchema() {
   return `<div class="schema-card">
     <div class="schema-title">Expected CSV Schema</div>
-    <div class="schema-cols">
-      ${EXPECTED_COLS.required.map(c => `<div class="schema-col">${c}<span class="req">*</span></div>`).join("")}
-      ${EXPECTED_COLS.optional.map(c => `<div class="schema-col">${c}<span class="opt">opt</span></div>`).join("")}
+
+    <div class="schema-section">
+      <div class="schema-section-label"><span class="badge req">REQUIRED</span> Always needed</div>
+      <div class="schema-cols">
+        ${REQUIRED.map(c => `<div class="schema-col">${c}</div>`).join("")}
+      </div>
     </div>
+
+    <div class="schema-section">
+      <div class="schema-section-label"><span class="badge cond">CONDITIONAL</span> Required for grade 5–7 (parent voice templates)</div>
+      <div class="schema-cols">
+        ${CONDITIONAL_PARENT.map(c => `<div class="schema-col">${c}</div>`).join("")}
+      </div>
+    </div>
+
+    <div class="schema-section">
+      <div class="schema-section-label"><span class="badge opt">OPTIONAL</span> Improves scoring accuracy</div>
+      <div class="schema-cols">
+        ${OPTIONAL.map(c => `<div class="schema-col">${c}</div>`).join("")}
+      </div>
+    </div>
+
     <div class="schema-demo">
       <span style="font-size:10.5px;color:var(--muted)">No CSV handy?</span>
-      <button id="demo-btn">Load demo data (20 rows)</button>
+      <button id="demo-btn">Load demo data (16 rows · grades 5–10)</button>
     </div>
   </div>`;
 }
@@ -341,39 +459,32 @@ function rResults() {
 
   const n = S.students.length;
   const tiers = {hot:0, warm75:0, warm50:0, d1ns:0};
-  const regions = {};
-  let totalScore = 0, totalAttn = 0, totalHw = 0, totalRead = 0;
+  const aud = {parent:0, student:0};
+  let totalScore = 0;
 
   S.students.forEach(s => {
     tiers[s.tier]++;
-    regions[s.region] = (regions[s.region]||0) + 1;
+    aud[s.audience]++;
     totalScore += s.score;
-    totalAttn += s.attn_pct;
-    totalHw += s.hw_pct;
-    totalRead += s.read_pct;
   });
 
-  const avgScore = (totalScore/n).toFixed(2);
-  const avgAttn = Math.round(totalAttn/n);
-  const avgHw = Math.round(totalHw/n);
-  const avgRead = Math.round(totalRead/n);
-
   return `<div class="results-section on">
-    ${rStats(n, tiers, avgScore, avgAttn, avgHw, avgRead)}
+    ${rStats(n, tiers, aud, totalScore)}
     ${rBar(n)}
     ${rAIInsights()}
     ${rTable()}
   </div>`;
 }
 
-function rStats(n, tiers, avgScore, avgAttn, avgHw, avgRead) {
+function rStats(n, tiers, aud, totalScore) {
   const items = [
     {label:"Total leads",  val:n,             color:"#8B7CF8", sub:"rows processed"},
-    {label:"🔥 Hot",        val:tiers.hot,     color:"#F06060", sub:"all 3 attended"},
-    {label:"🟠 Warm-75",    val:tiers.warm75,  color:"#FF7A2E", sub:"D3 dropoff"},
-    {label:"🟡 Warm-50",    val:tiers.warm50,  color:"#F5BC1E", sub:"D2 dropoff"},
-    {label:"⚫ D1 NoShow",  val:tiers.d1ns,    color:"#4A6580", sub:"nurture bucket"},
-    {label:"Avg score",    val:avgScore,      color:"#2ECC9A", sub:`${avgAttn}% attn · ${avgHw}% hw · ${avgRead}% read`},
+    {label:"🟠 Parent (5–7)",val:aud.parent,  color:"#FF7A2E", sub:"parent-voice track"},
+    {label:"🔵 Student (8–10)",val:aud.student,color:"#5BA8FF",sub:"student-voice track"},
+    {label:"🔥 Hot",        val:tiers.hot,    color:"#F06060", sub:"all 3 attended"},
+    {label:"🟠 Warm-75",    val:tiers.warm75, color:"#FF7A2E", sub:"D3 dropoff"},
+    {label:"🟡 Warm-50",    val:tiers.warm50, color:"#F5BC1E", sub:"D2 dropoff"},
+    {label:"⚫ D1 NoShow",  val:tiers.d1ns,   color:"#4A6580", sub:"nurture bucket"},
   ];
   return `<div class="stats-strip">
     ${items.map(it => `<div class="stat">
@@ -387,8 +498,9 @@ function rStats(n, tiers, avgScore, avgAttn, avgHw, avgRead) {
 function rBar(n) {
   return `<div class="result-bar">
     <span class="pill-chip">${n} leads</span>
-    <span class="pill-chip">Scored & tiered</span>
-    <span class="pill-chip">Template assigned</span>
+    <span class="pill-chip">6-dim score</span>
+    <span class="pill-chip">Audience routed</span>
+    <span class="pill-chip">WATI template assigned</span>
     <button class="rbar-btn download" id="download-btn">⬇ Download scored CSV</button>
     <button class="rbar-btn ai" id="ai-btn" ${S.aiLoading?"disabled":""}>
       <span class="sparkle">✨</span> ${S.aiLoading ? "Asking Claude…" : S.aiInsights ? "Re-run insights" : "Get AI insights"}
@@ -418,17 +530,16 @@ function rAIInsights() {
     </div>
     <div class="ai-body">${formatted}</div>
     <div class="ai-footer">
-      <span><span class="k">input tokens:</span><span class="v">${u.input_tokens || 0}</span></span>
-      <span><span class="k">output tokens:</span><span class="v">${u.output_tokens || 0}</span></span>
-      <span><span class="k">cache read:</span><span class="v">${u.cache_read_input_tokens || 0}</span></span>
-      <span><span class="k">cache write:</span><span class="v">${u.cache_creation_input_tokens || 0}</span></span>
-      <span style="margin-left:auto"><span class="k">est. cost:</span><span class="v">~$${estCost(u).toFixed(4)}</span></span>
+      <span>input: ${u.input_tokens || 0}</span>
+      <span>output: ${u.output_tokens || 0}</span>
+      <span>cache read: ${u.cache_read_input_tokens || 0}</span>
+      <span>cache write: ${u.cache_creation_input_tokens || 0}</span>
+      <span style="margin-left:auto">est: ~$${estCost(u).toFixed(4)}</span>
     </div>
   </div>`;
 }
 
 function estCost(u) {
-  // Opus 4.7: $5/M input, $25/M output, cache read ~0.1x, cache write ~1.25x
   const inp = (u.input_tokens || 0) / 1e6 * 5;
   const out = (u.output_tokens || 0) / 1e6 * 25;
   const cr = (u.cache_read_input_tokens || 0) / 1e6 * 0.5;
@@ -437,11 +548,13 @@ function estCost(u) {
 }
 
 function rTable() {
-  const rows = S.students.slice(0, 200); // cap display for perf
+  const rows = S.students.slice(0, 200);
   return `<div class="table-card">
     <div class="table-wrap"><table class="leads-table">
       <thead><tr>
-        <th>Student</th><th>Region</th><th>Attn · HW · Read</th><th>Score</th><th>Tier</th><th>Next template</th><th>Reason</th>
+        <th>Student</th><th>Grade · Audience</th><th>Region</th>
+        <th>Attn · Test · HW</th><th>Engage · WA</th>
+        <th>Score</th><th>Tier</th><th>WATI Template</th><th>Reason</th>
       </tr></thead>
       <tbody>
         ${rows.map(s => rRow(s)).join("")}
@@ -458,11 +571,19 @@ function rRow(s) {
       <div class="sn-name">${s.first_name} ${s.last_name}</div>
       <div class="sn-meta">${s.phone || s.email}</div>
     </td>
+    <td>
+      <span class="grade-pill">G${s.grade || "?"}</span>
+      <span class="aud-pill ${s.audience}" style="margin-left:4px">${s.audience.toUpperCase()}</span>
+    </td>
     <td><span class="reg-pill">${s.region || "—"}</span></td>
     <td>
       <span class="metric-bit ${s.attn_pct>=66?"good":s.attn_pct>=33?"":"bad"}">${s.attn_pct}%</span>
+      <span class="metric-bit ${s.test_pct>=50?"good":"bad"}">${s.test_pct}%</span>
       <span class="metric-bit ${s.hw_pct>=50?"good":"bad"}">${s.hw_pct}%</span>
-      <span class="metric-bit">${s.read_pct}%</span>
+    </td>
+    <td>
+      ${s.class_eng_pct != null ? `<span class="metric-bit ${s.class_eng_pct>=60?"good":"bad"}">${s.class_eng_pct}%</span>` : `<span class="metric-bit" style="opacity:.4">—</span>`}
+      ${s.wa_read_pct != null ? `<span class="metric-bit">${s.wa_read_pct}%</span>` : `<span class="metric-bit" style="opacity:.4">—</span>`}
     </td>
     <td><span class="score-cell" style="color:${t.color}">${s.score.toFixed(2)}</span></td>
     <td><span class="tier-pill" style="background:${t.color}18;color:${t.color};border:1px solid ${t.color}35">${t.label}</span></td>
@@ -490,18 +611,18 @@ function bindHandlers() {
       if (e.target.files[0]) handleFile(e.target.files[0]);
     });
   }
-
   document.getElementById("demo-btn")?.addEventListener("click", loadDemo);
   document.getElementById("download-btn")?.addEventListener("click", downloadCSV);
   document.getElementById("ai-btn")?.addEventListener("click", getAIInsights);
   document.getElementById("reset-btn")?.addEventListener("click", () => {
-    S = {students:null, fileName:null, error:null, aiInsights:null, aiUsage:null, aiLoading:false, aiError:null};
+    S = {students:null, fileName:null, error:null, warnings:[], aiInsights:null, aiUsage:null, aiLoading:false, aiError:null};
     render();
   });
 }
 
 function handleFile(file) {
   S.error = null;
+  S.warnings = [];
   S.aiInsights = null; S.aiError = null; S.aiUsage = null;
 
   if (!file.name.toLowerCase().endsWith(".csv")) {
@@ -517,77 +638,112 @@ function handleFile(file) {
         if (!results.data || results.data.length === 0) {
           throw new Error("CSV appears empty or has no data rows.");
         }
-
         const headers = Object.keys(results.data[0]).map(h => h.trim().toLowerCase().replace(/\s+/g,"_"));
-        const missing = EXPECTED_COLS.required.filter(c => !headers.includes(c));
-        if (missing.length > 0) {
-          throw new Error(`Missing required columns: ${missing.join(", ")}`);
+        const missing = REQUIRED.filter(c => !headers.includes(c));
+        if (missing.length > 0) throw new Error(`Missing required columns: ${missing.join(", ")}`);
+
+        const processed = results.data.map(processRow);
+        S.students = processed;
+        S.fileName = file.name;
+
+        // Warn if grade 5-7 students lack parent fields
+        const need_parent = processed.filter(s => s.audience === "parent" && (!s.parent_first_name || !s.parent_last_name));
+        if (need_parent.length > 0) {
+          S.warnings.push(`${need_parent.length} grade 5–7 students missing parent_first_name / parent_last_name — T12 will fall back to "Hello Parent" greeting.`);
         }
 
-        S.students = results.data.map(processRow);
-        S.fileName = file.name;
+        // Warn if optional rich fields are absent (scoring less precise)
+        const sample = processed[0];
+        if (sample.class_engagement_d1 == null && sample.class_engagement_d2 == null && sample.class_engagement_d3 == null) {
+          S.warnings.push("No class_engagement_dN fields detected — score uses 5 dimensions instead of 6 (weights auto-redistributed).");
+        }
+
         render();
       } catch (err) {
         S.error = err.message;
         render();
       }
     },
-    error: (err) => {
-      S.error = `CSV parse error: ${err.message}`;
-      render();
-    },
+    error: (err) => { S.error = `CSV parse error: ${err.message}`; render(); },
   });
 }
 
 function loadDemo() {
+  // Mix of grades 5-10 spanning all tiers + audiences
   const demo = [
-    // hot
-    ["Aarav","Reddy","+919812345678","aarav@mail.com","TG","Class 11",1,1,1,1,1,42,40],
-    ["Meera","Iyer","+919912341111","meera@mail.com","TN","Class 12",1,1,1,1,1,38,34],
-    ["Siddharth","Patil","+917044422222","sidd@mail.com","MH","Class 11",1,1,1,1,1,40,32],
-    ["Ishan","Rao","+918398011111","ishan@mail.com","TG","Class 10",1,1,1,1,1,36,32],
-    ["Kartik","Nair","+919722055555","kartik@mail.com","AP","Class 11",1,1,1,1,1,41,32],
-    // warm-75
-    ["Lakshmi","Rao","+918033099999","lakshmi@mail.com","AP","Class 12",1,1,0,1,1,42,39],
-    ["Gurpreet","Kaur","+919655211111","gurpreet@mail.com","PB","Class 11",1,1,0,1,1,37,31],
-    ["Harini","Venkat","+919788177777","harini@mail.com","TN","Class 12",1,1,0,1,0,38,37],
-    ["Rohan","Joshi","+919811173333","rohan@mail.com","MH","Class 11",1,1,0,1,1,40,31],
-    // warm-50
-    ["Abhinav","Kumar","+919066404444","abhinav@mail.com","TG","Class 12",1,0,0,1,0,35,27],
-    ["Saanvi","Desai","+918822099999","saanvi@mail.com","MH","Class 11",1,0,0,1,0,31,20],
-    ["Arjun","Mehta","+918599166666","arjun@mail.com","AP","Class 11",1,0,0,0,0,28,20],
-    ["Simran","Bains","+919933444444","simran@mail.com","PB","Class 10",1,0,0,1,0,29,20],
-    ["Venkat","Srinivasan","+919477000000","venkat@mail.com","TN","Class 12",1,0,0,0,0,26,14],
-    // d1 noshow
-    ["Deepak","Yadav","+919388211111","deepak@mail.com","MH","Class 11",0,0,0,0,0,34,14],
-    ["Swati","Paul","+919811922222","swati@mail.com","TG","Class 10",0,0,0,0,0,30,18],
-    ["Manoj","Das","+919644773333","manoj@mail.com","AP","Class 12",0,0,0,0,0,32,12],
-    ["Tanya","Kapoor","+919766155555","tanya@mail.com","PB","Class 11",0,0,0,0,0,31,9],
-    ["Rahul","Sinha","+919033188888","rahul@mail.com","TN","Class 12",0,0,0,0,0,33,11],
-    ["Pooja","Nanda","+919088299999","pooja@mail.com","MH","Class 10",0,0,0,0,0,29,13],
+    // Grade 5-7 (PARENT voice) — hot, warm, no-show mix
+    {first_name:"Aarav", last_name:"Reddy", phone:"+919812345678", email:"aarav@mail.com", region:"TG", grade:6, parent_first_name:"Vikram", parent_last_name:"Reddy", parent_phone:"+919812345670",
+     d1_attended:1, d2_attended:1, d3_attended:1, test_d1_submitted:1, test_d2_submitted:1, test_d3_submitted:1, hw_d1_submitted:1, hw_d2_submitted:1, hw_d3_submitted:1,
+     class_engagement_d1:88, class_engagement_d2:91, class_engagement_d3:85, doubts_posted:5, replay_sessions:3, engagement_score_app:82, wa_msgs_sent:42, wa_msgs_read:40},
+    {first_name:"Meera", last_name:"Iyer", phone:"+919912341111", email:"meera@mail.com", region:"TN", grade:5, parent_first_name:"Lakshmi", parent_last_name:"Iyer", parent_phone:"+919912341110",
+     d1_attended:1, d2_attended:1, d3_attended:1, test_d1_submitted:1, test_d2_submitted:1, test_d3_submitted:0, hw_d1_submitted:1, hw_d2_submitted:1, hw_d3_submitted:1,
+     class_engagement_d1:92, class_engagement_d2:88, class_engagement_d3:81, doubts_posted:7, replay_sessions:2, engagement_score_app:78, wa_msgs_sent:38, wa_msgs_read:34},
+    {first_name:"Lakshmi", last_name:"Rao", phone:"+918033099999", email:"lakshmi@mail.com", region:"AP", grade:7, parent_first_name:"Suresh", parent_last_name:"Rao", parent_phone:"+918033099990",
+     d1_attended:1, d2_attended:1, d3_attended:0, test_d1_submitted:1, test_d2_submitted:1, test_d3_submitted:0, hw_d1_submitted:1, hw_d2_submitted:1, hw_d3_submitted:0,
+     class_engagement_d1:75, class_engagement_d2:71, doubts_posted:2, replay_sessions:1, engagement_score_app:62, wa_msgs_sent:42, wa_msgs_read:39},
+    {first_name:"Simran", last_name:"Bains", phone:"+919933444444", email:"simran@mail.com", region:"PB", grade:5, parent_first_name:"Harpreet", parent_last_name:"Bains", parent_phone:"+919933444440",
+     d1_attended:1, d2_attended:0, d3_attended:0, test_d1_submitted:1, test_d2_submitted:0, test_d3_submitted:0, hw_d1_submitted:1, hw_d2_submitted:0, hw_d3_submitted:0,
+     class_engagement_d1:64, doubts_posted:0, replay_sessions:0, engagement_score_app:32, wa_msgs_sent:29, wa_msgs_read:20},
+    {first_name:"Tanya", last_name:"Kapoor", phone:"+919766155555", email:"tanya@mail.com", region:"PB", grade:6, parent_first_name:"Ramesh", parent_last_name:"Kapoor", parent_phone:"+919766155550",
+     d1_attended:0, d2_attended:0, d3_attended:0, test_d1_submitted:0, test_d2_submitted:0, test_d3_submitted:0, hw_d1_submitted:0, hw_d2_submitted:0, hw_d3_submitted:0,
+     wa_msgs_sent:31, wa_msgs_read:9},
+    {first_name:"Ishan", last_name:"Rao", phone:"+918398011111", email:"ishan@mail.com", region:"TG", grade:7, parent_first_name:"Anu", parent_last_name:"Rao", parent_phone:"+918398011110",
+     d1_attended:1, d2_attended:1, d3_attended:1, test_d1_submitted:1, test_d2_submitted:1, test_d3_submitted:1, hw_d1_submitted:1, hw_d2_submitted:1, hw_d3_submitted:1,
+     class_engagement_d1:84, class_engagement_d2:79, class_engagement_d3:88, doubts_posted:4, replay_sessions:2, engagement_score_app:75, wa_msgs_sent:36, wa_msgs_read:32},
+
+    // Grade 8-10 (STUDENT voice)
+    {first_name:"Siddharth", last_name:"Patil", phone:"+917044422222", email:"sidd@mail.com", region:"MH", grade:10,
+     d1_attended:1, d2_attended:1, d3_attended:1, test_d1_submitted:1, test_d2_submitted:1, test_d3_submitted:1, hw_d1_submitted:1, hw_d2_submitted:1, hw_d3_submitted:1,
+     class_engagement_d1:91, class_engagement_d2:88, class_engagement_d3:93, doubts_posted:8, replay_sessions:4, engagement_score_app:85, wa_msgs_sent:40, wa_msgs_read:32},
+    {first_name:"Kartik", last_name:"Nair", phone:"+919722055555", email:"kartik@mail.com", region:"AP", grade:9,
+     d1_attended:1, d2_attended:1, d3_attended:1, test_d1_submitted:1, test_d2_submitted:1, test_d3_submitted:1, hw_d1_submitted:1, hw_d2_submitted:0, hw_d3_submitted:1,
+     class_engagement_d1:82, class_engagement_d2:79, class_engagement_d3:84, doubts_posted:3, replay_sessions:1, engagement_score_app:71, wa_msgs_sent:41, wa_msgs_read:32},
+    {first_name:"Priyanshi", last_name:"Sharma", phone:"+919055175555", email:"priyanshi@mail.com", region:"MH", grade:10,
+     d1_attended:1, d2_attended:1, d3_attended:1, test_d1_submitted:1, test_d2_submitted:1, test_d3_submitted:1, hw_d1_submitted:1, hw_d2_submitted:1, hw_d3_submitted:1,
+     class_engagement_d1:94, class_engagement_d2:91, class_engagement_d3:89, doubts_posted:9, replay_sessions:5, engagement_score_app:88, wa_msgs_sent:36, wa_msgs_read:34},
+    {first_name:"Harini", last_name:"Venkat", phone:"+919788177777", email:"harini@mail.com", region:"TN", grade:9,
+     d1_attended:1, d2_attended:1, d3_attended:0, test_d1_submitted:1, test_d2_submitted:1, test_d3_submitted:0, hw_d1_submitted:1, hw_d2_submitted:0, hw_d3_submitted:0,
+     class_engagement_d1:78, class_engagement_d2:74, doubts_posted:2, replay_sessions:1, engagement_score_app:64, wa_msgs_sent:38, wa_msgs_read:37},
+    {first_name:"Rohan", last_name:"Joshi", phone:"+919811173333", email:"rohan@mail.com", region:"MH", grade:8,
+     d1_attended:1, d2_attended:1, d3_attended:0, test_d1_submitted:1, test_d2_submitted:0, test_d3_submitted:0, hw_d1_submitted:1, hw_d2_submitted:1, hw_d3_submitted:0,
+     class_engagement_d1:71, class_engagement_d2:69, doubts_posted:1, replay_sessions:0, engagement_score_app:55, wa_msgs_sent:40, wa_msgs_read:31},
+    {first_name:"Saanvi", last_name:"Desai", phone:"+918822099999", email:"saanvi@mail.com", region:"MH", grade:9,
+     d1_attended:1, d2_attended:0, d3_attended:0, test_d1_submitted:1, test_d2_submitted:0, test_d3_submitted:0, hw_d1_submitted:1, hw_d2_submitted:0, hw_d3_submitted:0,
+     class_engagement_d1:62, doubts_posted:0, replay_sessions:0, engagement_score_app:38, wa_msgs_sent:31, wa_msgs_read:20},
+    {first_name:"Abhinav", last_name:"Kumar", phone:"+919066404444", email:"abhinav@mail.com", region:"TG", grade:10,
+     d1_attended:1, d2_attended:0, d3_attended:0, test_d1_submitted:0, test_d2_submitted:0, test_d3_submitted:0, hw_d1_submitted:1, hw_d2_submitted:0, hw_d3_submitted:0,
+     class_engagement_d1:58, doubts_posted:1, replay_sessions:0, engagement_score_app:31, wa_msgs_sent:35, wa_msgs_read:27},
+    {first_name:"Deepak", last_name:"Yadav", phone:"+919388211111", email:"deepak@mail.com", region:"MH", grade:8,
+     d1_attended:0, d2_attended:0, d3_attended:0, test_d1_submitted:0, test_d2_submitted:0, test_d3_submitted:0, hw_d1_submitted:0, hw_d2_submitted:0, hw_d3_submitted:0,
+     wa_msgs_sent:34, wa_msgs_read:14},
+    {first_name:"Manoj", last_name:"Das", phone:"+919644773333", email:"manoj@mail.com", region:"AP", grade:10,
+     d1_attended:0, d2_attended:0, d3_attended:0, test_d1_submitted:0, test_d2_submitted:0, test_d3_submitted:0, hw_d1_submitted:0, hw_d2_submitted:0, hw_d3_submitted:0,
+     wa_msgs_sent:32, wa_msgs_read:12},
+    {first_name:"Pooja", last_name:"Nanda", phone:"+919088299999", email:"pooja@mail.com", region:"MH", grade:8,
+     d1_attended:0, d2_attended:0, d3_attended:0, test_d1_submitted:0, test_d2_submitted:0, test_d3_submitted:0, hw_d1_submitted:0, hw_d2_submitted:0, hw_d3_submitted:0,
+     wa_msgs_sent:29, wa_msgs_read:13},
   ];
 
-  const rows = demo.map(r => ({
-    first_name:r[0], last_name:r[1], phone:r[2], email:r[3], region:r[4], class:r[5],
-    d1_attended:r[6], d2_attended:r[7], d3_attended:r[8],
-    hw_d1_submitted:r[9], hw_d2_submitted:r[10],
-    wa_msgs_sent:r[11], wa_msgs_read:r[12],
-    batch_id:"BOOSTER-APR-C17",
-  }));
-
-  S.students = rows.map(processRow);
+  S.students = demo.map((r, i) => processRow({...r, batch_id:"BOOSTER-APR-C17"}, i));
   S.fileName = "demo_data.csv";
-  S.error = null;
+  S.error = null; S.warnings = [];
   S.aiInsights = null; S.aiError = null; S.aiUsage = null;
   render();
 }
 
 function downloadCSV() {
   const headers = [
-    "first_name","last_name","phone","email","region","class","batch_id",
-    "d1_attended","d2_attended","d3_attended","hw_d1_submitted","hw_d2_submitted",
+    "first_name","last_name","phone","email","region","grade","class","batch_id",
+    "parent_first_name","parent_last_name","parent_phone","device","audience",
+    "d1_attended","d2_attended","d3_attended",
+    "test_d1_submitted","test_d2_submitted","test_d3_submitted",
+    "hw_d1_submitted","hw_d2_submitted","hw_d3_submitted",
+    "class_engagement_d1","class_engagement_d2","class_engagement_d3",
+    "doubts_posted","replay_sessions","engagement_score_app",
+    "watch_time_d1","watch_time_d2","watch_time_d3",
     "wa_msgs_sent","wa_msgs_read",
-    "attn_pct","hw_pct","read_pct","score","tier","chosen_template","handoff_reason",
+    "attn_pct","test_pct","hw_pct","class_eng_pct","product_eng_pct","wa_read_pct",
+    "score","tier","chosen_template","handoff_reason",
   ];
   const csv = [
     headers.join(","),
@@ -607,42 +763,33 @@ function downloadCSV() {
   a.click();
 }
 
-/* ═══════════════════════════════════════════════════════
-   AI CALL — aggregated stats only, no raw rows
-═══════════════════════════════════════════════════════ */
-
 function buildCohortStats() {
   const n = S.students.length;
   const tiers = {hot:0, warm75:0, warm50:0, d1ns:0};
+  const aud = {parent:0, student:0};
+  const grades = {};
   const regions = {};
   const templates = {};
-  let totalAttn = 0, totalHw = 0, totalRead = 0;
-  let d1 = 0, d2 = 0, d3 = 0;
-  let hw1 = 0, hw2 = 0;
+  let attn=0, test=0, hw=0, classEng=0, classEngN=0;
+  let d1=0, d2=0, d3=0, hw1=0, hw2=0, hw3=0, t1=0, t2=0, t3=0;
 
   S.students.forEach(s => {
     tiers[s.tier]++;
-    if (s.region) {
-      regions[s.region] = regions[s.region] || {count:0, hot:0, d1:0, d2:0, d3:0};
-      regions[s.region].count++;
-      if (s.tier === "hot") regions[s.region].hot++;
-      if (s.d1_attended) regions[s.region].d1++;
-      if (s.d2_attended) regions[s.region].d2++;
-      if (s.d3_attended) regions[s.region].d3++;
-    }
+    aud[s.audience]++;
+    grades[`G${s.grade}`] = (grades[`G${s.grade}`]||0) + 1;
+    regions[s.region] = (regions[s.region]||0) + 1;
     templates[s.chosen_template] = (templates[s.chosen_template]||0) + 1;
-    totalAttn += s.attn_pct;
-    totalHw += s.hw_pct;
-    totalRead += s.read_pct;
-    if (s.d1_attended) d1++;
-    if (s.d2_attended) d2++;
-    if (s.d3_attended) d3++;
-    if (s.hw_d1_submitted) hw1++;
-    if (s.hw_d2_submitted) hw2++;
+    attn += s.attn_pct; test += s.test_pct; hw += s.hw_pct;
+    if (s.class_eng_pct != null) { classEng += s.class_eng_pct; classEngN++; }
+    if (s.d1_attended) d1++; if (s.d2_attended) d2++; if (s.d3_attended) d3++;
+    if (s.hw_d1_submitted) hw1++; if (s.hw_d2_submitted) hw2++; if (s.hw_d3_submitted) hw3++;
+    if (s.test_d1_submitted) t1++; if (s.test_d2_submitted) t2++; if (s.test_d3_submitted) t3++;
   });
 
   return {
     cohort_size: n,
+    audience_split: aud,
+    grade_distribution: grades,
     tier_distribution: tiers,
     tier_percentages: {
       hot:    +(tiers.hot/n*100).toFixed(1),
@@ -650,26 +797,26 @@ function buildCohortStats() {
       warm50: +(tiers.warm50/n*100).toFixed(1),
       d1ns:   +(tiers.d1ns/n*100).toFixed(1),
     },
-    day_attendance: {
-      d1: d1, d1_pct: +(d1/n*100).toFixed(1),
-      d2: d2, d2_pct: +(d2/n*100).toFixed(1),
-      d3: d3, d3_pct: +(d3/n*100).toFixed(1),
+    day_attendance_pct: {
+      d1: +(d1/n*100).toFixed(1), d2: +(d2/n*100).toFixed(1), d3: +(d3/n*100).toFixed(1),
     },
-    homework_submission: {
-      hw_d1: hw1, hw_d1_pct: +(hw1/n*100).toFixed(1),
-      hw_d2: hw2, hw_d2_pct: +(hw2/n*100).toFixed(1),
+    test_submission_pct: {
+      d1: +(t1/n*100).toFixed(1), d2: +(t2/n*100).toFixed(1), d3: +(t3/n*100).toFixed(1),
+    },
+    homework_submission_pct: {
+      d1: +(hw1/n*100).toFixed(1), d2: +(hw2/n*100).toFixed(1), d3: +(hw3/n*100).toFixed(1),
     },
     averages: {
-      attendance_pct: Math.round(totalAttn/n),
-      homework_pct: Math.round(totalHw/n),
-      wa_read_pct: Math.round(totalRead/n),
+      attendance_pct: Math.round(attn/n),
+      test_pct: Math.round(test/n),
+      hw_pct: Math.round(hw/n),
+      class_engagement_pct: classEngN > 0 ? Math.round(classEng/classEngN) : null,
     },
     dropoff_rates: {
       d1_to_d2: d1 > 0 ? +((d1-d2)/d1*100).toFixed(1) : 0,
       d2_to_d3: d2 > 0 ? +((d2-d3)/d2*100).toFixed(1) : 0,
     },
-    regions: regions,
-    templates_assigned: templates,
+    regions, templates_assigned: templates,
   };
 }
 
@@ -684,12 +831,10 @@ async function getAIInsights() {
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify({cohort_stats: stats}),
     });
-
     if (!res.ok) {
       const err = await res.json().catch(() => ({error: `HTTP ${res.status}`}));
       throw new Error(err.error || `HTTP ${res.status}`);
     }
-
     const data = await res.json();
     S.aiInsights = data.insights;
     S.aiUsage = data.usage;
@@ -702,7 +847,6 @@ async function getAIInsights() {
   }
 }
 
-/* ── BOOT ── */
 render();
 </script>
 </body>

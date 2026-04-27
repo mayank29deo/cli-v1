@@ -179,18 +179,34 @@ a{text-decoration:none;color:inherit}
    EMAIL DEFINITIONS
 ═══════════════════════════════════════════════════════ */
 
+function getAudience(grade) { return (grade >= 5 && grade <= 7) ? "parent" : "student"; }
+
+// Personas mirror simulator.html: 4 personas spanning all tiers + both audiences
 const PERSONAS = {
-  hot:    {first:"Arjun",    attn_d1:true, attn_d2:true, attn_d3:true, hw_d1:true, hw_d2:true, read_rate:95, rank:5},
-  warm75: {first:"Lakshmi",  attn_d1:true, attn_d2:true, attn_d3:false,hw_d1:true, hw_d2:true, read_rate:88, rank:18},
-  warm50: {first:"Saanvi",   attn_d1:true, attn_d2:false,attn_d3:false,hw_d1:true, hw_d2:false,read_rate:64, rank:44},
-  d1ns:   {first:"Harini",   attn_d1:false,attn_d2:false,attn_d3:false,hw_d1:false,hw_d2:false,read_rate:42, rank:82},
+  hot:    {first:"Arjun",   last:"Reddy",     grade:10, parent_first:"Vikram",  parent_last:"Reddy",     attn_d1:true, attn_d2:true, attn_d3:true,  hw_d1:true, hw_d2:true, read_rate:95, rank:5},
+  warm75: {first:"Lakshmi", last:"Rao",       grade:7,  parent_first:"Suresh",  parent_last:"Rao",       attn_d1:true, attn_d2:true, attn_d3:false, hw_d1:true, hw_d2:true, read_rate:88, rank:18},
+  warm50: {first:"Saanvi",  last:"Desai",     grade:9,  parent_first:"Anjali",  parent_last:"Desai",     attn_d1:true, attn_d2:false,attn_d3:false, hw_d1:true, hw_d2:false,read_rate:64, rank:44},
+  d1ns:   {first:"Harini",  last:"Venkatesh", grade:6,  parent_first:"Ganesh",  parent_last:"Venkatesh", attn_d1:false,attn_d2:false,attn_d3:false, hw_d1:false,hw_d2:false,read_rate:42, rank:82},
 };
 
+// Audience-aware subjects
 const EMAILS = [
-  {id:"d1",    label:"Day 1 Report",   icon:"1️⃣", subject:"Your Day 1 Booster · Scorecard inside 📊",  day:1, openRate:48, clickRate:21},
-  {id:"d2",    label:"Day 2 Report",   icon:"2️⃣", subject:"Day 2 done · You're 2/3 of the way there 💪", day:2, openRate:42, clickRate:19},
-  {id:"final", label:"Final 3-Day",    icon:"🏆", subject:"Your complete Booster journey report is here", day:3, openRate:56, clickRate:34},
+  {id:"d1", label:"Day 1 Report", icon:"1️⃣", day:1, openRate:48, clickRate:21,
+    subject_parent: "Day 1 Booster · {{child}}'s scorecard inside 📊",
+    subject_student: "Your Day 1 Booster · Scorecard inside 📊"},
+  {id:"d2", label:"Day 2 Report", icon:"2️⃣", day:2, openRate:42, clickRate:19,
+    subject_parent: "Day 2 done · {{child}}'s progress 💪",
+    subject_student: "Day 2 done · You're 2/3 of the way there 💪"},
+  {id:"final", label:"Final 3-Day", icon:"🏆", day:3, openRate:56, clickRate:34,
+    subject_parent: "{{child}}'s complete Booster journey report",
+    subject_student: "Your complete Booster journey report is here"},
 ];
+
+function emailSubject(em, p) {
+  const aud = getAudience(p.grade);
+  const tmpl = aud === "parent" ? em.subject_parent : em.subject_student;
+  return tmpl.replace("{{child}}", p.first);
+}
 
 /* ═══════════════════════════════════════════════════════
    STATE
@@ -243,10 +259,10 @@ function rToolbar() {
         </div>`).join("")}
     </div>
     <select class="persona-sel" id="persona-sel">
-      <option value="hot"    ${S.persona==="hot"?"selected":""}>As: Arjun — HOT (3/3 attn)</option>
-      <option value="warm75" ${S.persona==="warm75"?"selected":""}>As: Lakshmi — WARM-75 (2/3 attn)</option>
-      <option value="warm50" ${S.persona==="warm50"?"selected":""}>As: Saanvi — WARM-50 (1/3 attn)</option>
-      <option value="d1ns"   ${S.persona==="d1ns"?"selected":""}>As: Harini — D1 NO-SHOW</option>
+      <option value="hot"    ${S.persona==="hot"?"selected":""}>Arjun · G10 · STUDENT · HOT (3/3)</option>
+      <option value="warm75" ${S.persona==="warm75"?"selected":""}>Lakshmi · G7 · PARENT · WARM-75 (2/3)</option>
+      <option value="warm50" ${S.persona==="warm50"?"selected":""}>Saanvi · G9 · STUDENT · WARM-50 (1/3)</option>
+      <option value="d1ns"   ${S.persona==="d1ns"?"selected":""}>Harini · G6 · PARENT · D1 NO-SHOW</option>
     </select>
   </div>`;
 }
@@ -266,14 +282,14 @@ function rEmailPreview() {
     </div>
     <div class="gmail-env">
       <div class="gm-hdr">
-        <div class="gm-subject">${em.subject}</div>
+        <div class="gm-subject">${emailSubject(em, p)}</div>
         <div class="gm-from">
           <div class="gm-av">V</div>
           <div class="gm-from-det">
             <strong>Vedantu Booster &lt;booster@vedantu.com&gt;</strong>
-            <div>to ${p.first.toLowerCase()}@mail.com</div>
+            <div>to ${getAudience(p.grade) === "parent" ? `${p.parent_first.toLowerCase()}.${p.parent_last.toLowerCase()}@mail.com` : `${p.first.toLowerCase()}@mail.com`}</div>
           </div>
-          <div class="gm-date">${em.day === 3 ? "Apr 27, 08:00 AM" : `Apr ${23+em.day}, 9:00 PM`}</div>
+          <div class="gm-date">${em.day === 3 ? "Apr 30, 08:00 AM" : `Apr ${27+em.day}, 9:00 PM`}</div>
         </div>
       </div>
       ${S.email === "final" ? rFinalEmail(p) : rDailyEmail(p, em.day)}
@@ -282,6 +298,8 @@ function rEmailPreview() {
 }
 
 function rDailyEmail(p, day) {
+  const aud = getAudience(p.grade);
+  const isParent = aud === "parent";
   const attn = day === 1 ? (p.attn_d1?100:0) : Math.round(((p.attn_d1?1:0)+(p.attn_d2?1:0))/2*100);
   const hw   = day === 1 ? (p.hw_d1?100:0)   : Math.round(((p.hw_d1?1:0)+(p.hw_d2?1:0))/2*100);
   const topic = day === 1 ? "Rotational Mechanics" : "Gravitation";
@@ -293,37 +311,38 @@ function rDailyEmail(p, day) {
   const takeaways = day === 1 ? [
     "Moment of inertia & rotational kinetic energy — from first principles",
     "Angular momentum conservation with 3 real-world examples",
-    "5 JEE-level problems solved · patterns you'll see on the exam",
+    "5 problems solved · patterns you'll see on the exam",
   ] : [
     "Kepler's 3 laws — intuition before formulas",
     "Escape velocity derivation (it's simpler than you think)",
     "Why GPS satellites don't fall · orbital mechanics demystified",
   ];
 
-  const headline = isHigh
-    ? `You're crushing it, ${p.first} 🏆`
-    : isLow && day === 1
-      ? `We missed you today, ${p.first} 💙`
-      : `Nice work on Day ${day}, ${p.first} ✨`;
+  const headline = isParent
+    ? (isHigh ? `${p.first} is doing great 🏆` : isLow && day === 1 ? `${p.first} missed today's class 💙` : `${p.first}'s Day ${day} progress ✨`)
+    : (isHigh ? `You're crushing it, ${p.first} 🏆` : isLow && day === 1 ? `We missed you today, ${p.first} 💙` : `Nice work on Day ${day}, ${p.first} ✨`);
 
-  const subline = isHigh
-    ? `Top ${Math.ceil(p.rank)}% of your cohort · Day ${day} of 3`
-    : isLow
-      ? `Your seat is saved for tomorrow`
-      : `Here's your scorecard + tomorrow's prep`;
+  const subline = isParent
+    ? (isHigh ? `Top ${p.rank}% of the cohort · Day ${day} of 3` : isLow ? `Their seat is saved for tomorrow` : `${p.first}'s scorecard + tomorrow's prep`)
+    : (isHigh ? `Top ${p.rank}% of your cohort · Day ${day} of 3` : isLow ? `Your seat is saved for tomorrow` : `Here's your scorecard + tomorrow's prep`);
 
   return `<div class="v-email">
     <div class="v-banner">
-      <div class="v-logo">VEDANTU · BOOSTER</div>
+      <div class="v-logo">VEDANTU · BOOSTER ${isParent ? "· PARENT" : ""}</div>
       <div class="v-title">${headline}</div>
       <div class="v-subtitle">${subline}</div>
     </div>
 
-    <div class="v-greet">Hi <strong>${p.first}</strong>,</div>
+    <div class="v-greet">${isParent ? `Mr./Mrs. <strong>${p.parent_last}</strong>,` : `Hi <strong>${p.first}</strong>,`}</div>
     <div class="v-body">
-      <p>${isLow && day === 1
-          ? `We noticed you couldn't make it to Day 1's class on <strong>${topic}</strong>. Life happens — we completely get it. The good news: Day 2 tomorrow covers a fresh topic, and you can jump right back in without any catch-up.`
-          : `Day ${day} of your Booster trial is done. Here's everything that happened — your performance, what you learned, and what's next.`}</p>
+      <p>${isParent
+          ? (isLow && day === 1
+              ? `We noticed ${p.first} couldn't make it to Day 1's class on <strong>${topic}</strong>. No worries — Day 2 tomorrow covers a fresh topic, and they can jump right back in.`
+              : `Day ${day} of ${p.first}'s Booster trial is done. Here's a snapshot of how it went — performance, what they covered, and what's next.`)
+          : (isLow && day === 1
+              ? `We noticed you couldn't make it to Day 1's class on <strong>${topic}</strong>. Life happens — we completely get it. The good news: Day 2 tomorrow covers a fresh topic, and you can jump right back in without any catch-up.`
+              : `Day ${day} of your Booster trial is done. Here's everything that happened — your performance, what you learned, and what's next.`)
+      }</p>
     </div>
 
     <div class="v-scorecard">
@@ -370,7 +389,7 @@ function rDailyEmail(p, day) {
 
     ${!isLow || day > 1 ? `
       <div class="v-takeaways">
-        <div class="v-ta-title">✨ What you learned today</div>
+        <div class="v-ta-title">${isParent ? `✨ What ${p.first} learned today` : "✨ What you learned today"}</div>
         ${takeaways.map(t => `
           <div class="v-ta">
             <div class="v-ta-tick">✓</div>
@@ -380,18 +399,18 @@ function rDailyEmail(p, day) {
     ` : ""}
 
     <div class="v-cta">
-      <div class="v-cta-title">${isLow && day === 1 ? `Don't let Day 1 decide your story` : `Tomorrow's class — Day ${day+1}`}</div>
+      <div class="v-cta-title">${isLow && day === 1 ? (isParent ? `Day 2 — a fresh chance for ${p.first}` : `Don't let Day 1 decide your story`) : (isParent ? `Tomorrow's class — Day ${day+1}` : `Tomorrow's class — Day ${day+1}`)}</div>
       <div class="v-cta-sub">${isLow && day === 1
         ? `Day 2 starts at 6:30 PM with <strong>Gravitation</strong>. Fresh topic, clean slate.`
         : day === 2
-          ? `<strong>Oscillations</strong> at 6:30 PM tomorrow — the transformation class. This is where the 3 days connect.`
-          : `<strong>Gravitation</strong> at 6:30 PM. We'll build on what you learned today.`}</div>
-      <a href="#" class="v-cta-btn">${isLow && day === 1 ? "Join me tomorrow →" : "Set reminder →"}</a>
+          ? `<strong>Oscillations</strong> at 6:30 PM tomorrow — the transformation class.`
+          : `<strong>Gravitation</strong> at 6:30 PM tomorrow.`}</div>
+      <a href="#" class="v-cta-btn">${isLow && day === 1 ? (isParent ? `Help ${p.first} rejoin →` : `Join me tomorrow →`) : `Set reminder →`}</a>
     </div>
 
     ${isHigh ? `
       <div class="v-tip">
-        <strong>💡 Teacher note:</strong> You answered every quiz correctly today. Tomorrow I'm going to ask you something harder — be ready. — Neha Ma'am
+        <strong>💡 Teacher note:</strong> ${isParent ? `${p.first} answered every quiz correctly today. Tomorrow's class will push them a bit further — they're ready for it.` : `You answered every quiz correctly today. Tomorrow I'm going to ask you something harder — be ready.`} — Neha Ma'am
       </div>
     ` : ""}
 
@@ -405,6 +424,8 @@ function rDailyEmail(p, day) {
 }
 
 function rFinalEmail(p) {
+  const aud = getAudience(p.grade);
+  const isParent = aud === "parent";
   const attnN = (p.attn_d1?1:0)+(p.attn_d2?1:0)+(p.attn_d3?1:0);
   const hwN = (p.hw_d1?1:0)+(p.hw_d2?1:0);
   const score = Math.round((0.6*attnN/3 + 0.3*hwN/2 + 0.1*p.read_rate/100) * 100);
@@ -415,14 +436,17 @@ function rFinalEmail(p) {
 
   return `<div class="v-email">
     <div class="v-banner">
-      <div class="v-logo">VEDANTU · BOOSTER · FINAL REPORT</div>
-      <div class="v-title">Your 3-day journey, ${p.first} ✨</div>
-      <div class="v-subtitle">Everything you did · and what happens next</div>
+      <div class="v-logo">VEDANTU · BOOSTER · FINAL REPORT${isParent ? " · PARENT" : ""}</div>
+      <div class="v-title">${isParent ? `${p.first}'s 3-day journey 📊` : `Your 3-day journey, ${p.first} ✨`}</div>
+      <div class="v-subtitle">${isParent ? `Complete progress report · what they covered · next steps` : `Everything you did · and what happens next`}</div>
     </div>
 
-    <div class="v-greet">Hi <strong>${p.first}</strong>,</div>
+    <div class="v-greet">${isParent ? `Mr./Mrs. <strong>${p.parent_last}</strong>,` : `Hi <strong>${p.first}</strong>,`}</div>
     <div class="v-body">
-      <p>Three days ago you took a chance on yourself. Here's the full story — every class, every homework, every concept.</p>
+      <p>${isParent
+        ? `Here's the complete picture of ${p.first}'s 3-day Booster trial — every class, every homework, every concept they engaged with.`
+        : `Three days ago you took a chance on yourself. Here's the full story — every class, every homework, every concept.`
+      }</p>
     </div>
 
     <div class="v-overall">
@@ -484,32 +508,42 @@ function rFinalEmail(p) {
     </div>
 
     <div class="v-takeaways">
-      <div class="v-ta-title">🎓 What you now know</div>
+      <div class="v-ta-title">🎓 ${isParent ? `What ${p.first} now knows` : `What you now know`}</div>
       <div class="v-ta"><div class="v-ta-tick">✓</div>Rotational Mechanics — foundation locked</div>
       <div class="v-ta"><div class="v-ta-tick">✓</div>Gravitation — orbital mechanics, Kepler's laws</div>
       <div class="v-ta"><div class="v-ta-tick">✓</div>Oscillations — SHM, damping, connection to waves</div>
-      <div class="v-ta"><div class="v-ta-tick">✓</div>Full Physics foundation for JEE Main Unit 4</div>
+      <div class="v-ta"><div class="v-ta-tick">✓</div>Full Physics foundation for the year ahead</div>
     </div>
 
     <div class="v-cta">
-      <div class="v-cta-title">${score >= 55 ? "Want to keep going?" : "Take a breath. Whenever you're ready."}</div>
+      <div class="v-cta-title">${isParent
+        ? (score >= 55 ? `Continue ${p.first}'s learning journey?` : `Whenever you're ready for them to continue.`)
+        : (score >= 55 ? `Want to keep going?` : `Take a breath. Whenever you're ready.`)
+      }</div>
       <div class="v-cta-sub">
-        ${score >= 85
-          ? `You're clearly ready for the full course. Your counsellor will reach out today with a track built for where you are.`
-          : score >= 55
-            ? `You picked up the momentum fast. A 30-min call with your counsellor will map out your next 6 months.`
-            : `No pressure. Your progress is saved for 30 days — come back whenever.`}
+        ${isParent
+          ? (score >= 85
+              ? `${p.first} is clearly ready for the full course. Your dedicated academic counsellor will call today to walk through a personalized plan, scholarship eligibility, and fee options.`
+              : score >= 55
+                ? `${p.first} built strong momentum. A 30-min call with our counsellor will map out their next 6 months.`
+                : `No pressure. ${p.first}'s progress is saved for 30 days — they can rejoin whenever you're ready.`)
+          : (score >= 85
+              ? `You're clearly ready for the full course. Your counsellor will reach out today with a track built for where you are.`
+              : score >= 55
+                ? `You picked up the momentum fast. A 30-min call with your counsellor will map out your next 6 months.`
+                : `No pressure. Your progress is saved for 30 days — come back whenever.`)
+        }
       </div>
-      <a href="#" class="v-cta-btn">${score >= 55 ? "See full course →" : "Come back later →"}</a>
+      <a href="#" class="v-cta-btn">${score >= 55 ? (isParent ? "See full course details →" : "See full course →") : "Come back later →"}</a>
     </div>
 
     <div class="v-tip">
-      <strong>📎 Download:</strong> Your detailed performance report (PDF) · teacher notes · recommended next topics — all attached to this email.
+      <strong>📎 Download:</strong> ${isParent ? `Detailed performance report (PDF) · teacher notes on ${p.first}'s learning style · recommended next topics — all attached.` : `Your detailed performance report (PDF) · teacher notes · recommended next topics — all attached to this email.`}
     </div>
 
     <div class="v-foot">
       <div class="v-foot-lg">VEDANTU</div>
-      Thank you for spending 3 days with us, ${p.first}. However this goes — we're rooting for you.<br>
+      ${isParent ? `Thank you for letting us spend 3 days with ${p.first}. However this goes — we're rooting for them.` : `Thank you for spending 3 days with us, ${p.first}. However this goes — we're rooting for you.`}<br>
       <a href="#">View on web</a> · <a href="#">Download PDF</a> · <a href="#">Preferences</a><br>
       <span style="font-size:10.5px">Vedantu Innovations · Bangalore, India</span>
     </div>
@@ -543,14 +577,22 @@ function rSidebar() {
     </div>
 
     <div class="side-card">
-      <div class="sc-title">🔤 Rendered variables</div>
+      <div class="sc-title">🔤 Rendered variables · ${getAudience(p.grade) === "parent" ? "PARENT track" : "STUDENT track"}</div>
+      <div class="var-row"><code>{{grade}}</code><span class="vv">${p.grade} (${getAudience(p.grade)})</span></div>
       <div class="var-row"><code>{{first_name}}</code><span class="vv">${p.first}</span></div>
+      ${getAudience(p.grade) === "parent" ? `
+        <div class="var-row"><code>{{child_first_name}}</code><span class="vv">${p.first}</span></div>
+        <div class="var-row"><code>{{parent_salutation}}</code><span class="vv">Mr./Mrs.</span></div>
+        <div class="var-row"><code>{{parent_last_name}}</code><span class="vv">${p.parent_last}</span></div>
+        <div class="var-row"><code>{{parent_email}}</code><span class="vv">${p.parent_first.toLowerCase()}.${p.parent_last.toLowerCase()}@mail.com</span></div>
+      ` : `
+        <div class="var-row"><code>{{email}}</code><span class="vv">${p.first.toLowerCase()}@mail.com</span></div>
+      `}
       <div class="var-row"><code>{{attn_score}}</code><span class="vv">${attn}%</span></div>
       <div class="var-row"><code>{{hw_score}}</code><span class="vv">${hw}%</span></div>
       <div class="var-row"><code>{{read_rate}}</code><span class="vv">${p.read_rate}%</span></div>
       <div class="var-row"><code>{{rank_in_batch}}</code><span class="vv">Top ${p.rank}%</span></div>
-      <div class="var-row"><code>{{email}}</code><span class="vv">${p.first.toLowerCase()}@mail.com</span></div>
-      <button class="send-btn" id="send-test">📤 Send test to me</button>
+      <button class="send-btn" id="send-test">📤 Send test to ${getAudience(p.grade) === "parent" ? "parent" : "student"}</button>
     </div>
 
     <div class="side-card">

@@ -23,18 +23,16 @@ a{text-decoration:none;color:inherit}
 @keyframes slideIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-/* TOPBAR */
 .topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;height:52px;padding:0 28px;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0}
 .logo{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.35em;color:var(--purple)}
 .divider{width:1px;height:20px;background:var(--border)}
 .crumb{font-size:11.5px;font-weight:500}
 .crumb span{color:var(--muted)}
-.nav-links{display:flex;gap:4px;margin-left:auto}
+.nav-links{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
 .nav-btn{font-size:11px;padding:6px 12px;border-radius:7px;border:1px solid var(--border);color:var(--muted);transition:all .15s;white-space:nowrap}
 .nav-btn:hover{border-color:var(--purple);color:var(--purple)}
 .nav-btn.on{border-color:var(--purple);color:var(--purple);background:rgba(139,124,248,.07)}
 
-/* FILTER BAR */
 .filter-bar{background:var(--panel);border-bottom:1px solid var(--border);padding:11px 28px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;flex-shrink:0}
 .fb-label{font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .chip-group{display:flex;gap:5px;flex-wrap:wrap}
@@ -43,30 +41,31 @@ a{text-decoration:none;color:inherit}
 .chip.on{border-color:var(--purple);color:var(--purple);background:rgba(139,124,248,.08)}
 .budget-pill{margin-left:auto;font-size:10.5px;padding:5px 12px;border-radius:20px;background:rgba(30,205,181,.07);border:1px solid rgba(30,205,181,.28);color:var(--teal);font-weight:500}
 
-/* LAYOUT */
-.layout{display:grid;grid-template-columns:460px 1fr;height:calc(100vh - 52px - 50px);overflow:hidden}
+.layout{display:grid;grid-template-columns:480px 1fr;height:calc(100vh - 52px - 50px);overflow:hidden}
 .panel{border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
 .panel:last-child{border-right:none}
 .panel-head{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .panel-title{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .panel-scroll{flex:1;overflow-y:auto;padding:8px}
 
-/* TEMPLATE LIST */
-.tpl-item{padding:12px 14px;border-radius:10px;cursor:pointer;border:1px solid transparent;transition:all .15s;margin-bottom:5px;animation:up .3s ease both}
+.tpl-item{padding:11px 13px;border-radius:10px;cursor:pointer;border:1px solid transparent;transition:all .15s;margin-bottom:5px;animation:up .3s ease both}
 .tpl-item:hover{background:var(--panel);border-color:var(--border)}
 .tpl-item.active{background:rgba(139,124,248,.07);border-color:rgba(139,124,248,.28)}
-.tpl-h1{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.tpl-id{font-family:'DM Mono',monospace;font-size:9.5px;color:var(--muted);letter-spacing:.05em}
-.tpl-title{font-size:12px;font-weight:500;margin-bottom:6px;line-height:1.35}
-.tpl-h2{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
-.pill{font-size:9.5px;font-weight:600;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.tpl-h1{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.tpl-id{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.04em}
+.tpl-aud{margin-left:auto;font-size:8.5px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:4px}
+.tpl-aud.parent{background:rgba(255,122,46,.1);color:var(--orange);border:1px solid rgba(255,122,46,.25)}
+.tpl-aud.student{background:rgba(94,168,255,.1);color:var(--blue);border:1px solid rgba(94,168,255,.25)}
+.tpl-aud.shared{background:rgba(46,204,154,.1);color:var(--green);border:1px solid rgba(46,204,154,.25)}
+.tpl-title{font-size:11.5px;font-weight:500;margin-bottom:5px;line-height:1.35}
+.tpl-h2{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.pill{font-size:9px;font-weight:600;padding:2px 6px;border-radius:20px;white-space:nowrap}
 .pill.day{background:rgba(139,124,248,.12);color:var(--purple);border:1px solid rgba(139,124,248,.25)}
-.pill.tone{background:rgba(94,168,255,.10);color:var(--blue);border:1px solid rgba(94,168,255,.22)}
-.read-bar{height:3px;background:var(--faint);border-radius:3px;overflow:hidden;margin-top:8px;position:relative}
+.pill.tone{background:rgba(46,204,154,.10);color:var(--green);border:1px solid rgba(46,204,154,.22)}
+.read-bar{height:3px;background:var(--faint);border-radius:3px;overflow:hidden;margin-top:7px;position:relative}
 .read-bar-fill{height:100%;border-radius:3px;transition:width .8s}
-.read-label{font-size:9px;color:var(--muted);margin-top:4px;font-family:'DM Mono',monospace}
+.read-label{font-size:8.5px;color:var(--muted);margin-top:3px;font-family:'DM Mono',monospace}
 
-/* DETAIL PANEL */
 .detail-wrap{flex:1;overflow-y:auto;padding:20px 24px 40px}
 .detail-head{display:flex;align-items:flex-start;gap:14px;padding-bottom:16px;border-bottom:1px solid var(--border);margin-bottom:18px}
 .d-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
@@ -81,26 +80,22 @@ a{text-decoration:none;color:inherit}
 .section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:14px}
 .section-title{font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
 
-/* BODY PREVIEW */
 .body-preview{font-size:12px;line-height:1.65;color:var(--text);white-space:pre-wrap;font-family:'DM Sans',sans-serif}
 .body-preview strong{color:var(--text);font-weight:600}
 .var{display:inline-block;background:rgba(245,188,30,.13);color:var(--amber);padding:1px 6px;border-radius:4px;font-family:'DM Mono',monospace;font-size:11px;font-weight:500}
 
-/* RULE */
 .rule-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px dashed var(--faint);font-size:11.5px;line-height:1.5}
 .rule-row:last-child{border-bottom:none}
 .rule-icon{flex-shrink:0;width:18px;color:var(--green)}
 .rule-row strong{color:var(--text)}
 
-/* VAR LIST */
-.var-item{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:11px;border-bottom:1px dashed var(--faint)}
+.var-item{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:11px;border-bottom:1px dashed var(--faint);gap:8px}
 .var-item:last-child{border-bottom:none}
-.var-item code{font-family:'DM Mono',monospace;color:var(--amber);font-size:11px}
-.var-item span{color:var(--muted);font-size:10.5px}
+.var-item code{font-family:'DM Mono',monospace;color:var(--amber);font-size:11px;flex-shrink:0}
+.var-item span{color:var(--muted);font-size:10.5px;text-align:right}
 
-/* WA PREVIEW */
 .phone{width:260px;border-radius:28px;overflow:hidden;border:7px solid #181830;box-shadow:0 14px 42px rgba(0,0,0,.8);background:#0d1418;margin:0 auto}
-.phone-inner{display:flex;flex-direction:column;height:460px}
+.phone-inner{display:flex;flex-direction:column;height:480px}
 .wa-hdr{background:#202c33;padding:10px 12px;display:flex;align-items:center;gap:9px;flex-shrink:0}
 .wa-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;background:linear-gradient(135deg,#FF7A2E,#F5BC1E);flex-shrink:0}
 .wa-name{font-size:12px;font-weight:600;color:#e9edef}
@@ -110,22 +105,27 @@ a{text-decoration:none;color:inherit}
 .wa-date span{background:#182229;color:#8696a0;font-size:9.5px;padding:3px 9px;border-radius:7px}
 .bw{display:flex;margin-bottom:3px}
 .bw.in{justify-content:flex-start}
-.bubble{max-width:85%;padding:7px 10px 17px;border-radius:8px 8px 8px 2px;font-size:11.5px;line-height:1.55;color:#e9edef;background:#202c33;position:relative;word-break:break-word;animation:slideIn .3s ease both;white-space:pre-wrap}
+.bubble{max-width:88%;padding:7px 10px 17px;border-radius:8px 8px 8px 2px;font-size:11.5px;line-height:1.55;color:#e9edef;background:#202c33;position:relative;word-break:break-word;animation:slideIn .3s ease both;white-space:pre-wrap}
 .bubble strong{color:#fff}
 .btime{position:absolute;bottom:3px;right:8px;font-size:8.5px;color:#8696a0}
 .wa-header-img{border-radius:4px;margin-bottom:5px;background:linear-gradient(135deg,#FF7A2E,#F5BC1E);height:80px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:600;text-align:center;padding:8px}
 .wa-btn-row{background:#202c33;padding:6px 8px;margin-top:1px;border-radius:2px 2px 8px 8px;display:flex;flex-direction:column;gap:1px}
 .wa-btn{background:rgba(255,255,255,.06);color:#53bdeb;padding:7px;text-align:center;font-size:11px;font-weight:500;border-radius:4px}
 
-/* REGIONAL VARIANTS */
 .regional-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .reg-chip{font-size:9.5px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .15s}
 .reg-chip.on{border-color:var(--orange);color:var(--orange);background:rgba(255,122,46,.08)}
 .reg-chip:hover:not(.on){color:var(--text);border-color:var(--muted)}
 
+.pair-banner{background:linear-gradient(135deg,rgba(255,122,46,.06),rgba(94,168,255,.06));border:1px solid rgba(139,124,248,.25);border-radius:10px;padding:12px 14px;margin-bottom:14px;display:flex;gap:14px;align-items:center;font-size:11.5px}
+.pair-banner strong{color:var(--text)}
+.pair-banner .pair-tag{font-size:9.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:5px;border:1px solid rgba(139,124,248,.3);color:var(--purple);background:rgba(139,124,248,.08)}
+.jump-btn{margin-left:auto;font-size:10.5px;padding:5px 11px;border-radius:7px;border:1px solid var(--border);color:var(--purple)}
+.jump-btn:hover{border-color:var(--purple);background:rgba(139,124,248,.06)}
+
 /* AUTO-SELECTOR */
 .autosel{background:linear-gradient(135deg,rgba(139,124,248,.06),rgba(30,205,181,.04));border:1px solid rgba(139,124,248,.22);border-radius:14px;padding:18px;margin-top:10px}
-.autosel-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:14px;margin-bottom:14px}
+.autosel-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-top:14px;margin-bottom:14px}
 .as-col{background:var(--faint);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
 .as-label{font-size:9px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
 .as-seg{display:flex;gap:3px;background:var(--bg);padding:3px;border-radius:7px}
@@ -147,373 +147,505 @@ a{text-decoration:none;color:inherit}
 <div id="root"></div>
 <script>
 /* ═══════════════════════════════════════════════════════
-   TEMPLATE LIBRARY — 16 core + 5 regional posters
+   25-TEMPLATE LIBRARY · audience-split (parent vs student)
+   • 10 paired templates × 2 audiences = 20
+   • 5 shared templates (audience-neutral) = 5
+   • Total = 25 (at WATI cap)
+   • T10_HYPE_VIDEO dropped per team's PDF
 ═══════════════════════════════════════════════════════ */
 
 const TEMPLATES = [
-  // ─── PRE-COHORT (D-3 / D-1) ───────────────────
+
+  // ═══ PRE-COHORT ═══════════════════════════════════════
   {
-    id:"T10_HYPE_VIDEO", name:"Pre-cohort hype · class snippet", icon:"🎬",
-    day:"D-3/D-1", dayKey:"pre", tone:"Excitement", group:"Pre-cohort", read:71,
-    color:"#E06EAA",
-    variables:[
-      {k:"first_name",         d:"Student first name"},
-      {k:"snippet_video_url",  d:"30-sec teacher clip"},
-      {k:"teacher_name",       d:"Teacher name"},
-    ],
-    rule:"Fires D-3 and D-1 before batch start · all enrolled users",
-    body:`{{first_name}}, 30-second taste of what's coming 🎬
-
-*{{snippet_video_url}}*
-
-That's {{teacher_name}} breaking down a concept that took me 3 classes in school. You'll see it on Day 1. 🤯
-
-Set a reminder for your batch!`
-  },
-  {
-    id:"T11_CURIOSITY_HOOK", name:"Pre-cohort curiosity hook", icon:"🔍",
-    day:"D-3/D-1", dayKey:"pre", tone:"Teasing", group:"Pre-cohort", read:68,
-    color:"#E06EAA",
-    variables:[
-      {k:"first_name",     d:"Student first name"},
-      {k:"hook_question",  d:"Intriguing question tied to D1 topic"},
-      {k:"d1_topic",       d:"Day 1 topic name"},
-    ],
-    rule:"Fires D-2 (between hype video and T-24h reminder)",
-    body:`Quick riddle, {{first_name}}:
+    id:"T11_CURIOSITY_HOOK_PARENT", logical_id:"T11_CURIOSITY_HOOK", audience:"parent",
+    name:"Curiosity hook · Parent voice", icon:"🔍", day:"D-2", dayKey:"pre",
+    tone:"Warm · invites parent to engage child", group:"Pre-cohort", read:67, color:"#FF7A2E",
+    rule:"Fires D-2 · students with grade 5–7",
+    body:`Quick question for {{child_first_name}} 👇
 
 *{{hook_question}}*
 
-Reply with your guess? We'll reveal the answer in Day 1's class on {{d1_topic}}. 🔍
-
-(No Googling! 😉)`
-  },
-
-  // ─── DAY 0 ────────────────────────────────────
-  {
-    id:"T01_WELCOME", name:"Welcome + batch schedule (regional)", icon:"🎉",
-    day:"D0", dayKey:"d0", tone:"Warm, excited", group:"Onboarding", read:94,
-    color:"#8B7CF8",
-    regional:true,
+Encourage them to think — we'll explain this in tomorrow's class 😊`,
     variables:[
-      {k:"first_name",     d:"Student first name"},
-      {k:"batch_id",       d:"Cohort batch ID"},
-      {k:"day1_date",      d:"Day 1 date"},
-      {k:"day1_time",      d:"Day 1 time"},
-      {k:"day1_topic",     d:"Day 1 subject/topic"},
-      {k:"day2_date",      d:"Day 2 date"},
-      {k:"day2_time",      d:"Day 2 time"},
-      {k:"day2_topic",     d:"Day 2 topic"},
-      {k:"day3_date",      d:"Day 3 date"},
-      {k:"day3_time",      d:"Day 3 time"},
-      {k:"day3_topic",     d:"Day 3 topic"},
-      {k:"teacher_name",   d:"Teacher name"},
-      {k:"subject",        d:"Subject"},
-      {k:"phone",          d:"Registered phone (for login)"},
-      {k:"email",          d:"Registered email (for login)"},
-      {k:"header_image",   d:"Regional poster URL (auto by state)"},
+      {k:"child_first_name", d:"Student first name"},
+      {k:"hook_question", d:"Question tied to D1 topic"},
     ],
-    rule:"Fires on batch_enrollment event (T1) · header image auto-selected from student state: TG/TN/AP/MH/PB",
-    body:`Hey {{first_name}}! 🎉 Welcome to the Vedantu Booster Trial!
-
-Your 3-day adventure starts *{{day1_date}} at {{day1_time}}*.
-
-📅 *Your schedule:*
-Day 1 · {{day1_date}} · {{day1_time}} — {{day1_topic}}
-Day 2 · {{day2_date}} · {{day2_time}} — {{day2_topic}}
-Day 3 · {{day3_date}} · {{day3_time}} — {{day3_topic}}
-
-*How to join:*
-1. Download the Vedantu app
-2. Log in with: {{phone}} / {{email}}
-3. Class appears under 'My Courses'
-
-Your teacher: *{{teacher_name}}* ({{subject}})
-See you there! 🚀`
-  },
-
-  // ─── REMINDERS (all 3 days) ───────────────────
-  {
-    id:"T02_REMINDER_T24H", name:"Class reminder · T-24h", icon:"⏰",
-    day:"D0-D2 eve", dayKey:"rem24", tone:"Anticipation", group:"Reminder", read:84,
-    color:"#5BA8FF",
-    variables:[
-      {k:"first_name",              d:"Student first name"},
-      {k:"day_label",               d:"'Day 1' / 'Day 2' / 'Day 3'"},
-      {k:"class_time",              d:"Tomorrow's class time"},
-      {k:"teacher_name",            d:"Teacher"},
-      {k:"topic",                   d:"Tomorrow's topic"},
-      {k:"n_days_topic_preview",    d:"1-line teaser"},
-    ],
-    rule:"Fires 24h before each class (D0 eve for D1, D1 eve for D2, D2 eve for D3)",
-    body:`{{first_name}}, tomorrow is {{day_label}}! ⏰
-
-{{class_time}} sharp · *{{teacher_name}}* takes you through:
-👉 {{topic}}
-
-Sneak peek: {{n_days_topic_preview}}
-
-Set a reminder. See you at {{class_time}}. 💪`
   },
   {
-    id:"T03_REMINDER_T3H", name:"Class reminder · T-3h + prep", icon:"📚",
-    day:"D1-D3 morn", dayKey:"rem3", tone:"Curious question-hook", group:"Reminder", read:89,
-    color:"#5BA8FF",
-    variables:[
-      {k:"first_name",     d:"Student first name"},
-      {k:"hook_question",  d:"Question tied to today's topic"},
-      {k:"topic",          d:"Today's topic"},
-      {k:"class_time",     d:"Today's class time"},
-    ],
-    rule:"Fires 3h before each Day 1/2/3 class · hook_question varies per day for tonality shift",
-    body:`{{first_name}}, quick question before class at {{class_time}}:
+    id:"T11_CURIOSITY_HOOK_STUDENT", logical_id:"T11_CURIOSITY_HOOK", audience:"student",
+    name:"Curiosity hook · Student voice", icon:"🔍", day:"D-2", dayKey:"pre",
+    tone:"Teasing · brain-teaser energy", group:"Pre-cohort", read:71, color:"#5BA8FF",
+    rule:"Fires D-2 · students with grade 8–10",
+    body:`Quick brain teaser 🧠
 
 *{{hook_question}}*
 
-Today we'll crack this together in {{topic}}. 3 hours to go — be ready with pen + notebook. ✏️`
-  },
-  {
-    id:"T04_JOIN_NOW", name:"Class starts in 30 min · Join CTA", icon:"⚡",
-    day:"D1-D3", dayKey:"join", tone:"Urgent · FOMO", group:"Reminder", read:91,
-    color:"#F06060",
+Think about it — we'll break it tomorrow 😏`,
     variables:[
-      {k:"first_name",     d:"Student first name"},
-      {k:"class_time",     d:"Class start time"},
-      {k:"join_link",      d:"Deep link to class"},
-      {k:"teacher_name",   d:"Teacher"},
+      {k:"hook_question", d:"Question tied to D1 topic"},
     ],
-    rule:"Fires T-30min for each Day 1/2/3 class · highest-priority send",
-    body:`{{first_name}}, class starts in *30 minutes* ⚡
-
-{{class_time}} · tap to join:
-👉 {{join_link}}
-
-Don't make {{teacher_name}} start without you! 👀`
   },
 
-  // ─── POST-CLASS & HOMEWORK ────────────────────
+  // ═══ DAY 0 — WELCOME (regional posters apply to both) ═══
   {
-    id:"T05_POST_SUMMARY", name:"Post-class summary + feedback", icon:"✨",
-    day:"D1-D3 post", dayKey:"post", tone:"Reflective", group:"Post-class", read:81,
-    color:"#1ECDB5",
-    variables:[
-      {k:"first_name",           d:"Student first name"},
-      {k:"day_label",            d:"'Day 1' / 'Day 2' / 'Day 3'"},
-      {k:"topic",                d:"Today's topic"},
-      {k:"key_takeaway_1",       d:"Takeaway bullet 1"},
-      {k:"key_takeaway_2",       d:"Takeaway bullet 2"},
-      {k:"key_takeaway_3",       d:"Takeaway bullet 3"},
-      {k:"feedback_link",        d:"1-click feedback URL"},
-    ],
-    rule:"Fires on class_ended event · only for students who attended (attendance=YES)",
-    body:`That's a wrap on *{{day_label}}* 🎯
+    id:"T01_WELCOME_PARENT", logical_id:"T01_WELCOME", audience:"parent", regional:true,
+    name:"Welcome + schedule · Parent voice", icon:"🎉", day:"D0", dayKey:"d0",
+    tone:"Trust + safety · long-term framing", group:"Onboarding", read:96, color:"#FF7A2E",
+    rule:"Fires on batch_enrollment · grade 5–7 · regional poster auto-selected by state",
+    body:`Hello Parent 👋
 
-Today in {{topic}} you learned:
+Welcome to Vedantu's *3-Day Booster Trial for {{child_first_name}}* 🎉
+
+📅 Starting: {{day1_date}} · {{day1_time}}
+
+Your child's schedule:
+Day 1 · {{day1_topic}}
+Day 2 · {{day2_topic}}
+Day 3 · {{day3_topic}}
+
+How to join:
+1. Download Vedantu App
+2. Login using: {{phone}} / {{email}}
+3. Class visible under *My Courses*
+
+👩‍🏫 Teacher: {{teacher_name}} ({{subject}})
+
+We're excited to support {{child_first_name}}'s learning journey 💙`,
+    variables:[
+      {k:"child_first_name", d:"Student first name"},
+      {k:"day1_date", d:"Day 1 date"},
+      {k:"day1_time", d:"Day 1 time"},
+      {k:"day1_topic", d:"Day 1 topic"},
+      {k:"day2_topic", d:"Day 2 topic"},
+      {k:"day3_topic", d:"Day 3 topic"},
+      {k:"teacher_name", d:"Teacher name"},
+      {k:"subject", d:"Subject"},
+      {k:"phone", d:"Registered phone (parent's)"},
+      {k:"email", d:"Registered email"},
+      {k:"header_image", d:"Regional poster URL (auto by state)"},
+    ],
+  },
+  {
+    id:"T01_WELCOME_STUDENT", logical_id:"T01_WELCOME", audience:"student", regional:true,
+    name:"Welcome + schedule · Student voice", icon:"🎉", day:"D0", dayKey:"d0",
+    tone:"Energy + ambition · 'Let's level up'", group:"Onboarding", read:91, color:"#5BA8FF",
+    rule:"Fires on batch_enrollment · grade 8–10 · regional poster auto-selected by state",
+    body:`Hey {{first_name}}! 🚀
+
+Welcome to your *3-Day {{subject}} Booster Trial*
+
+Starting {{day1_date}} · {{day1_time}}
+
+🔥 Your lineup:
+Day 1: {{day1_topic}}
+Day 2: {{day2_topic}}
+Day 3: {{day3_topic}}
+
+Login → Join → Learn
+
+Teacher: {{teacher_name}}
+
+Let's level up 💪`,
+    variables:[
+      {k:"first_name", d:"Student first name"},
+      {k:"subject", d:"Subject"},
+      {k:"day1_date", d:"Day 1 date"},
+      {k:"day1_time", d:"Day 1 time"},
+      {k:"day1_topic", d:"Day 1 topic"},
+      {k:"day2_topic", d:"Day 2 topic"},
+      {k:"day3_topic", d:"Day 3 topic"},
+      {k:"teacher_name", d:"Teacher"},
+      {k:"header_image", d:"Regional poster URL"},
+    ],
+  },
+
+  // ═══ REMINDERS (SHARED — same body for both audiences) ═══
+  {
+    id:"T02_REMINDER_T24H", logical_id:"T02_REMINDER_T24H", audience:"shared",
+    name:"T-24h class reminder", icon:"⏰", day:"D0–D2 eve", dayKey:"rem24",
+    tone:"Anticipation · neutral", group:"Reminder", read:84, color:"#2ECC9A",
+    rule:"Fires 24h before each class (D0/D1/D2 eve) · all grades · audience-neutral copy",
+    body:`Reminder: {{first_name}}'s class tomorrow ⏰
+
+📘 Topic: {{topic}}
+🕡 Time: {{class_time}}
+
+See you in class — consistency builds strong concepts 📚`,
+    variables:[
+      {k:"first_name", d:"Student first name"},
+      {k:"topic", d:"Tomorrow's topic"},
+      {k:"class_time", d:"Tomorrow's class time"},
+    ],
+  },
+  {
+    id:"T03_REMINDER_T3H", logical_id:"T03_REMINDER_T3H", audience:"shared",
+    name:"T-3h reminder + prep", icon:"📚", day:"D1–D3 morn", dayKey:"rem3",
+    tone:"Curious · neutral", group:"Reminder", read:88, color:"#2ECC9A",
+    rule:"Fires 3h before each Day 1/2/3 class · all grades",
+    body:`Class in 3 hours ⏳
+
+{{first_name}}, today's question to think about:
+*{{hook_question}}*
+
+Topic: {{topic}}
+
+Be ready with notebook + pen. ✏️`,
+    variables:[
+      {k:"first_name", d:"Student first name"},
+      {k:"hook_question", d:"Question for today"},
+      {k:"topic", d:"Today's topic"},
+    ],
+  },
+  {
+    id:"T04_JOIN_NOW", logical_id:"T04_JOIN_NOW", audience:"shared",
+    name:"Class starts in 30 min · Join CTA", icon:"⚡", day:"D1–D3", dayKey:"join",
+    tone:"Urgent · neutral", group:"Reminder", read:92, color:"#2ECC9A",
+    rule:"Fires T-30min for each Day 1/2/3 class · all grades",
+    body:`Class starts in *30 minutes* ⚡
+
+👉 Join here: {{join_link}}
+
+Log in 5 minutes early for a smooth start.`,
+    variables:[
+      {k:"join_link", d:"Deep link to class"},
+    ],
+  },
+
+  // ═══ POST-CLASS — SUMMARY (PAIRED) ═══
+  {
+    id:"T05_POST_SUMMARY_PARENT", logical_id:"T05_POST_SUMMARY", audience:"parent",
+    name:"Post-class summary · Parent", icon:"✨", day:"D1–D3 post", dayKey:"post",
+    tone:"Reflective · 'today's class summary'", group:"Post-class", read:81, color:"#FF7A2E",
+    rule:"Fires class_ended · attended=YES · grade 5–7",
+    body:`Today's class summary 📊
+
+{{child_first_name}} learned:
 ✅ {{key_takeaway_1}}
 ✅ {{key_takeaway_2}}
 ✅ {{key_takeaway_3}}
 
-How was the class? → {{feedback_link}}
+Feedback: {{feedback_link}}
 
-Your detailed performance report is heading to your inbox. 📧`
+A performance report will be shared shortly 📧`,
+    variables:[
+      {k:"child_first_name", d:"Student first name"},
+      {k:"key_takeaway_1", d:"Takeaway 1"},
+      {k:"key_takeaway_2", d:"Takeaway 2"},
+      {k:"key_takeaway_3", d:"Takeaway 3"},
+      {k:"feedback_link", d:"Feedback URL"},
+    ],
   },
   {
-    id:"T06_HW_ASSIGNED", name:"Homework assigned", icon:"✏️",
-    day:"D1-D2", dayKey:"hw", tone:"Coach", group:"Homework", read:76,
-    color:"#2ECC9A",
+    id:"T05_POST_SUMMARY_STUDENT", logical_id:"T05_POST_SUMMARY", audience:"student",
+    name:"Post-class summary · Student", icon:"✨", day:"D1–D3 post", dayKey:"post",
+    tone:"Punchy · 'That was solid 💯'", group:"Post-class", read:84, color:"#5BA8FF",
+    rule:"Fires class_ended · attended=YES · grade 8–10",
+    body:`That was solid 💯
+
+Today you learned:
+✅ {{key_takeaway_1}}
+✅ {{key_takeaway_2}}
+✅ {{key_takeaway_3}}
+
+How was it?
+👉 {{feedback_link}}`,
     variables:[
-      {k:"first_name",     d:"Student first name"},
-      {k:"day_label",      d:"'Day 1' / 'Day 2'"},
-      {k:"hw_topic",       d:"Homework topic"},
-      {k:"hw_deadline",    d:"Deadline timestamp"},
-      {k:"hw_link",        d:"Homework URL"},
-      {k:"hw_duration",    d:"Estimated time"},
+      {k:"key_takeaway_1", d:"Takeaway 1"},
+      {k:"key_takeaway_2", d:"Takeaway 2"},
+      {k:"key_takeaway_3", d:"Takeaway 3"},
+      {k:"feedback_link", d:"Feedback URL"},
     ],
-    rule:"Fires 30 min after class_ended (D1 or D2) · only for attendees",
-    body:`{{first_name}}, time to lock in what you learned 💪
-
-*{{day_label}} Homework: {{hw_topic}}*
-⏱ {{hw_duration}} · Deadline: {{hw_deadline}}
-
-Start here → {{hw_link}}
-
-Students who submit HW on time are *3.4× more likely* to crack full concepts. Be that student. 🧠`
-  },
-  {
-    id:"T07_HW_REMINDER", name:"HW reminder · unsubmitted nudge", icon:"🔔",
-    day:"D1-D2 eve", dayKey:"hwrem", tone:"Nudge", group:"Homework", read:69,
-    color:"#F5BC1E",
-    variables:[
-      {k:"first_name",   d:"Student first name"},
-      {k:"hw_topic",     d:"Pending HW topic"},
-      {k:"hours_left",   d:"Hours until deadline"},
-      {k:"hw_link",      d:"Homework URL"},
-    ],
-    rule:"Fires at T-6h before HW deadline · only if hw_submitted=NO",
-    body:`{{first_name}}, your {{hw_topic}} homework is still pending 👀
-
-{{hours_left}} hours left. Takes ~20 minutes.
-
-Tap to submit → {{hw_link}}
-
-Even 5 questions beats 0. Show up for yourself. 🔥`
   },
 
-  // ─── PERFORMANCE (branching) ──────────────────
+  // ═══ HOMEWORK (SHARED — short, factual) ═══
   {
-    id:"T08_PERF_HIGH", name:"Daily perf · High engagement", icon:"🏆",
-    day:"D1-D2 eve", dayKey:"perfH", tone:"Praise + push", group:"Performance", read:77,
-    color:"#2ECC9A",
-    variables:[
-      {k:"first_name",       d:"Student first name"},
-      {k:"attn_score",       d:"Attendance % so far"},
-      {k:"hw_score",         d:"HW % so far"},
-      {k:"day_num",          d:"'1' or '2'"},
-      {k:"rank_in_batch",    d:"Batch rank (top X%)"},
-    ],
-    rule:"Fires D1 eve / D2 eve · IF attended=YES AND hw_submitted=YES",
-    body:`{{first_name}}, you're *crushing it* 🏆
+    id:"T06_HW_ASSIGNED", logical_id:"T06_HW_ASSIGNED", audience:"shared",
+    name:"Homework assigned", icon:"✏️", day:"D1–D3", dayKey:"hw",
+    tone:"Coach · neutral", group:"Homework", read:78, color:"#2ECC9A",
+    rule:"Fires 30 min after class_ended (D1/D2/D3) · attendees only",
+    body:`Day {{day_num}} Homework assigned 📚
 
-📊 Day {{day_num}} scorecard:
-Attendance: {{attn_score}}% ✅
-Homework: {{hw_score}}% ✅
+⏱ {{hw_duration}}
+Deadline: {{hw_deadline}}
+
+👉 Start here: {{hw_link}}
+
+Students who complete homework regularly show *3× improvement* in concept clarity.`,
+    variables:[
+      {k:"day_num", d:"'1' / '2' / '3'"},
+      {k:"hw_duration", d:"Estimated time (e.g. '20–25 mins')"},
+      {k:"hw_deadline", d:"Deadline timestamp"},
+      {k:"hw_link", d:"Homework URL"},
+    ],
+  },
+  {
+    id:"T07_HW_REMINDER", logical_id:"T07_HW_REMINDER", audience:"shared",
+    name:"HW reminder · unsubmitted", icon:"🔔", day:"D1–D3 eve", dayKey:"hwrem",
+    tone:"Nudge · neutral", group:"Homework", read:69, color:"#2ECC9A",
+    rule:"Fires T-6h before HW deadline · IF hw_submitted=NO",
+    body:`Homework still pending 👀
+
+{{first_name}}, just 20 minutes can lock in today's learning.
+
+👉 Submit here: {{hw_link}}
+
+Even 5 questions beats 0.`,
+    variables:[
+      {k:"first_name", d:"Student first name"},
+      {k:"hw_link", d:"Homework URL"},
+    ],
+  },
+
+  // ═══ DAILY PERFORMANCE (PAIRED) ═══
+  {
+    id:"T08_PERF_HIGH_PARENT", logical_id:"T08_PERF_HIGH", audience:"parent",
+    name:"Daily perf · High · Parent", icon:"🏆", day:"D1–D2 eve", dayKey:"perfH",
+    tone:"Reassuring · 'long-term confidence'", group:"Performance", read:79, color:"#FF7A2E",
+    rule:"Fires D1/D2 eve · attended=YES AND hw_submitted=YES · grade 5–7",
+    body:`Great progress! 🎉
+
+📊 {{child_first_name}}'s performance:
+Attendance: {{attn_score}}%
+Homework: Completed
 Batch rank: Top {{rank_in_batch}}%
 
-This is what top-1% students do. *Don't stop now.*
-
-Tomorrow's class is the deepest one — you're primed for it. 🚀`
+Consistency like this builds long-term academic confidence 💪`,
+    variables:[
+      {k:"child_first_name", d:"Student first name"},
+      {k:"attn_score", d:"Attendance %"},
+      {k:"rank_in_batch", d:"Batch rank %"},
+    ],
   },
   {
-    id:"T09_PERF_LOW", name:"Daily perf · Low engagement", icon:"💭",
-    day:"D1-D2 eve", dayKey:"perfL", tone:"Don't-miss-out urgency", group:"Performance", read:62,
-    color:"#F5BC1E",
+    id:"T08_PERF_HIGH_STUDENT", logical_id:"T08_PERF_HIGH", audience:"student",
+    name:"Daily perf · High · Student", icon:"🏆", day:"D1–D2 eve", dayKey:"perfH",
+    tone:"Praise + ambition · 'this is how toppers stay ahead'", group:"Performance", read:83, color:"#5BA8FF",
+    rule:"Fires D1/D2 eve · attended=YES AND hw_submitted=YES · grade 8–10",
+    body:`You're doing great 🔥
+
+📊 Stats:
+Attendance: {{attn_score}}%
+HW: Done
+Rank: Top {{rank_in_batch}}%
+
+This is how toppers stay ahead
+
+Keep going 🚀`,
     variables:[
-      {k:"first_name",      d:"Student first name"},
-      {k:"missed",          d:"'missed class' / 'skipped homework' / 'missed both'"},
-      {k:"day_num",         d:"'1' or '2'"},
-      {k:"confirm_link",    d:"'I'll join tomorrow' confirm URL"},
+      {k:"attn_score", d:"Attendance %"},
+      {k:"rank_in_batch", d:"Batch rank %"},
     ],
-    rule:"Fires D1 eve / D2 eve · IF attended=NO OR hw_submitted=NO (not both YES)",
-    body:`{{first_name}}, I don't want you to miss out 💭
-
-Day {{day_num}} check: you {{missed}}.
-
-Look — 2 more days. *Just 2.* The Day 3 session is where everything clicks and ~70% of students end up wanting to continue after it.
-
-Don't let Day 1 decide your story. Show up tomorrow.
-
-Tap to confirm → {{confirm_link}}`
-  },
-
-  // ─── D1 NO-SHOW special ───────────────────────
-  {
-    id:"T16_D1_NOSHOW", name:"D1 no-show · empathy re-engage", icon:"💙",
-    day:"D1 eve", dayKey:"noshow", tone:"Empathy + pitch", group:"Recovery", read:58,
-    color:"#8B7CF8",
-    variables:[
-      {k:"first_name",        d:"Student first name"},
-      {k:"day2_time",         d:"Day 2 class time"},
-      {k:"day2_topic",        d:"Day 2 topic"},
-      {k:"snippet_summary",   d:"30-sec Day 1 catch-up video URL"},
-    ],
-    rule:"Fires D1 evening · IF d1_attended=NO (overrides T09 for this group)",
-    body:`{{first_name}}, we missed you today 💙
-
-Life happens. Completely get it.
-
-Here's the thing — Day 2 tomorrow at {{day2_time}} covers *{{day2_topic}}*, which doesn't need Day 1 context. You can jump right back in.
-
-30-second catch-up of Day 1: {{snippet_summary}}
-
-Rejoin tomorrow? We saved your seat. 🪑✨`
-  },
-
-  // ─── DAY 3 END & CONVERSION ───────────────────
-  {
-    id:"T12_D3_SUMMARY", name:"Day 3 overall summary", icon:"🎓",
-    day:"D3 end", dayKey:"d3sum", tone:"Transformation · emotional close", group:"Conversion", read:85,
-    color:"#FF7A2E",
-    variables:[
-      {k:"first_name",                 d:"Student first name"},
-      {k:"attn_total",                 d:"Classes attended (0-3)"},
-      {k:"hw_total",                   d:"HW submitted (0-2)"},
-      {k:"overall_score",              d:"Final score %"},
-      {k:"learning_outcome",           d:"1-line learning summary"},
-      {k:"performance_report_link",    d:"Full report URL"},
-    ],
-    rule:"Fires 1h after Day 3 class ends · sent to all enrolled (including no-shows)",
-    body:`{{first_name}}, three days ago you took a chance on yourself.
-
-📊 *Your 3-day journey:*
-Classes attended: {{attn_total}}/3
-Homework done: {{hw_total}}/2
-Overall score: {{overall_score}}%
-
-*You learned:* {{learning_outcome}}
-
-What now? Your full performance report → {{performance_report_link}}
-
-The real question is — do you want to keep going? 👇`
   },
   {
-    id:"T13_INTENT_CAPTURE", name:"Intent capture · YES/NO buttons", icon:"🎯",
-    day:"D3+1", dayKey:"intent", tone:"Direct", group:"Conversion", read:79,
-    color:"#FF7A2E",
-    buttons:["✅ YES, I'm interested", "⏭ Not right now"],
+    id:"T09_PERF_LOW_PARENT", logical_id:"T09_PERF_LOW", audience:"parent",
+    name:"Daily perf · Low · Parent", icon:"💭", day:"D1–D2 eve", dayKey:"perfL",
+    tone:"Gentle · 'let's help them stay consistent'", group:"Performance", read:62, color:"#FF7A2E",
+    rule:"Fires D1/D2 eve · attended=NO OR hw_submitted=NO · grade 5–7",
+    body:`We noticed {{child_first_name}} missed parts of the session today
+
+Even attending 1 class regularly can significantly improve understanding 📈
+
+Let's help them stay consistent tomorrow 💙`,
     variables:[
-      {k:"first_name",    d:"Student first name"},
+      {k:"child_first_name", d:"Student first name"},
     ],
-    rule:"Fires Day 3+1 at 18:00 IST · WATI button template",
-    body:`{{first_name}}, one last question 🎯
-
-Based on these 3 days, would you like to enroll in the full course?
-
-Quick details help us match you with the right counsellor:
-• Who's answering: *You / Parent*
-• Already taking tuition: *Yes / No*
-
-Tap below 👇`
   },
   {
-    id:"T14_COUNSELLOR_CONNECT", name:"Counsellor handoff (Intent=YES)", icon:"🤝",
-    day:"D3+1", dayKey:"connect", tone:"Close · warm", group:"Conversion", read:88,
-    color:"#2ECC9A",
-    variables:[
-      {k:"first_name",         d:"Student first name"},
-      {k:"counsellor_name",    d:"Assigned counsellor"},
-      {k:"counsellor_phone",   d:"Counsellor phone"},
-      {k:"call_window",        d:"'4pm–7pm today'"},
-    ],
-    rule:"Fires within 15 min of T13 button-reply=YES · assigns counsellor by region+tier",
-    body:`{{first_name}}, amazing 🎉
+    id:"T09_PERF_LOW_STUDENT", logical_id:"T09_PERF_LOW", audience:"student",
+    name:"Daily perf · Low · Student", icon:"💭", day:"D1–D2 eve", dayKey:"perfL",
+    tone:"Direct nudge · 'show up tomorrow'", group:"Performance", read:64, color:"#5BA8FF",
+    rule:"Fires D1/D2 eve · attended=NO OR hw_submitted=NO · grade 8–10",
+    body:`You missed a bit today
 
-Your dedicated counsellor: *{{counsellor_name}}*
+But here's the thing — it's not too late
+
+Show up tomorrow. That's all it takes 💪`,
+    variables:[],
+  },
+
+  // ═══ D1 NO-SHOW (PAIRED) ═══
+  {
+    id:"T16_D1_NOSHOW_PARENT", logical_id:"T16_D1_NOSHOW", audience:"parent",
+    name:"D1 no-show · Parent", icon:"💙", day:"D1 eve", dayKey:"noshow",
+    tone:"Empathy · 'no worries'", group:"Recovery", read:58, color:"#FF7A2E",
+    rule:"Fires D1 eve · IF d1_attended=NO · grade 5–7",
+    body:`We noticed {{child_first_name}} couldn't attend today
+
+No worries 😊
+
+Tomorrow's class is equally important — we'd love to see them join!`,
+    variables:[
+      {k:"child_first_name", d:"Student first name"},
+    ],
+  },
+  {
+    id:"T16_D1_NOSHOW_STUDENT", logical_id:"T16_D1_NOSHOW", audience:"student",
+    name:"D1 no-show · Student", icon:"💙", day:"D1 eve", dayKey:"noshow",
+    tone:"Casual · 'happens'", group:"Recovery", read:61, color:"#5BA8FF",
+    rule:"Fires D1 eve · IF d1_attended=NO · grade 8–10",
+    body:`Missed today? Happens.
+
+But Day 2 is where it gets interesting
+
+Be there tomorrow 🔥`,
+    variables:[],
+  },
+
+  // ═══ DAY 3 SUMMARY (PAIRED) ═══
+  {
+    id:"T12_D3_SUMMARY_PARENT", logical_id:"T12_D3_SUMMARY", audience:"parent",
+    name:"Day 3 summary · Parent", icon:"🎓", day:"D3 end", dayKey:"d3sum",
+    tone:"Formal close · addresses parent by name", group:"Conversion", read:85, color:"#FF7A2E",
+    rule:"Fires 1h after Day 3 class · all enrolled · grade 5–7",
+    body:`{{parent_salutation}} {{parent_last_name}}, here's {{child_first_name}}'s 3-day progress 📊
+
+✔ Classes attended: {{attn_total}}/3
+✔ Concepts covered
+✔ Performance insights
+
+View detailed report:
+👉 {{performance_report_link}}
+
+You've taken a great step toward strengthening their foundation 💙`,
+    variables:[
+      {k:"parent_salutation", d:"'Mr.' / 'Mrs.'"},
+      {k:"parent_last_name", d:"Parent last name"},
+      {k:"child_first_name", d:"Student first name"},
+      {k:"attn_total", d:"Classes attended (0–3)"},
+      {k:"performance_report_link", d:"Full report URL"},
+    ],
+  },
+  {
+    id:"T12_D3_SUMMARY_STUDENT", logical_id:"T12_D3_SUMMARY", audience:"student",
+    name:"Day 3 summary · Student", icon:"🎓", day:"D3 end", dayKey:"d3sum",
+    tone:"Punchy close · '3 days. Big progress.'", group:"Conversion", read:88, color:"#5BA8FF",
+    rule:"Fires 1h after Day 3 class · all enrolled · grade 8–10",
+    body:`3 days. Big progress.
+
+📊 Your stats:
+Classes: {{attn_total}}/3
+HW: Done
+Score: {{overall_score}}%
+
+You just built a strong {{subject}} base
+
+👉 Full report: {{performance_report_link}}
+
+Now the real question 👇`,
+    variables:[
+      {k:"attn_total", d:"Classes attended (0–3)"},
+      {k:"overall_score", d:"Final score %"},
+      {k:"subject", d:"Subject"},
+      {k:"performance_report_link", d:"Full report URL"},
+    ],
+  },
+
+  // ═══ INTENT CAPTURE (PAIRED) ═══
+  {
+    id:"T13_INTENT_CAPTURE_PARENT", logical_id:"T13_INTENT_CAPTURE", audience:"parent",
+    name:"Intent capture · Parent", icon:"🎯", day:"D3+1", dayKey:"intent",
+    tone:"Direct · addresses parent", group:"Conversion", read:79, color:"#FF7A2E",
+    rule:"Fires D3+1 18:00 IST · grade 5–7 · WATI button template",
+    body:`Would you like {{child_first_name}} to continue this learning journey?
+
+Please help us guide you better:
+• Who is responding: *Parent / Student*
+• Current tuition: *Yes / No*`,
+    buttons:["Yes, continue","Not right now"],
+    variables:[
+      {k:"child_first_name", d:"Student first name"},
+    ],
+  },
+  {
+    id:"T13_INTENT_CAPTURE_STUDENT", logical_id:"T13_INTENT_CAPTURE", audience:"student",
+    name:"Intent capture · Student", icon:"🎯", day:"D3+1", dayKey:"intent",
+    tone:"Direct · 'do you want to continue?'", group:"Conversion", read:81, color:"#5BA8FF",
+    rule:"Fires D3+1 18:00 IST · grade 8–10 · WATI button template",
+    body:`Do you want to continue this journey? 🎯
+
+Tell us:
+• You / Parent responding
+• Already in tuition? Yes / No`,
+    buttons:["Yes, continue","Not right now"],
+    variables:[],
+  },
+
+  // ═══ COUNSELLOR CONNECT (PAIRED) ═══
+  {
+    id:"T14_COUNSELLOR_CONNECT_PARENT", logical_id:"T14_COUNSELLOR_CONNECT", audience:"parent",
+    name:"Counsellor connect · Parent", icon:"🤝", day:"D3+1", dayKey:"connect",
+    tone:"Formal · 'discuss plan / scholarship / fees'", group:"Conversion", read:90, color:"#FF7A2E",
+    rule:"Fires within 15 min of T13 reply=YES · grade 5–7 · counsellor by region+tier",
+    body:`Thank you! 🎉
+
+Your academic counsellor: *{{counsellor_name}}*
 📞 {{counsellor_phone}}
 
-They'll call you between *{{call_window}}* to walk you through:
-✅ Your ideal full course track
-✅ Scholarship options (if eligible)
-✅ Fee + payment flexibility
-
-Prep 3 questions you want answered. See you on that call! 💙`
+They'll call between {{call_window}} to discuss:
+✔ Personalized learning plan
+✔ Scholarship eligibility
+✔ Fee options`,
+    variables:[
+      {k:"counsellor_name", d:"Counsellor name"},
+      {k:"counsellor_phone", d:"Counsellor phone"},
+      {k:"call_window", d:"Time window"},
+    ],
   },
   {
-    id:"T15_NURTURE_SOFT", name:"Soft nurture (NO / no response)", icon:"🌱",
-    day:"D3+2", dayKey:"nurture", tone:"Gentle re-engage", group:"Conversion", read:38,
-    color:"#5BA8FF",
+    id:"T14_COUNSELLOR_CONNECT_STUDENT", logical_id:"T14_COUNSELLOR_CONNECT", audience:"student",
+    name:"Counsellor connect · Student", icon:"🤝", day:"D3+1", dayKey:"connect",
+    tone:"Casual · 'nice decision · be ready'", group:"Conversion", read:86, color:"#5BA8FF",
+    rule:"Fires within 15 min of T13 reply=YES · grade 8–10",
+    body:`Nice decision 💯
+
+Your counsellor: {{counsellor_name}}
+
+They'll call you today ({{call_window}})
+
+Ask them anything about:
+✔ Strategy
+✔ Scholarships
+✔ Course plan
+
+Be ready 💪`,
     variables:[
-      {k:"first_name",       d:"Student first name"},
-      {k:"overall_score",    d:"Final score %"},
-      {k:"benefits_link",    d:"2-min benefits page URL"},
+      {k:"counsellor_name", d:"Counsellor name"},
+      {k:"call_window", d:"Time window"},
     ],
-    rule:"Fires Day 3+2 · IF intent=NO OR no reply to T13 within 24h",
-    body:`Hey {{first_name}} 🌱
+  },
 
-You scored {{overall_score}}% in your Booster trial — that's a solid base.
+  // ═══ NURTURE SOFT (PAIRED) ═══
+  {
+    id:"T15_NURTURE_SOFT_PARENT", logical_id:"T15_NURTURE_SOFT", audience:"parent",
+    name:"Soft nurture · Parent", icon:"🌱", day:"D3+2", dayKey:"nurture",
+    tone:"Patient · 'we understand this is a decision'", group:"Conversion", read:38, color:"#FF7A2E",
+    rule:"Fires D3+2 · IF intent=NO OR no reply to T13 · grade 5–7",
+    body:`We understand this is a decision 😊
 
-No pressure on the full course. But here's a 2-min read on what changes for students who continue → {{benefits_link}}
+{{child_first_name}}'s detailed report is still available:
+👉 {{benefits_link}}
 
-We keep your progress saved for 30 days. Whenever you're ready. 🙂`
+We're here whenever you're ready to continue 💙`,
+    variables:[
+      {k:"child_first_name", d:"Student first name"},
+      {k:"benefits_link", d:"Benefits URL"},
+    ],
+  },
+  {
+    id:"T15_NURTURE_SOFT_STUDENT", logical_id:"T15_NURTURE_SOFT", audience:"student",
+    name:"Soft nurture · Student", icon:"🌱", day:"D3+2", dayKey:"nurture",
+    tone:"Cool · 'still thinking? that's okay'", group:"Conversion", read:42, color:"#5BA8FF",
+    rule:"Fires D3+2 · IF intent=NO OR no reply to T13 · grade 8–10",
+    body:`Still thinking? That's okay
+
+Your report is saved here:
+👉 {{benefits_link}}
+
+Whenever you're ready — we've got you 🚀`,
+    variables:[
+      {k:"benefits_link", d:"Benefits URL"},
+    ],
   },
 ];
 
@@ -526,45 +658,70 @@ const REGIONS = [
 ];
 
 const DAY_FILTERS = [
-  {k:"all",    label:"All"},
-  {k:"pre",    label:"Pre-cohort"},
-  {k:"d0",     label:"Day 0"},
-  {k:"d1",     label:"Day 1"},
-  {k:"d2",     label:"Day 2"},
-  {k:"d3",     label:"Day 3"},
-  {k:"conv",   label:"Conversion (D3+)"},
+  {k:"all",  label:"All"},
+  {k:"pre",  label:"Pre-cohort"},
+  {k:"d0",   label:"Day 0"},
+  {k:"d1",   label:"Day 1"},
+  {k:"d2",   label:"Day 2"},
+  {k:"d3",   label:"Day 3"},
+  {k:"conv", label:"Conversion"},
+];
+
+const AUDIENCE_FILTERS = [
+  {k:"all",     label:"All audiences"},
+  {k:"parent",  label:"🟠 Parent (5–7)"},
+  {k:"student", label:"🔵 Student (8–10)"},
+  {k:"shared",  label:"🟢 Shared (both)"},
 ];
 
 /* ═══════════════════════════════════════════════════════
-   AUTO-SELECTOR LOGIC
-   Given student state → returns which template fires next
+   AUTO-SELECTOR — phase + grade → resolved WATI template
 ═══════════════════════════════════════════════════════ */
 
-function autoSelect(state) {
-  const {phase, attended_d1, attended_d2, hw_d1, hw_d2} = state;
+function getAudience(grade) {
+  if (grade >= 5 && grade <= 7) return "parent";
+  if (grade >= 8 && grade <= 10) return "student";
+  return "student";
+}
 
-  if (phase === "enroll")  return {id:"T01_WELCOME", reason:"Batch enrollment event (T1)"};
-  if (phase === "pre_d3")  return {id:"T10_HYPE_VIDEO", reason:"D-3 pre-cohort · excitement"};
-  if (phase === "pre_d1")  return {id:"T11_CURIOSITY_HOOK", reason:"D-2 pre-cohort · curiosity hook"};
-  if (phase === "t24h")    return {id:"T02_REMINDER_T24H", reason:"24h before next class"};
-  if (phase === "t3h")     return {id:"T03_REMINDER_T3H", reason:"3h before class · question hook"};
-  if (phase === "t30m")    return {id:"T04_JOIN_NOW", reason:"30 min before · urgent CTA"};
-
+function pickLogicalTemplate(state) {
+  const {phase, attended_d1, attended_d2, attended_d3, hw_d1, hw_d2, hw_d3, intent} = state;
+  if (phase === "pre")        return {id:"T11_CURIOSITY_HOOK", reason:"Pre-cohort · curiosity hook"};
+  if (phase === "enroll")     return {id:"T01_WELCOME", reason:"Batch enrollment event"};
+  if (phase === "t24h")       return {id:"T02_REMINDER_T24H", reason:"24h before next class"};
+  if (phase === "t3h")        return {id:"T03_REMINDER_T3H", reason:"3h before class"};
+  if (phase === "t30m")       return {id:"T04_JOIN_NOW", reason:"30 min before class"};
   if (phase === "post_d1") {
-    if (!attended_d1) return {id:"T16_D1_NOSHOW", reason:"No-show on D1 · empathy re-engage"};
-    if (attended_d1 && hw_d1) return {id:"T08_PERF_HIGH", reason:"D1: attended + HW submitted"};
-    return {id:"T09_PERF_LOW", reason:"D1: partial engagement"};
+    if (!attended_d1) return {id:"T16_D1_NOSHOW", reason:"D1 no-show · empathy re-engage"};
+    return {id:"T05_POST_SUMMARY", reason:"D1 attended · summary"};
   }
-  if (phase === "post_d2") {
-    if (attended_d2 && hw_d2) return {id:"T08_PERF_HIGH", reason:"D2: attended + HW submitted"};
-    return {id:"T09_PERF_LOW", reason:"D2: partial engagement"};
-  }
-  if (phase === "post_d3")  return {id:"T12_D3_SUMMARY", reason:"Day 3 ended · transformation close"};
-  if (phase === "intent")   return {id:"T13_INTENT_CAPTURE", reason:"Day 3+1 · ask intent"};
-  if (phase === "intent_y") return {id:"T14_COUNSELLOR_CONNECT", reason:"Button reply = YES · handoff"};
-  if (phase === "intent_n") return {id:"T15_NURTURE_SOFT", reason:"Intent NO / no reply · soft nurture"};
+  if (phase === "hw_d1")      return attended_d1 ? {id:"T06_HW_ASSIGNED", reason:"D1 attended · HW"} : {id:null, reason:"Skipped — D1 not attended"};
+  if (phase === "eve_d1")     return (attended_d1 && hw_d1) ? {id:"T08_PERF_HIGH", reason:"D1: attn + HW ✓"} : {id:"T09_PERF_LOW", reason:"D1: partial engagement"};
+  if (phase === "post_d2")    return attended_d2 ? {id:"T05_POST_SUMMARY", reason:"D2 attended · summary"} : {id:null, reason:"Skipped — D2 not attended"};
+  if (phase === "eve_d2")     return (attended_d2 && hw_d2) ? {id:"T08_PERF_HIGH", reason:"D2: attn + HW ✓"} : {id:"T09_PERF_LOW", reason:"D2: partial engagement"};
+  if (phase === "post_d3")    return attended_d3 ? {id:"T05_POST_SUMMARY", reason:"D3 attended · summary"} : {id:null, reason:"Skipped — D3 not attended"};
+  if (phase === "end_d3")     return {id:"T12_D3_SUMMARY", reason:"D3 end · transformation close"};
+  if (phase === "intent")     return {id:"T13_INTENT_CAPTURE", reason:"D3+1 · ask intent"};
+  if (phase === "intent_y")   return {id:"T14_COUNSELLOR_CONNECT", reason:"Reply YES · handoff"};
+  if (phase === "intent_n")   return {id:"T15_NURTURE_SOFT", reason:"Reply NO / no reply · soft nurture"};
+  return {id:null, reason:"No template"};
+}
 
-  return {id:"T01_WELCOME", reason:"Default"};
+function resolveTemplate(logical_id, audience) {
+  if (!logical_id) return null;
+  const candidates = TEMPLATES.filter(t => t.logical_id === logical_id);
+  // Shared first (audience-neutral wins for shared messages)
+  const shared = candidates.find(t => t.audience === "shared");
+  if (shared) return shared.id;
+  const match = candidates.find(t => t.audience === audience);
+  return match?.id || null;
+}
+
+function autoSelect(state, grade) {
+  const audience = getAudience(grade);
+  const {id: logical, reason} = pickLogicalTemplate(state);
+  const watiId = resolveTemplate(logical, audience);
+  return {logical_id: logical, wati_id: watiId, audience, reason};
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -572,10 +729,11 @@ function autoSelect(state) {
 ═══════════════════════════════════════════════════════ */
 
 let S = {
-  filter:"all",
-  selectedId:"T01_WELCOME",
+  filterDay:"all",
+  filterAudience:"all",
+  selectedId:"T01_WELCOME_PARENT",
   selectedRegion:"TG",
-  autosel:{phase:"post_d1", attended_d1:true, attended_d2:false, hw_d1:false, hw_d2:false},
+  autosel:{phase:"post_d1", attended_d1:true, attended_d2:false, attended_d3:false, hw_d1:false, hw_d2:false, grade:6},
 };
 
 /* ═══════════════════════════════════════════════════════
@@ -611,31 +769,42 @@ function rTopbar() {
 }
 
 function rFilterBar() {
+  const total = TEMPLATES.length;
+  const parent = TEMPLATES.filter(t => t.audience === "parent").length;
+  const student = TEMPLATES.filter(t => t.audience === "student").length;
+  const shared = TEMPLATES.filter(t => t.audience === "shared").length;
+
   return `<div class="filter-bar">
-    <span class="fb-label">Filter by day</span>
+    <span class="fb-label">Day</span>
     <div class="chip-group">
-      ${DAY_FILTERS.map(f => {
-        const on = S.filter === f.k ? "on" : "";
-        return `<button class="chip ${on}" data-filter="${f.k}">${f.label}</button>`;
-      }).join("")}
+      ${DAY_FILTERS.map(f => `<button class="chip ${S.filterDay===f.k?"on":""}" data-day="${f.k}">${f.label}</button>`).join("")}
     </div>
-    <div class="budget-pill">16 core + 5 regional = 21/25 WATI templates</div>
+    <span class="fb-label" style="margin-left:8px">Audience</span>
+    <div class="chip-group">
+      ${AUDIENCE_FILTERS.map(f => `<button class="chip ${S.filterAudience===f.k?"on":""}" data-aud="${f.k}">${f.label}</button>`).join("")}
+    </div>
+    <div class="budget-pill">${parent} parent + ${student} student + ${shared} shared = ${total}/25 WATI templates</div>
   </div>`;
 }
 
-function filterMatch(t) {
-  if (S.filter === "all") return true;
-  if (S.filter === "pre")  return t.dayKey === "pre";
-  if (S.filter === "d0")   return t.dayKey === "d0";
-  if (S.filter === "d1")   return ["rem24","rem3","join","post","hw","hwrem","perfH","perfL","noshow"].includes(t.dayKey);
-  if (S.filter === "d2")   return ["rem24","rem3","join","post","hw","hwrem","perfH","perfL"].includes(t.dayKey);
-  if (S.filter === "d3")   return ["rem24","rem3","join","post","d3sum"].includes(t.dayKey);
-  if (S.filter === "conv") return ["d3sum","intent","connect","nurture"].includes(t.dayKey);
+function dayMatch(t) {
+  if (S.filterDay === "all") return true;
+  if (S.filterDay === "pre")  return t.dayKey === "pre";
+  if (S.filterDay === "d0")   return t.dayKey === "d0";
+  if (S.filterDay === "d1")   return ["rem24","rem3","join","post","hw","hwrem","perfH","perfL","noshow"].includes(t.dayKey);
+  if (S.filterDay === "d2")   return ["rem24","rem3","join","post","hw","hwrem","perfH","perfL"].includes(t.dayKey);
+  if (S.filterDay === "d3")   return ["rem24","rem3","join","post","d3sum"].includes(t.dayKey);
+  if (S.filterDay === "conv") return ["d3sum","intent","connect","nurture"].includes(t.dayKey);
   return true;
 }
 
+function audMatch(t) {
+  if (S.filterAudience === "all") return true;
+  return t.audience === S.filterAudience;
+}
+
 function rTplList() {
-  const list = TEMPLATES.filter(filterMatch);
+  const list = TEMPLATES.filter(t => dayMatch(t) && audMatch(t));
   return `<div class="panel">
     <div class="panel-head">
       <span class="panel-title">Templates</span>
@@ -645,19 +814,19 @@ function rTplList() {
       ${list.map((t,i) => {
         const active = S.selectedId === t.id ? "active" : "";
         const readCls = t.read >= 80 ? "var(--green)" : t.read >= 65 ? "var(--amber)" : "var(--red)";
-        return `<div class="tpl-item ${active}" data-tid="${t.id}" style="animation-delay:${i*.03}s">
+        return `<div class="tpl-item ${active}" data-tid="${t.id}" style="animation-delay:${i*.02}s">
           <div class="tpl-h1">
-            <span style="font-size:16px">${t.icon}</span>
+            <span style="font-size:15px">${t.icon}</span>
             <span class="tpl-id">${t.id}</span>
-            ${t.regional ? `<span class="pill" style="background:rgba(255,122,46,.1);color:var(--orange);border:1px solid rgba(255,122,46,.3);margin-left:auto">5 regions</span>` : ""}
+            <span class="tpl-aud ${t.audience}">${t.audience.toUpperCase()}</span>
           </div>
           <div class="tpl-title">${t.name}</div>
           <div class="tpl-h2">
             <span class="pill day">${t.day}</span>
-            <span class="pill tone">${t.tone}</span>
+            <span class="pill tone">${t.tone.split("·")[0].trim()}</span>
           </div>
           <div class="read-bar"><div class="read-bar-fill" style="width:${t.read}%;background:${readCls}"></div></div>
-          <div class="read-label">${t.read}% read rate</div>
+          <div class="read-label">${t.read}% read · ${t.group}</div>
         </div>`;
       }).join("")}
     </div>
@@ -665,6 +834,11 @@ function rTplList() {
 }
 
 function rDetail(tpl) {
+  // Find paired counterpart if exists
+  const pair = tpl.audience !== "shared"
+    ? TEMPLATES.find(t => t.logical_id === tpl.logical_id && t.audience !== tpl.audience && t.audience !== "shared")
+    : null;
+
   return `<div class="panel">
     <div class="panel-head">
       <span class="panel-title">Template Detail</span>
@@ -675,22 +849,26 @@ function rDetail(tpl) {
         <div class="d-icon" style="background:${tpl.color}15;color:${tpl.color}">${tpl.icon}</div>
         <div style="flex:1">
           <div class="d-name">${tpl.name}</div>
-          <div class="d-sub">${tpl.group} · ${tpl.day}</div>
+          <div class="d-sub">${tpl.group} · ${tpl.day} · logical ID: ${tpl.logical_id}</div>
           <div class="d-pills">
             <span class="pill day">${tpl.day}</span>
             <span class="pill tone">${tpl.tone}</span>
             <span class="pill" style="background:rgba(46,204,154,.1);color:var(--green);border:1px solid rgba(46,204,154,.28)">${tpl.read}% read</span>
+            <span class="tpl-aud ${tpl.audience}" style="font-size:9.5px">${tpl.audience.toUpperCase()}</span>
           </div>
         </div>
       </div>
 
+      ${pair ? `<div class="pair-banner">
+        <span class="pair-tag">PAIRED</span>
+        <span>This template has a <strong>${pair.audience}</strong> counterpart: <strong>${pair.id}</strong></span>
+        <button class="jump-btn" data-jump="${pair.id}">View ${pair.audience} variant →</button>
+      </div>` : ""}
+
       <div class="split">
         <div class="split-main">
           <div class="section">
-            <div class="section-title">
-              <span>Message Body (raw)</span>
-              <span style="color:var(--purple);text-transform:none;letter-spacing:0;font-size:10px;font-weight:500">Copy →</span>
-            </div>
+            <div class="section-title"><span>Message Body (raw)</span></div>
             <div class="body-preview">${highlightVars(tpl.body)}</div>
             ${tpl.buttons ? `
               <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap">
@@ -719,7 +897,7 @@ function rDetail(tpl) {
 
           <div class="section">
             <div class="section-title">Variables (${tpl.variables.length})</div>
-            ${tpl.variables.map(v => `
+            ${tpl.variables.length === 0 ? `<div style="font-size:11px;color:var(--muted);font-style:italic">No variables — static body.</div>` : tpl.variables.map(v => `
               <div class="var-item">
                 <code>{{${v.k}}}</code>
                 <span>${v.d}</span>
@@ -748,41 +926,29 @@ function rRegionalPreview(tpl) {
 
 function rWAPreview(tpl) {
   const sample = {
-    first_name:"Arjun", batch_id:"BOOSTER-APR-C17",
-    day1_date:"Apr 24", day1_time:"6:30 PM", day1_topic:"Rotational Mechanics",
-    day2_date:"Apr 25", day2_time:"6:30 PM", day2_topic:"Gravitation",
-    day3_date:"Apr 26", day3_time:"6:30 PM", day3_topic:"Oscillations",
+    first_name:"Arjun", child_first_name:"Arjun",
+    parent_salutation:"Mr.", parent_last_name:"Sharma",
+    day1_date:"Apr 28", day1_time:"6:30 PM", day1_topic:"Rotational Mechanics",
+    day2_date:"Apr 29", day2_time:"6:30 PM", day2_topic:"Gravitation",
+    day3_date:"Apr 30", day3_time:"6:30 PM", day3_topic:"Oscillations",
     teacher_name:"Neha Ma'am", subject:"Physics",
     phone:"+91 98XXX 12345", email:"arjun@mail.com",
-    day_label:"Day 2", class_time:"6:30 PM", topic:"Gravitation",
-    n_days_topic_preview:"Why do satellites stay up?",
-    hook_question:"Why do astronauts float even though gravity is still pulling them?",
+    topic:"Gravitation", class_time:"6:30 PM",
+    hook_question:"Why do astronauts float even when gravity exists?",
     join_link:"ved.app/j/C17D2",
-    key_takeaway_1:"Kepler's 3 laws via real examples",
-    key_takeaway_2:"Escape velocity derivation",
-    key_takeaway_3:"Orbital mechanics · 5 MCQs solved",
+    key_takeaway_1:"Kepler's Laws", key_takeaway_2:"Escape Velocity", key_takeaway_3:"Basics of Orbital Motion",
     feedback_link:"ved.app/fb/C17D2",
-    hw_topic:"Rotational Mechanics", hw_deadline:"Tomorrow 6 PM",
-    hw_link:"ved.app/hw/C17D1", hw_duration:"25 min",
-    hours_left:"6", attn_score:"100", hw_score:"100",
-    day_num:"1", rank_in_batch:"8",
-    missed:"missed class", confirm_link:"ved.app/confirm",
-    snippet_video_url:"ved.app/snip/C17", snippet_summary:"ved.app/recap/C17D1",
-    d1_topic:"Rotational Mechanics",
-    attn_total:"3", hw_total:"2", overall_score:"94",
-    learning_outcome:"Full Physics foundation for JEE Main Unit 4",
+    day_num:"1", hw_duration:"20–25 mins", hw_deadline:"Tomorrow 6 PM", hw_link:"ved.app/hw/C17D1",
+    attn_score:"100", rank_in_batch:"10",
+    attn_total:"3", overall_score:"94",
+    counsellor_name:"Ankita Sharma", counsellor_phone:"+91 8X-XXXX-XXXX", call_window:"4–7 PM",
+    benefits_link:"ved.app/report",
     performance_report_link:"ved.app/report/C17/arjun",
-    counsellor_name:"Ankita Sharma", counsellor_phone:"+91 8X-XXXX-XXXX",
-    call_window:"4 PM – 7 PM today",
-    benefits_link:"ved.app/why-continue",
-    header_image:`[${S.selectedRegion} REGIONAL POSTER]`,
+    header_image:`[${S.selectedRegion} POSTER]`,
   };
 
   const rendered = tpl.body.replace(/\{\{(\w+)\}\}/g, (_, k) => sample[k] || `{{${k}}}`);
-  const formatted = rendered
-    .replace(/\*(.*?)\*/g, "<strong>$1</strong>")
-    .replace(/\n/g, "<br>");
-
+  const formatted = rendered.replace(/\*(.*?)\*/g, "<strong>$1</strong>").replace(/\n/g, "<br>");
   const regionColor = REGIONS.find(r => r.code === S.selectedRegion)?.color || "#FF7A2E";
 
   return `<div class="phone"><div class="phone-inner">
@@ -803,57 +969,61 @@ function rWAPreview(tpl) {
           <span class="btime">${new Date().toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"})}</span>
         </div>
       </div>
-      ${tpl.buttons ? `<div class="bw in" style="margin-top:-2px"><div class="wa-btn-row" style="max-width:85%">${tpl.buttons.map(b => `<div class="wa-btn">${b}</div>`).join("")}</div></div>` : ""}
+      ${tpl.buttons ? `<div class="bw in" style="margin-top:-2px"><div class="wa-btn-row" style="max-width:88%">${tpl.buttons.map(b => `<div class="wa-btn">${b}</div>`).join("")}</div></div>` : ""}
     </div>
   </div></div>`;
 }
 
 function rAutoSelector() {
-  const result = autoSelect(S.autosel);
-  const match = TEMPLATES.find(t => t.id === result.id);
+  const result = autoSelect(S.autosel, S.autosel.grade);
+  const match = result.wati_id ? TEMPLATES.find(t => t.id === result.wati_id) : null;
 
   return `<div class="autosel">
     <div class="section-title" style="margin:0;color:var(--purple)">
       <span>⚡ Auto-selector playground</span>
-      <span style="color:var(--muted);text-transform:none;letter-spacing:0;font-size:10px;font-weight:500">Apps Script uses this logic</span>
+      <span style="color:var(--muted);text-transform:none;letter-spacing:0;font-size:10px;font-weight:500">grade → audience → template</span>
     </div>
     <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5">
-      Simulate student state — see which template the rule engine picks & writes into the <code style="color:var(--amber);font-family:'DM Mono',monospace">chosen_template</code> column.
+      Simulate phase + grade — see which WATI template the engine picks (audience routed automatically: 5–7 → parent voice, 8–10 → student voice).
     </div>
     <div class="autosel-grid">
       <div class="as-col">
         <div class="as-label">Journey phase</div>
         <select class="as-phase" style="width:100%;padding:6px 8px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:6px;font-size:11px">
           ${[
-            ["enroll","On enrollment"],
-            ["pre_d3","Pre-cohort D-3"],
-            ["pre_d1","Pre-cohort D-2"],
-            ["t24h","T-24h reminder"],
-            ["t3h","T-3h reminder"],
-            ["t30m","T-30min join CTA"],
-            ["post_d1","After Day 1 class"],
-            ["post_d2","After Day 2 class"],
-            ["post_d3","After Day 3 class"],
-            ["intent","Day 3+1 intent"],
-            ["intent_y","Button YES reply"],
-            ["intent_n","No reply / NO"],
+            ["pre","Pre-cohort"],["enroll","On enrollment"],
+            ["t24h","T-24h reminder"],["t3h","T-3h reminder"],["t30m","T-30m join CTA"],
+            ["post_d1","After D1 class"],["hw_d1","D1 HW assigned"],["eve_d1","D1 evening"],
+            ["post_d2","After D2 class"],["eve_d2","D2 evening"],
+            ["post_d3","After D3 class"],["end_d3","D3 end summary"],
+            ["intent","D3+1 intent ask"],["intent_y","Reply YES"],["intent_n","No reply / NO"],
           ].map(([v,l]) => `<option value="${v}" ${S.autosel.phase===v?"selected":""}>${l}</option>`).join("")}
         </select>
       </div>
       <div class="as-col">
-        <div class="as-label">Attended Day 1 / Day 2</div>
-        <div class="as-seg" style="margin-bottom:5px">
+        <div class="as-label">Grade (audience)</div>
+        <select class="as-grade" style="width:100%;padding:6px 8px;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:6px;font-size:11px">
+          ${[5,6,7,8,9,10].map(g => `<option value="${g}" ${S.autosel.grade===g?"selected":""}>Grade ${g} · ${getAudience(g)}</option>`).join("")}
+        </select>
+      </div>
+      <div class="as-col">
+        <div class="as-label">Attended D1 / D2 / D3</div>
+        <div class="as-seg" style="margin-bottom:4px">
           <button class="${S.autosel.attended_d1?"on":""}" data-as="attended_d1" data-val="1">D1 ✓</button>
           <button class="${!S.autosel.attended_d1?"on":""}" data-as="attended_d1" data-val="0">D1 ✗</button>
         </div>
-        <div class="as-seg">
+        <div class="as-seg" style="margin-bottom:4px">
           <button class="${S.autosel.attended_d2?"on":""}" data-as="attended_d2" data-val="1">D2 ✓</button>
           <button class="${!S.autosel.attended_d2?"on":""}" data-as="attended_d2" data-val="0">D2 ✗</button>
         </div>
+        <div class="as-seg">
+          <button class="${S.autosel.attended_d3?"on":""}" data-as="attended_d3" data-val="1">D3 ✓</button>
+          <button class="${!S.autosel.attended_d3?"on":""}" data-as="attended_d3" data-val="0">D3 ✗</button>
+        </div>
       </div>
       <div class="as-col">
-        <div class="as-label">HW Day 1 / Day 2</div>
-        <div class="as-seg" style="margin-bottom:5px">
+        <div class="as-label">HW D1 / D2</div>
+        <div class="as-seg" style="margin-bottom:4px">
           <button class="${S.autosel.hw_d1?"on":""}" data-as="hw_d1" data-val="1">HW1 ✓</button>
           <button class="${!S.autosel.hw_d1?"on":""}" data-as="hw_d1" data-val="0">HW1 ✗</button>
         </div>
@@ -866,10 +1036,11 @@ function rAutoSelector() {
     <div class="as-result">
       <div class="as-result-ico">${match?.icon || "📩"}</div>
       <div class="as-result-txt">
-        Selected → <strong>${result.id}</strong> · ${match?.name || ""}<br>
+        Logical → <strong>${result.logical_id || "—"}</strong> · Audience → <strong>${result.audience}</strong><br>
+        WATI ID → <strong>${result.wati_id || "(no template — phase skipped)"}</strong><br>
         <span style="color:var(--muted)">Reason: ${result.reason}</span>
       </div>
-      <button class="nav-btn" data-jump="${result.id}" style="flex-shrink:0">View →</button>
+      ${result.wati_id ? `<button class="jump-btn" data-jump="${result.wati_id}">View →</button>` : ""}
     </div>
   </div>`;
 }
@@ -885,40 +1056,36 @@ function highlightVars(body) {
 ═══════════════════════════════════════════════════════ */
 
 function bindHandlers() {
-  document.querySelectorAll("[data-filter]").forEach(el => {
-    el.addEventListener("click", () => { S.filter = el.dataset.filter; render(); });
+  document.querySelectorAll("[data-day]").forEach(el => {
+    el.addEventListener("click", () => { S.filterDay = el.dataset.day; render(); });
   });
-
+  document.querySelectorAll("[data-aud]").forEach(el => {
+    el.addEventListener("click", () => { S.filterAudience = el.dataset.aud; render(); });
+  });
   document.querySelectorAll("[data-tid]").forEach(el => {
-    el.addEventListener("click", () => {
-      S.selectedId = el.dataset.tid;
-      render();
-    });
+    el.addEventListener("click", () => { S.selectedId = el.dataset.tid; render(); });
   });
-
   document.querySelectorAll("[data-region]").forEach(el => {
     el.addEventListener("click", () => { S.selectedRegion = el.dataset.region; render(); });
   });
 
-  const phaseSel = document.querySelector(".as-phase");
-  if (phaseSel) phaseSel.addEventListener("change", e => {
-    S.autosel.phase = e.target.value;
-    render();
+  document.querySelector(".as-phase")?.addEventListener("change", e => {
+    S.autosel.phase = e.target.value; render();
   });
-
+  document.querySelector(".as-grade")?.addEventListener("change", e => {
+    S.autosel.grade = +e.target.value; render();
+  });
   document.querySelectorAll("[data-as]").forEach(el => {
     el.addEventListener("click", () => {
       S.autosel[el.dataset.as] = el.dataset.val === "1";
       render();
     });
   });
-
   document.querySelectorAll("[data-jump]").forEach(el => {
     el.addEventListener("click", () => { S.selectedId = el.dataset.jump; render(); });
   });
 }
 
-/* ── BOOT ── */
 render();
 </script>
 </body>

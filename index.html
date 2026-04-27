@@ -124,6 +124,27 @@ h1.pg-title{font-size:26px;font-weight:300;letter-spacing:-.01em;margin-bottom:3
 .tier-fill{height:100%;border-radius:99px;animation:grow 1.1s cubic-bezier(.4,0,.2,1) forwards}
 .tier-n{font-size:13px;font-weight:500;font-family:'DM Mono',monospace;text-align:right}
 
+/* ── AUDIENCE SPLIT ── */
+.aud-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.aud-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;animation:up .4s ease both}
+.aud-head{padding:14px 18px;display:flex;align-items:center;gap:12px}
+.aud-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.aud-title{font-size:14px;font-weight:500;line-height:1.2}
+.aud-sub{font-size:10.5px;color:var(--muted);margin-top:3px}
+.aud-pct{font-size:24px;font-weight:500;font-family:'DM Mono',monospace;line-height:1}
+.aud-body{padding:8px 18px 16px}
+.aud-stat-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px dashed var(--faint);font-size:11.5px}
+.aud-stat-row:last-child{border-bottom:none}
+.aud-stat-lbl{color:var(--muted)}
+.aud-stat-val{font-weight:500}
+
+.grade-bar-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;align-items:end;height:130px}
+.grade-bar{display:flex;flex-direction:column;align-items:center;gap:5px;height:100%}
+.grade-bar-label{font-size:11px;font-weight:600;color:var(--text);order:3;display:flex;align-items:center;gap:3px}
+.grade-bar-track{flex:1;width:100%;background:var(--faint);border-radius:6px;display:flex;align-items:flex-end;overflow:hidden;order:1}
+.grade-bar-fill{width:100%;border-radius:6px;transition:height .8s cubic-bezier(.4,0,.2,1)}
+.grade-bar-n{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted);order:2}
+
 /* ── REGIONS ── */
 .region-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
 .region-card{
@@ -196,6 +217,8 @@ h1.pg-title{font-size:26px;font-weight:300;letter-spacing:-.01em;margin-bottom:3
   .kpi-grid{grid-template-columns:repeat(2,1fr)}
   .two-col{grid-template-columns:1fr}
   .region-grid{grid-template-columns:repeat(3,1fr)}
+  .aud-grid{grid-template-columns:1fr}
+  .aud-card[style*="grid-column:span 2"]{grid-column:span 1}
 }
 @media (max-width:640px){
   .wrap{padding:16px}
@@ -251,6 +274,40 @@ const REGIONS = [
   {code:"PB", name:"Patiala (PB)",    flag:"🔴", enrolled:79,  attended:49,  color:"#F06060"},
 ];
 
+// Audience split — driven by grade (5-7 = parent, 8-10 = student)
+const AUDIENCE = {
+  parent: {
+    label:"Parent track",
+    grades:"Grade 5–7",
+    color:"#FF7A2E",
+    enrolled:524,
+    d1_attended:382, d2_attended:311, d3_attended:242,
+    hot:248, warm75:71, warm50:54, d1ns:151,
+    sales_ready:319,
+    avg_open_rate:43,
+    note:"Trust + safety voice",
+  },
+  student: {
+    label:"Student track",
+    grades:"Grade 8–10",
+    color:"#5BA8FF",
+    enrolled:724,
+    d1_attended:510, d2_attended:443, d3_attended:370,
+    hot:364, warm75:71, warm50:84, d1ns:205,
+    sales_ready:435,
+    avg_open_rate:39,
+    note:"Energy + ambition voice",
+  },
+};
+const GRADE_DIST = [
+  {g:5, n:142, aud:"parent"},
+  {g:6, n:191, aud:"parent"},
+  {g:7, n:191, aud:"parent"},
+  {g:8, n:218, aud:"student"},
+  {g:9, n:241, aud:"student"},
+  {g:10,n:265, aud:"student"},
+];
+
 const KPIS = [
   {label:"Cohort size",             val:1248, suffix:"students", sub:"Enrolled via AIO",          delta:"+12%", dtype:"up"},
   {label:"D2 attendance",           val:754,  suffix:"/ 1,248",  sub:"60.4% of cohort",            delta:"−15%", dtype:"down", note:"vs D1"},
@@ -259,7 +316,7 @@ const KPIS = [
   {label:"Email open rate",         val:"41", suffix:"%",        sub:"Daily performance reports",   delta:"flat", dtype:"flat"},
   {label:"Hot leads so far",        val:612,  suffix:"students", sub:"49.0% conversion potential",  delta:"+48",  dtype:"up", note:"vs last cohort"},
   {label:"Sales-ready today",       val:187,  suffix:"leads",    sub:"Hot + Warm-75 awaiting pickup",delta:"NEW",  dtype:"flat"},
-  {label:"Templates in rotation",   val:16,   suffix:"/ 25 cap", sub:"5 regional poster variants",  delta:"OK",   dtype:"up"},
+  {label:"WATI templates in use",   val:25,   suffix:"/ 25 cap", sub:"10 paired + 5 shared (audience-split)", delta:"FULL", dtype:"flat"},
 ];
 
 const TEMPLATES_PERF = [
@@ -283,15 +340,17 @@ const ACTIVITY = [
 ];
 
 const SALES_QUEUE = [
-  {name:"Aarav Reddy",      region:"TG", score:0.98, tier:"hot",    reason:"3/3 attn · 2/2 HW · 96% read",  phone:"+91 98••• 2341"},
-  {name:"Meera Iyer",       region:"TN", score:0.94, tier:"hot",    reason:"3/3 attn · 2/2 HW · 89% read",  phone:"+91 99••• 1147"},
-  {name:"Siddharth Patil",  region:"MH", score:0.91, tier:"hot",    reason:"3/3 attn · 2/2 HW · 81% read",  phone:"+91 70••• 4422"},
-  {name:"Lakshmi Rao",      region:"AP", score:0.78, tier:"warm75", reason:"2/3 attn · 2/2 HW · 92% read",  phone:"+91 80••• 3309"},
-  {name:"Gurpreet Kaur",    region:"PB", score:0.74, tier:"warm75", reason:"2/3 attn · 2/2 HW · 85% read",  phone:"+91 96••• 5521"},
-  {name:"Harini Venkatesh", region:"TN", score:0.71, tier:"warm75", reason:"2/3 attn · 1/2 HW · 97% read",  phone:"+91 97••• 8817"},
-  {name:"Abhinav Kumar",    region:"TG", score:0.52, tier:"warm50", reason:"1/3 attn · 1/2 HW · 78% read",  phone:"+91 90••• 6640"},
-  {name:"Saanvi Desai",     region:"MH", score:0.48, tier:"warm50", reason:"1/3 attn · 1/2 HW · 64% read",  phone:"+91 88••• 2209"},
+  {name:"Aarav Reddy",      region:"TG", grade:6,  score:0.98, tier:"hot",    reason:"3/3 attn · 3/3 test · 3/3 HW",  phone:"+91 98••• 2341"},
+  {name:"Meera Iyer",       region:"TN", grade:10, score:0.94, tier:"hot",    reason:"3/3 attn · 3/3 test · 3/3 HW",  phone:"+91 99••• 1147"},
+  {name:"Siddharth Patil",  region:"MH", grade:9,  score:0.91, tier:"hot",    reason:"3/3 attn · 2/3 test · 3/3 HW",  phone:"+91 70••• 4422"},
+  {name:"Lakshmi Rao",      region:"AP", grade:7,  score:0.78, tier:"warm75", reason:"2/3 attn · 2/3 test · 2/3 HW",  phone:"+91 80••• 3309"},
+  {name:"Gurpreet Kaur",    region:"PB", grade:9,  score:0.74, tier:"warm75", reason:"2/3 attn · 2/3 test · 2/3 HW",  phone:"+91 96••• 5521"},
+  {name:"Harini Venkatesh", region:"TN", grade:6,  score:0.71, tier:"warm75", reason:"2/3 attn · 2/3 test · 1/3 HW",  phone:"+91 97••• 8817"},
+  {name:"Abhinav Kumar",    region:"TG", grade:10, score:0.52, tier:"warm50", reason:"1/3 attn · 0/3 test · 1/3 HW",  phone:"+91 90••• 6640"},
+  {name:"Saanvi Desai",     region:"MH", grade:9,  score:0.48, tier:"warm50", reason:"1/3 attn · 1/3 test · 1/3 HW",  phone:"+91 88••• 2209"},
 ];
+
+function gradeAudience(g) { return (g >= 5 && g <= 7) ? "parent" : "student"; }
 
 /* ═══════════════════════════════════════════════════════
    RENDER
@@ -323,6 +382,16 @@ function render() {
 
       <div class="section">
         <div class="sec-head">
+          <span class="sec-title">Audience Split — Grade-Band Routing</span>
+          <span class="sec-count">${AUDIENCE.parent.enrolled + AUDIENCE.student.enrolled} students</span>
+          <span class="sec-count" style="color:var(--orange);border-color:rgba(255,122,46,.3)">5–7 → parent voice</span>
+          <span class="sec-count" style="color:var(--blue);border-color:rgba(94,168,255,.3)">8–10 → student voice</span>
+        </div>
+        ${rAudienceSplit()}
+      </div>
+
+      <div class="section">
+        <div class="sec-head">
           <span class="sec-title">Regional Breakdown</span>
           <span class="sec-count">5 states</span>
         </div>
@@ -335,9 +404,9 @@ function render() {
       </div>
 
       <div class="foot-note">
-        <strong>Scoring formula:</strong> score = 0.6·(attendance/3) + 0.3·(hw/2) + 0.1·(wa_read/wa_sent).
+        <strong>Scoring formula:</strong> 6 dimensions — 0.25·attendance + 0.20·test + 0.20·hw + 0.15·class_engagement + 0.15·product_engagement + 0.05·wa_read.
         Tiers: <strong style="color:#F06060">Hot</strong> (all 3 days) · <strong style="color:#FF7A2E">Warm-75</strong> (drop after D2) · <strong style="color:#F5BC1E">Warm-50</strong> (drop after D1) · <strong style="color:#4A6580">D1-NoShow</strong> (separate nurture bucket).
-        <br>Template auto-selector picks 1 of 16 WATI-verified templates (+ 5 regional poster variants). Selected <code style="color:var(--purple)">template_id</code> is written back to the master sheet per dispatch.
+        <br><strong>Audience routing:</strong> grade 5–7 → <span style="color:var(--orange)">parent voice</span> templates · grade 8–10 → <span style="color:var(--blue)">student voice</span> templates. 25 WATI templates: 10 paired (parent + student) + 5 shared (audience-neutral). Resolved <code style="color:var(--purple)">chosen_template</code> with audience suffix (e.g. <code style="color:var(--amber);font-family:'DM Mono',monospace">T01_WELCOME_PARENT</code>) is written back per dispatch.
       </div>
     </div>`;
 
@@ -478,6 +547,102 @@ function rTemplateBoard() {
   </div>`;
 }
 
+function rAudienceSplit() {
+  const total = AUDIENCE.parent.enrolled + AUDIENCE.student.enrolled;
+  const pPct = ((AUDIENCE.parent.enrolled / total) * 100).toFixed(1);
+  const sPct = ((AUDIENCE.student.enrolled / total) * 100).toFixed(1);
+  const maxGrade = Math.max(...GRADE_DIST.map(g => g.n));
+
+  return `<div class="aud-grid">
+    <div class="aud-card" style="border-color:rgba(255,122,46,.3)">
+      <div class="aud-head" style="background:linear-gradient(135deg,rgba(255,122,46,.08),rgba(255,122,46,.02))">
+        <div class="aud-icon" style="background:rgba(255,122,46,.15);color:var(--orange)">🟠</div>
+        <div style="flex:1">
+          <div class="aud-title">${AUDIENCE.parent.label}</div>
+          <div class="aud-sub">${AUDIENCE.parent.grades} · ${AUDIENCE.parent.note}</div>
+        </div>
+        <div class="aud-pct" style="color:var(--orange)">${pPct}%</div>
+      </div>
+      <div class="aud-body">
+        <div class="aud-stat-row">
+          <span class="aud-stat-lbl">Enrolled</span>
+          <span class="aud-stat-val" style="color:var(--orange)">${AUDIENCE.parent.enrolled}</span>
+        </div>
+        <div class="aud-stat-row">
+          <span class="aud-stat-lbl">D1 / D2 / D3 attended</span>
+          <span class="aud-stat-val" style="font-family:'DM Mono',monospace;font-size:11.5px">${AUDIENCE.parent.d1_attended} · ${AUDIENCE.parent.d2_attended} · ${AUDIENCE.parent.d3_attended}</span>
+        </div>
+        <div class="aud-stat-row">
+          <span class="aud-stat-lbl">Hot / Warm-75 / Warm-50</span>
+          <span class="aud-stat-val" style="font-family:'DM Mono',monospace;font-size:11.5px">${AUDIENCE.parent.hot} · ${AUDIENCE.parent.warm75} · ${AUDIENCE.parent.warm50}</span>
+        </div>
+        <div class="aud-stat-row">
+          <span class="aud-stat-lbl">Email open rate</span>
+          <span class="aud-stat-val" style="color:var(--green)">${AUDIENCE.parent.avg_open_rate}%</span>
+        </div>
+        <div class="aud-stat-row">
+          <span class="aud-stat-lbl">Sales-ready (Hot+W75)</span>
+          <span class="aud-stat-val" style="color:var(--orange);font-weight:600">${AUDIENCE.parent.sales_ready}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="aud-card" style="border-color:rgba(94,168,255,.3)">
+      <div class="aud-head" style="background:linear-gradient(135deg,rgba(94,168,255,.08),rgba(94,168,255,.02))">
+        <div class="aud-icon" style="background:rgba(94,168,255,.15);color:var(--blue)">🔵</div>
+        <div style="flex:1">
+          <div class="aud-title">${AUDIENCE.student.label}</div>
+          <div class="aud-sub">${AUDIENCE.student.grades} · ${AUDIENCE.student.note}</div>
+        </div>
+        <div class="aud-pct" style="color:var(--blue)">${sPct}%</div>
+      </div>
+      <div class="aud-body">
+        <div class="aud-stat-row">
+          <span class="aud-stat-lbl">Enrolled</span>
+          <span class="aud-stat-val" style="color:var(--blue)">${AUDIENCE.student.enrolled}</span>
+        </div>
+        <div class="aud-stat-row">
+          <span class="aud-stat-lbl">D1 / D2 / D3 attended</span>
+          <span class="aud-stat-val" style="font-family:'DM Mono',monospace;font-size:11.5px">${AUDIENCE.student.d1_attended} · ${AUDIENCE.student.d2_attended} · ${AUDIENCE.student.d3_attended}</span>
+        </div>
+        <div class="aud-stat-row">
+          <span class="aud-stat-lbl">Hot / Warm-75 / Warm-50</span>
+          <span class="aud-stat-val" style="font-family:'DM Mono',monospace;font-size:11.5px">${AUDIENCE.student.hot} · ${AUDIENCE.student.warm75} · ${AUDIENCE.student.warm50}</span>
+        </div>
+        <div class="aud-stat-row">
+          <span class="aud-stat-lbl">Email open rate</span>
+          <span class="aud-stat-val" style="color:var(--green)">${AUDIENCE.student.avg_open_rate}%</span>
+        </div>
+        <div class="aud-stat-row">
+          <span class="aud-stat-lbl">Sales-ready (Hot+W75)</span>
+          <span class="aud-stat-val" style="color:var(--blue);font-weight:600">${AUDIENCE.student.sales_ready}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="aud-card" style="grid-column:span 2;border-color:var(--border)">
+      <div class="aud-head" style="padding-bottom:8px">
+        <div style="flex:1">
+          <div class="aud-title" style="font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)">Per-grade enrollment</div>
+        </div>
+      </div>
+      <div style="padding:8px 18px 16px">
+        <div class="grade-bar-row">
+          ${GRADE_DIST.map(g => {
+            const pct = (g.n/maxGrade*100).toFixed(0);
+            const c = g.aud === "parent" ? "#FF7A2E" : "#5BA8FF";
+            return `<div class="grade-bar">
+              <div class="grade-bar-label">G${g.g}<span style="font-size:8.5px;font-weight:700;letter-spacing:.05em;margin-left:4px;color:${c}">${g.aud === "parent" ? "P" : "S"}</span></div>
+              <div class="grade-bar-track"><div class="grade-bar-fill" style="height:${pct}%;background:${c}"></div></div>
+              <div class="grade-bar-n">${g.n}</div>
+            </div>`;
+          }).join("")}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
 function rRegions() {
   const maxEnr = Math.max(...REGIONS.map(r => r.enrolled));
   return `<div class="region-grid">
@@ -515,15 +680,21 @@ function rSalesHandoff() {
     </div>
     <table class="handoff-table">
       <thead><tr>
-        <th>Student</th><th>Reg</th><th>Score</th><th>Tier</th><th></th>
+        <th>Student</th><th>G · A</th><th>Reg</th><th>Score</th><th>Tier</th><th></th>
       </tr></thead>
       <tbody>
         ${SALES_QUEUE.map(s => {
           const c = tierColor[s.tier];
+          const aud = gradeAudience(s.grade);
+          const audColor = aud === "parent" ? "var(--orange)" : "var(--blue)";
           return `<tr>
             <td>
               <div style="font-weight:500">${s.name}</div>
               <div style="font-size:9.5px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px">${s.reason}</div>
+            </td>
+            <td>
+              <span style="font-size:10px;font-weight:600;color:${audColor}">G${s.grade}</span>
+              <span style="font-size:8px;font-weight:700;letter-spacing:.06em;color:${audColor};margin-left:3px">${aud === "parent" ? "P" : "S"}</span>
             </td>
             <td style="color:var(--muted);font-family:'DM Mono',monospace">${s.region}</td>
             <td><span class="score-chip" style="color:${c}">${s.score.toFixed(2)}</span></td>
